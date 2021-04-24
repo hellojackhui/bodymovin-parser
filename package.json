@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "build": "rollup --config",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache",
+    "dev": "rollup --config --watch",
+    "bootstrap": "cd example/web && npm run start"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

@@ -13,6 +13,11 @@ export default {
       name: 'core',
       format: "umd",
     },
+    {
+      file: "lib/bundle.es.js",
+      name: 'core',
+      format: "es",
+    }
   ],
   plugins: [
     typescript({
