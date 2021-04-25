@@ -153,11 +153,12 @@ class Layer {
     }
 
     buildAnimeFrames(frames) {
-        Object.keys(frames).forEach((key) => {
+        Object.keys(frames).forEach((key, index) => {
             const data = this.animeFrames[key] || {};
             this.animeFrames[key] = {
                 ...data,
                 ...frames[key],
+                offset: Number(Number(index / this.frames).toFixed(3)),
             }
         })
     }
