@@ -35,7 +35,7 @@ class Rotate {
         const {t: nt, s: ns} = next;
         this.startTime = t;
         this.endTime = nt;
-        this.duration = nt - t;
+        this.duration = Math.abs(nt - t);
         this.startVal = this.getRotate(s);
         this.endVal = this.getRotate(ns);
         this.bezierFn = createBezier('r', layer);

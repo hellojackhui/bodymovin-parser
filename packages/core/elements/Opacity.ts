@@ -35,7 +35,7 @@ class Opacity {
         const {t: nt, s: ns} = next;
         this.startTime = t;
         this.endTime = nt;
-        this.duration = nt - t;
+        this.duration = Math.abs(nt - t);
         this.startVal = this.getOpacity(s);
         this.endVal = this.getOpacity(ns);
         this.bezierFn = createBezier('o', layer);

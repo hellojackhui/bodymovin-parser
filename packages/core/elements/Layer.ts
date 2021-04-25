@@ -3,6 +3,7 @@ import {
     buildOpacityFrames,
     buildRotateFrames,
     buildScaleFrames,
+    buildPositionFrames,
 } from './Frames';
 
 class Layer {
@@ -87,7 +88,13 @@ class Layer {
     buildPositionAnime(layer) {
         if (isAttribute('p', layer)) {
             this.attributes['position'] = this.getPositionStyle(layer.k);
+            return;
         }
+        const positionFrames = buildPositionFrames({
+            layer: layer.k,
+            frames: this.frames,
+        });
+        this.buildAnimeFrames(positionFrames);
     }
     
     buildAnchorAnime(layer) {

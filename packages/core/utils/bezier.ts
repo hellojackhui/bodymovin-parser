@@ -1,4 +1,5 @@
 import BezierEasing from './bezier-easing';
+import bezierdata from './bezier-path';
 
 const createBezier = (type, data) => {
     switch(type) {
@@ -48,10 +49,21 @@ function createBezierStr(layer) {
         } else {
             return `cube-bezier(${ix}, ${ox}, ${iy}, ${oy})`;
         }
+    } else {
+        return 'linear';
     }
+}
+
+function createParabolaList(layer, nextlayer) {
+    if (!layer.to || !layer.ti) {
+        return null;
+    }
+    const pointdata = bezierdata(layer.s, nextlayer.s, layer.to, layer.ti);
+    return pointdata;
 }
 
 export {
     createBezier,
     createBezierStr,
+    createParabolaList,
 };
