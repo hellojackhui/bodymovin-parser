@@ -7,12 +7,11 @@ class Asset {
     public path: any;
 
     constructor(assets) {
-        this.assetsSource = assets;
-        this.buildAssets();
+        this.buildAssets(assets);
     }
 
-    buildAssets() {
-        const { id, w, h, u, p } = this.assetsSource;
+    buildAssets(assets) {
+        const { id, w, h, u, p } = assets;
         this.type = 'node';
         this.id = id;
         this.width = w;

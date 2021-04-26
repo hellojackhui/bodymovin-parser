@@ -5,16 +5,16 @@ export default {
   input: "packages/core/index.ts",
   output: [
     {
-      file: "lib/bundle.iife.js",
+      file: "lib/core.iife.js",
       format: "iife",
     },
     {
-      file: "lib/bundle.umd.js",
+      file: "lib/core.umd.js",
       name: 'core',
       format: "umd",
     },
     {
-      file: "lib/bundle.es.js",
+      file: "lib/core.es.js",
       name: 'core',
       format: "es",
     }
