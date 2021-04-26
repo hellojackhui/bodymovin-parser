@@ -2,11 +2,13 @@
   "name": "@bodymovin-parser/web-css",
   "version": "0.0.1",
   "description": "bodymovin-parser to web-css model",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "@bodymovin-parser/compiler-core": "0.0.1"
+  }
 }

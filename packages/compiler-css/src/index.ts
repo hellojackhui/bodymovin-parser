@@ -1,4 +1,4 @@
-import ParserCore from '../../lib/core.es';
+import ParserCore from '@bodymovin-parser/compiler-core';
 
 class ParserToCSS {
     fetch: any;

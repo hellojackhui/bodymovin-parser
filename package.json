@@ -4,6 +4,7 @@
   "scripts": {
     "build": "rollup --config",
     "test": "jest --no-cache",
+    "core-test": "node scripts/compiler-core.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start"
   },

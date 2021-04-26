@@ -2,7 +2,7 @@
   "name": "@bodymovin-parser/compiler-core",
   "version": "0.0.1",
   "description": "@bodymovin-parser/compiler-core",
-  "main": "index.ts",
+  "main": "index.js",
   "files": [
     "index.ts",
     "dist"

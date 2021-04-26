@@ -1,6 +1,6 @@
 // 解析器核心类
-import Asset from './src/elements/Asset';
-import Layer from './src/elements/Layer';
+import Asset from './elements/Asset';
+import Layer from './elements/Layer';
 class ParserCore {
     
     public json: any;
