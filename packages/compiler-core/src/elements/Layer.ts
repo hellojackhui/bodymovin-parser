@@ -36,7 +36,7 @@ class Layer {
         Object.keys(ks).forEach((key) => {
             const layer = ks[key];
             this.buildMetricAnime(key, layer);
-        })
+        });
     }
 
     buildMetricAnime(type, layer) {
@@ -70,6 +70,9 @@ class Layer {
             layer: layer.k,
             frames: this.frames,
         });
+        if (!this.attributes['opacity']) {
+            this.attributes['opacity'] = opacityFrames[0].opacity;
+        }
         this.buildAnimeFrames(opacityFrames);
     }
 
@@ -82,6 +85,9 @@ class Layer {
             layer: layer.k,
             frames: this.frames,
         });
+        if (!this.attributes['rotate']) {
+            this.attributes['rotate'] = rotateFrames[0].rotate;
+        }
         this.buildAnimeFrames(rotateFrames);
     }
 
@@ -94,6 +100,9 @@ class Layer {
             layer: layer.k,
             frames: this.frames,
         });
+        if (!this.attributes['position']) {
+            this.attributes['position'] = positionFrames[0].position;
+        }
         this.buildAnimeFrames(positionFrames);
     }
     
@@ -113,6 +122,9 @@ class Layer {
             layer: layer.k,
             frames: this.frames,
         });
+        if (!this.attributes['scale']) {
+            this.attributes['scale'] = scaleFrames[0].scale;
+        }
         this.buildAnimeFrames(scaleFrames);
     }
 
@@ -158,7 +170,7 @@ class Layer {
             this.animeFrames[key] = {
                 ...data,
                 ...frames[key],
-                offset: Number(Number(index / this.frames).toFixed(3)),
+                offset: Number(Number(index / this.frames).toFixed(5)),
             }
         })
     }

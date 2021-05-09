@@ -1,29 +1,60 @@
 import typescript from "rollup-plugin-typescript";
+import commonjs from "rollup-plugin-commonjs";
 import { uglify } from 'rollup-plugin-uglify';
 
-export default {
-  input: "packages/compiler-core/src/index.ts",
+const rollupCore = {
+  input: 'packages/compiler-core/src/index.ts',
   output: [
     {
-      file: "lib/compiler-core.iife.js",
+      file: "packages/compiler-core/lib/compiler-core.iife.js",
       format: "iife",
     },
     {
-      file: "lib/compiler-core.umd.js",
+      file: "packages/compiler-core/lib/compiler-core.umd.js",
       name: 'core',
       format: "umd",
     },
     {
-      file: "lib/compiler-core.es.js",
+      file: "packages/compiler-core/lib/compiler-core.es.js",
       name: 'core',
       format: "es",
     }
-  ],
+  ]
+}
+
+const rollupCss = {
+  input: 'packages/compiler-css/src/index.ts',
+  output: [
+    {
+      file: "lib/compiler-css/compiler-css.umd.js",
+      name: 'core',
+      format: "umd",
+    },
+    {
+      file: "lib/compiler-css/compiler-css.es.js",
+      name: 'core',
+      format: "es",
+    }
+  ]
+}
+
+
+const mode = rollupCss;
+
+export default {
+  input: mode.input,
+  output: mode.output,
   plugins: [
     typescript({
       exclude: "node_modules/**",
       typescript: require("typescript"),
     }),
-    uglify()
+    uglify(),
+    commonjs({
+      include: ['packages/**/*.js'],
+      exclude: ['node_modules/'],
+      extensions: [ '.js', '.coffee' ],
+
+    })
   ],
 };

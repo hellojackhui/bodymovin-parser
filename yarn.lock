@@ -1725,6 +1725,13 @@ aws4@^1.8.0:
   resolved "http://r.npm.sankuai.com/aws4/download/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha1-1h9G2DslGSUOJ4Ta9bCUeai0HFk=
 
+axios@0.21.1:
+  version "0.21.1"
+  resolved "http://r.npm.sankuai.com/axios/download/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  integrity sha1-IlY0gZYvTWvemnbVFu8OXTwJsrg=
+  dependencies:
+    follow-redirects "^1.10.0"
+
 babel-jest@^26.6.3:
   version "26.6.3"
   resolved "http://r.npm.sankuai.com/babel-jest/download/babel-jest-26.6.3.tgz#d87d25cb0037577a0c89f82e5755c5d293c01056"
@@ -2940,6 +2947,11 @@ find-up@^4.0.0, find-up@^4.1.0:
   dependencies:
     locate-path "^5.0.0"
     path-exists "^4.0.0"
+
+follow-redirects@^1.10.0:
+  version "1.14.0"
+  resolved "http://r.npm.sankuai.com/follow-redirects/download/follow-redirects-1.14.0.tgz#f5d260f95c5f8c105894491feee5dc8993b402fe"
+  integrity sha1-9dJg+VxfjBBYlEkf7uXciZO0Av4=
 
 for-in@^1.0.2:
   version "1.0.2"

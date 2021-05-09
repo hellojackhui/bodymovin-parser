@@ -12,11 +12,15 @@ class Asset {
 
     buildAssets(assets) {
         const { id, w, h, u, p } = assets;
-        this.type = 'node';
+        this.type = this.getNodeType(assets.p);
         this.id = id;
         this.width = w;
         this.height = h;
         this.path = this.buildUrlPath(u, p);
+    }
+
+    getNodeType(path) {
+        return path ? 'image' : 'node';
     }
 
     buildUrlPath(url, path) {

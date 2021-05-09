@@ -66,18 +66,19 @@ class ParserCore {
         }
     }
 
-
     buildLayers() {
         const { layers } = this.json;
         if (!layers || !layers.length) return;
-        const frameCount = this.endframe - this.startframe + 1;
+        const frameCount = this.endframe - this.startframe;
         layers.forEach(layer => {
-            const layerInstance = new Layer({
-                layer,
-                frames: frameCount < this.frame + 1 ? this.frame + 1 : frameCount,
-            });
-            let layerId = layerInstance.getId();
-            this.assetsObj[layerId].layer = layerInstance;
+            if (layer.ks) {
+                const layerInstance = new Layer({
+                    layer,
+                    frames: frameCount,
+                });
+                let layerId = layerInstance.getId();
+                this.assetsObj[layerId].layer = layerInstance;
+            }
         });
     }
 
