@@ -8,22 +8,23 @@ class HTMLParser {
 
     constructor(layer) {
         this.layerJson = layer;
-        this.htmlTree = this.buildHtmlAST(layer);
+        this.htmlTree = this.buildHtmlTree(layer);
         this._id = 1;
     }
 
-    buildHtmlAST(layerjson) {
+    buildHtmlTree(layerjson) {
         const tree = {};
         const traverse = (json, tree) => {
             if (!json) return;
-            const {type, id, children} = json;
-            tree.type = type || id;
-            tree._id = this._id++;
+            const {type, _name, _id, baseClassName = '', imageClassName = '', animeClassName = '', children} = json;
+            tree['_id'] = _id;
+            tree['className'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)/, '$2');
+            tree['aelayerName'] = _name || 'root';
             if (children) {
-                tree.children = [];
-                for (let i = 0; i < children.length; i++) {
-                    tree.children.push(traverse(children[i], {}));
-                }
+                tree['children'] = [];
+                children.forEach(child => {
+                    tree['children'].push(traverse(child, {}));
+                });
             }
             return tree;
         }

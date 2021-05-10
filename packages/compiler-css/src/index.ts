@@ -41,7 +41,7 @@ class ParserToCSS {
         // 适配文件输出。
         const astTree = this.rebuildAst(json);
         const animeTree = this.buildAnimeTree(astTree);
-        const domTree = this.buildDOMTree(astTree);
+        const domTree = this.buildDOMTree(animeTree);
         console.log('domTree', domTree);
         // const cssContent = this.buildCSSContent(animeTree);
         // const domContent = this.buildDOMContent(domTree);
@@ -50,9 +50,9 @@ class ParserToCSS {
 
     rebuildAst(json) {
         const res = {};
-        const { name, startframe, endframe, frame, layer } = json;
-        res['name'] = name;
+        const { name, startframe, endframe, frame, layer, id } = json;
         res['duration'] = Number((endframe - startframe) / frame);
+        res['_name'] = name;
         this.rebuildLayer(layer, res);
         return res;
     }
@@ -61,8 +61,9 @@ class ParserToCSS {
         let index = 0;
         const traverse = (source, json) => {
             if (!json) return;
-            const { type, id, width, height, children, path, layer} = json;
+            const { type, id, width, height, children, path, layer, name} = json;
             source['type'] = type;
+            source['_name'] = name || id;
             source['id'] = id || 'root';
             source['styles'] = {
                 width,

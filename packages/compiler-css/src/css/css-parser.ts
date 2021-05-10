@@ -23,7 +23,9 @@ class CSSParser {
         const res = {};
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
-                const { styles, children} = tree;
+                const { styles, children, id, _name} = tree;
+                target['_id'] = id;
+                target['_name'] = _name;
                 target['baseClassName'] = `Layer_Composition`;
                 target['baseStyles'] = {
                     ...styles,
@@ -36,7 +38,9 @@ class CSSParser {
                     });
                 }
             } else {
-                const { styles, _id, _index, animeList, url} = tree;
+                const { styles, _id, _index, animeList, url, _name} = tree;
+                target['_id'] = _id;
+                target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
                 target['baseStyles'] = {
                     ...styles,
