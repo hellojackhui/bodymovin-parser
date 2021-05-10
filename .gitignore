@@ -1,7 +1,9 @@
 node_modules/
-mock/
 demo/
 example/
 lib/
 .DS_Store
 .vscode/
+example/
+mock/
+test.js

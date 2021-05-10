@@ -1,0 +1,25 @@
+{
+  "name": "@bodymovin-parser/compiler-core",
+  "version": "0.0.1",
+  "description": "@bodymovin-parser/compiler-core",
+  "main": "index.js",
+  "files": [
+    "index.ts",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
+    "directory": "packages/compiler-core"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bodymovin",
+    "bodymovin-parser"
+  ],
+  "license": "MIT",
+  "author": "huijiawei",
+  "homepage": "https://github.com/hellojackhui/bodymovin-parser/blob/master/README.md"
+}

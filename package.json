@@ -1,0 +1,25 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "build": "rollup --config",
+    "test": "jest --no-cache",
+    "core-test": "node scripts/compiler-core.js",
+    "css-test": "node scripts/compiler-css.js",
+    "dev": "rollup --config --watch",
+    "bootstrap": "cd example/web && npm run start"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "axios": "0.21.1",
+    "jest": "^26.6.3",
+    "lerna": "^4.0.0",
+    "rollup": "^2.45.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "6.0.4",
+    "ts-jest": "^26.5.5",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4"
+  }
+}
