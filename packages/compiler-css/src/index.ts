@@ -1,6 +1,7 @@
 import ParserCore from '@bodymovin-parser/compiler-core';
 import HTMLParser from './html/html-parser';
 import CSSParser from './css/css-parser';
+import { camelCaseToAttrs, isCamelCase } from './utils/camel';
 
 class ParserToCSS {
     public fetch: any;
@@ -26,7 +27,6 @@ class ParserToCSS {
     parseByFetch(url) {
         if (this.fetch) {
             this.fetch(url).then((json) => {
-                console.log('ParserCore', ParserCore);
                 this.parser = new ParserCore({json});
                 const outputJSON = this.parser.outputJson();
                 this.parseAst(outputJSON);
@@ -39,12 +39,20 @@ class ParserToCSS {
         // 基于新ast生成dom树和css树
         // dom生成输出字符串，css生成输出字符串。
         // 适配文件输出。
+        const { mode } = this._config;
         const astTree = this.rebuildAst(json);
         const animeTree = this.buildAnimeTree(astTree);
-        const domTree = this.buildDOMTree(animeTree);
-        console.log('domTree', domTree);
-        // const cssContent = this.buildCSSContent(animeTree);
-        // const domContent = this.buildDOMContent(domTree);
+        switch (mode) {
+            case 'anime':
+                this.generateAnimeCode({
+                    tree: animeTree
+                });
+                break;
+            case 'style':
+                break;
+            default:
+                break;
+        }
 
     }
 
@@ -118,11 +126,119 @@ class ParserToCSS {
     }
 
     buildCSSContent(tree) {
+        let res = '';
+        const traverse = (tree, baseString) => {
+            const { 
+                _id, 
+                baseClassName, 
+                baseStyles, 
+                imageClassName, 
+                imageUrl,
+                animeClassName, 
+                animation,
+                keyFramesName,
+                keyFramesList,
+                children, } = tree;
+            if (baseClassName) {
+                let classStr = this.buildClassString(baseClassName, baseStyles);
+                baseString += `${classStr} `;
+            }
+            if (imageClassName) {
+                let classStr = this.buildBgString(imageClassName, imageUrl);
+                baseString += `${classStr} `;
+            }
+            if (animeClassName) {
+                let classStr = this.buildClassString(animeClassName, animation);
+                baseString += `${classStr} `;
+            }
+            if (keyFramesName) {
+                let classStr = this.buildKeyFramesString(keyFramesName, keyFramesList);
+                baseString += `${classStr} `;
+            }
+            if (children) {
+                children.forEach((child) => {
+                    baseString += traverse(child, '');
+                })
+            }
+            return baseString;
+        }
+        traverse(tree, res);
         return '';
     }
 
     buildDOMContent(tree) {
-        return '';
+        let template = '<div {{attributes}}>{{slot}}</div>'
+        let res = '';
+        const traverse = (obj, str) => {
+            if (!obj) return str;
+            const {children, _id, ...rest} = obj;
+            let attrs = Object.keys(rest).map((key) => {
+                return `${key}="${obj[key]}"`;
+            });
+            let attributes = attrs.join(' ');
+            let tmp = template.replace(/\{\{attributes\}\}/, attributes);
+            if (children) {
+                let childs = obj.children.map((child) => {
+                    return traverse(child, '');
+                })
+                tmp = tmp.replace(/\{\{slot\}\}/, childs.join(' '));
+            } else {
+                tmp = tmp.replace(/\{\{slot\}\}/, '');
+            }
+            return tmp;
+        }
+        res = traverse(tree, res);
+        return res;
+    }
+
+    generateAnimeCode({
+        tree,
+    }) {
+        const domTree = this.buildDOMTree(tree);
+        const domContent = this.buildDOMContent(domTree);
+        const cssContent = this.buildCSSContent(tree);
+        console.log('domTree', cssContent);
+    }
+
+    buildClassString(className, styles) {
+        let cssTemplate = '.{{className}} {{{content}}}';
+        let classString = cssTemplate.replace(/\{\{className\}\}/, className);
+        let attrs = Object.keys(styles).map((key) => {
+            if (isCamelCase(key)) {
+                let camelKey = camelCaseToAttrs(key);
+                return `${camelKey}: ${styles[key]};`;
+            } else {
+                return `${key}: ${styles[key]};`;
+            }
+        })
+        classString = classString.replace(/\{\{content\}\}/, attrs.join(' '));
+        return classString;
+    }
+
+    buildBgString(className, url) {
+        let cssTemplate = '.{{className}} {{{content}}}';
+        let classString = cssTemplate.replace(/\{\{className\}\}/, className);
+        classString = classString.replace(/\{\{content\}\}/, `background-image: url('${url}')`);
+        return classString;
+    }
+
+    buildKeyFramesString(keyFramesName, keyFramesList) {
+        let keyframesTemplate = '@keyframes {{kfname}} {{{framelist}}}';
+        let kfString = keyframesTemplate.replace(/\{\{kfname\}\}/, keyFramesName);
+        let framelist = Object.keys(keyFramesList).map((key) => {
+            return `${key} {${this.formatKeyFrames(keyFramesList[key])}}`
+        })
+        kfString = kfString.replace(/\{\{framelist\}\}/, framelist.join(' '));
+        return kfString;
+    }
+
+    formatKeyFrames(styles) {
+        let res = [];
+        Object.keys(styles).forEach((key) => {
+            let str = `${key}: ${styles[key]}`;
+            res.push(str);
+        });
+        return res.join(' ');
     }
     
 }

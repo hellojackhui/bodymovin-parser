@@ -27,10 +27,11 @@ class CSSParser {
                 target['_id'] = id;
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_Composition`;
-                target['baseStyles'] = {
+                
+                target['baseStyles'] = this.formatStyles({
                     ...styles,
                     ...this._baseRootStyles,
-                }
+                });
                 if (children) {
                     target['children'] = [];
                     children.forEach(child => {
@@ -42,9 +43,10 @@ class CSSParser {
                 target['_id'] = _id;
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
-                target['baseStyles'] = {
+                target['baseStyles'] = this.formatStyles({
                     ...styles,
-                }
+                    position: 'absolute',
+                });
                 if (url) {
                     target['imageClassName'] = `Layer_Bg${_index}`;
                     target['imageUrl'] = url;
@@ -53,9 +55,9 @@ class CSSParser {
                     target['animeClassName'] =  `Layer_Anim${_index}`;
                     target['animation'] = {
                         'animationName': `Layer_AnimKeys${_index}`,
-                        'animationDuration': this._duration,
-                        'animationDelay': 0.00,
-                        'animationTimeFunction': 'step(1)',
+                        'animationDuration': `${this._duration}s`,
+                        'animationDelay': '0.00s',
+                        'animationTimingFunction': 'steps(1)',
                         'animationIterationCount': 'infinite',
                         'animationDirection': 'normal',
                         'animationFillMode': 'none'
@@ -83,7 +85,6 @@ class CSSParser {
             let transformStr = '';
             const {opacity, ...rest} = item;
             if (rest) {
-                transformStr += 'transform: ';
                 const { position, rotate, scale } = rest;
                 if (position) {
                     const valX = this.fix(position[0] - p[0], 2);
@@ -101,6 +102,7 @@ class CSSParser {
                         transformStr += `scale3D(${scale.x},${scale.y},${scale.z}) `
                     }
                 }
+                transformStr = transformStr.replace(/\s$/, '');
                 transformStr += ';';
                 res[key]['transform'] = transformStr;
             }
@@ -113,6 +115,20 @@ class CSSParser {
 
     getAnimeTree() {
         return this.parseTree;
+    }
+
+    formatStyles(styles) {
+        let res = {};
+        const formList = [
+            'width',
+            'height',
+            'top',
+            'left',
+        ]
+        Object.keys(styles).forEach((key) => {
+            res[key] = formList.includes(key) ? `${styles[key]}px` : styles[key];
+        });
+        return res;
     }
 
 

@@ -20,6 +20,7 @@
     "rollup-plugin-uglify": "6.0.4",
     "ts-jest": "^26.5.5",
     "tslib": "^2.2.0",
-    "typescript": "^4.2.4"
+    "typescript": "^4.2.4",
+    "fs-extra": "10.0.0"
   }
 }

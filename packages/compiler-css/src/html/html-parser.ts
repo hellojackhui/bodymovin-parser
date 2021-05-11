@@ -18,7 +18,7 @@ class HTMLParser {
             if (!json) return;
             const {type, _name, _id, baseClassName = '', imageClassName = '', animeClassName = '', children} = json;
             tree['_id'] = _id;
-            tree['className'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)/, '$2');
+            tree['class'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)$/, '$2');
             tree['aelayerName'] = _name || 'root';
             if (children) {
                 tree['children'] = [];

@@ -11,6 +11,9 @@ const fetch = (url) => {
 
 const instance = new ParserToCSS({
     requestFn: fetch,
+    config: {
+        mode: 'anime'
+    }
 })
 
 instance.parseByFetch('http://portal-portm.meituan.com/test/wmmp/loading.json')
