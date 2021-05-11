@@ -4,6 +4,7 @@ class CSSParser {
     private _duration: number;
     private _baseRootStyles: object;
     public parseTree: object;
+    private _baseChildStyles: object;
 
     constructor(tree) {
         this._tree = tree;
@@ -12,9 +13,15 @@ class CSSParser {
             display: 'block',
             overflow: 'hidden',
             position: 'relative',
-            transformOrigin: '50% 0%',
+            transformOrigin: '50.00% 0%',
             backfaceVisibility: 'visible',
             transform: `translate3D(0,0,0) scale(1,1)`,
+            transformStyle: 'preserve-3d',
+        }
+        this._baseChildStyles = {
+            display: 'block',
+            position: 'absolute', 
+            transformOrigin: '50.00% 50.00%',
             transformStyle: 'preserve-3d',
         }
         this.parseTree = this.buildAnimeTree(tree);
@@ -44,8 +51,8 @@ class CSSParser {
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
                 target['baseStyles'] = this.formatStyles({
+                    ...this._baseChildStyles,
                     ...styles,
-                    position: 'absolute',
                 });
                 if (url) {
                     target['imageClassName'] = `Layer_Bg${_index}`;
@@ -63,7 +70,7 @@ class CSSParser {
                         'animationFillMode': 'none'
                     }
                     target['keyFramesName'] = `Layer_AnimKeys${_index}`;
-                    target['keyFramesList'] = this.getKeyFrames(animeList);
+                    target['keyFramesList'] = this.getKeyFrames(animeList, target);
                 }
             }
             return target;
@@ -72,14 +79,14 @@ class CSSParser {
         return res;
     }
 
-    getKeyFrames(list) {
+    getKeyFrames(list, source) {
         const res = {};
         if (!list || !Object.keys(list).length) return {};
         let p;
         Object.keys(list).map((key, index) => {
             let item = list[key];
             if (index === 0) {
-                p = item.position
+                p = item.position;
             }
             res[key] = {};
             let transformStr = '';
@@ -108,6 +115,14 @@ class CSSParser {
             }
             if (opacity) {
                 res[key]['opacity'] = this.fix(opacity, 2);
+            }
+            if (index === 0) {
+                console.log('opacity', opacity);
+                // 回写数据
+                source.baseStyles = {
+                    ...source.baseStyles,
+                    opacity: this.fix(opacity, 2),
+                }
             }
         })
         return res;

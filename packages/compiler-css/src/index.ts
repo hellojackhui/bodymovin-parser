@@ -141,19 +141,19 @@ class ParserToCSS {
                 children, } = tree;
             if (baseClassName) {
                 let classStr = this.buildClassString(baseClassName, baseStyles);
-                baseString += `${classStr} `;
+                baseString += `${classStr}\n`;
             }
             if (imageClassName) {
                 let classStr = this.buildBgString(imageClassName, imageUrl);
-                baseString += `${classStr} `;
+                baseString += `${classStr}\n`;
             }
             if (animeClassName) {
                 let classStr = this.buildClassString(animeClassName, animation);
-                baseString += `${classStr} `;
+                baseString += `${classStr}\n`;
             }
             if (keyFramesName) {
                 let classStr = this.buildKeyFramesString(keyFramesName, keyFramesList);
-                baseString += `${classStr} `;
+                baseString += `${classStr}\n`;
             }
             if (children) {
                 children.forEach((child) => {
@@ -162,8 +162,9 @@ class ParserToCSS {
             }
             return baseString;
         }
-        traverse(tree, res);
-        return '';
+        res = traverse(tree, res);
+        console.log(res);
+        return res;
     }
 
     buildDOMContent(tree) {
@@ -197,7 +198,6 @@ class ParserToCSS {
         const domTree = this.buildDOMTree(tree);
         const domContent = this.buildDOMContent(domTree);
         const cssContent = this.buildCSSContent(tree);
-        console.log('domTree', cssContent);
     }
 
     buildClassString(className, styles) {
