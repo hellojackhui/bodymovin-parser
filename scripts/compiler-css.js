@@ -16,4 +16,4 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByFetch('http://portal-portm.meituan.com/test/wmmp/loading.json')
+instance.parseByFetch('http://portal-portm.meituan.com/test/wmmp/1.json')

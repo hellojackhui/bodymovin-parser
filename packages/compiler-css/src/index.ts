@@ -95,6 +95,7 @@ class ParserToCSS {
                     ...source['styles'],
                     left: position[0] - anchor[0],
                     top: position[1] - anchor[1],
+                    transformOrigin: `${(anchor[0] / width) * 100}% ${(anchor[1] / height) * 100}%`,
                 }
                 source['animeList'] = this.buildAnimeList(animeFrames, attributes);
             }
@@ -197,7 +198,8 @@ class ParserToCSS {
         const domTree = this.buildDOMTree(tree);
         const domContent = this.buildDOMContent(domTree);
         const cssContent = this.buildCSSContent(tree);
-        console.log('domContent', cssContent);
+        console.log('domContent', domContent);
+        console.log('cssContent', cssContent);
     }
 
     buildClassString(className, styles) {

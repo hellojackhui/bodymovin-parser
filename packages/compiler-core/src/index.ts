@@ -71,7 +71,7 @@ class ParserCore {
         if (!layers || !layers.length) return;
         const frameCount = this.endframe - this.startframe;
         layers.forEach(layer => {
-            if (layer.ks) {
+            if (layer.ks && layer.refId) {
                 const layerInstance = new Layer({
                     layer,
                     frames: frameCount,

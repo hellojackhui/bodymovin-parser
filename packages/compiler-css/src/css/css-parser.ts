@@ -20,8 +20,7 @@ class CSSParser {
         }
         this._baseChildStyles = {
             display: 'block',
-            position: 'absolute', 
-            transformOrigin: '50.00% 50.00%',
+            position: 'absolute',
             transformStyle: 'preserve-3d',
         }
         this.parseTree = this.buildAnimeTree(tree);
@@ -62,7 +61,7 @@ class CSSParser {
                     target['animeClassName'] =  `Layer_Anim${_index}`;
                     target['animation'] = {
                         'animationName': `Layer_AnimKeys${_index}`,
-                        'animationDuration': `${this._duration}s`,
+                        'animationDuration': `${Number(this._duration.toFixed(3))}s`,
                         'animationDelay': '0.00s',
                         'animationTimingFunction': 'steps(1)',
                         'animationIterationCount': 'infinite',
