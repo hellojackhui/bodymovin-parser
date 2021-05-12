@@ -11,22 +11,30 @@ class Layer {
     frames: number; 
     index: any;
     id: any;
+    _level: number;
+    _startFrame: number;
     attributes: {};
     animeFrames: any[];
+    parentId: string;
+    _unionId: string;
 
     constructor({
         layer,
         frames,
+        startFrame,
     }) {
         this.frames = frames;
+        this._startFrame = startFrame;
         this.buildBaseInfo(layer);
         this.buildAnimeLayer(layer);
     }
 
     buildBaseInfo(layer) {
-        const { ind, refId: id } = layer;
+        const { ind, refId: id, parent = 0 } = layer;
         this.index = ind;
+        this._unionId = `layer-bm-${ind}`;
         this.id = id;
+        this.parentId = `layer-bm-${parent}`;
         this.attributes = {};
         this.animeFrames = [];
     }
@@ -69,6 +77,7 @@ class Layer {
         const opacityFrames = buildOpacityFrames({
             layer: layer.k,
             frames: this.frames,
+            startFrame: this._startFrame,
         });
         if (!this.attributes['opacity']) {
             this.attributes['opacity'] = opacityFrames[0].opacity;
@@ -84,6 +93,7 @@ class Layer {
         const rotateFrames = buildRotateFrames({
             layer: layer.k,
             frames: this.frames,
+            startFrame: this._startFrame,
         });
         if (!this.attributes['rotate']) {
             this.attributes['rotate'] = rotateFrames[0].rotate;
@@ -99,6 +109,7 @@ class Layer {
         const positionFrames = buildPositionFrames({
             layer: layer.k,
             frames: this.frames,
+            startFrame: this._startFrame,
         });
         if (!this.attributes['position']) {
             this.attributes['position'] = positionFrames[0].position;
@@ -121,6 +132,7 @@ class Layer {
         const scaleFrames = buildScaleFrames({
             layer: layer.k,
             frames: this.frames,
+            startFrame: this._startFrame,
         });
         if (!this.attributes['scale']) {
             this.attributes['scale'] = scaleFrames[0].scale;
@@ -162,6 +174,14 @@ class Layer {
 
     getId() {
         return this.id;
+    }
+
+    getParentId() {
+        return this.parentId;
+    }
+
+    getUnionId() {
+        return this._unionId;
     }
 
     buildAnimeFrames(frames) {

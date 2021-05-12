@@ -21,20 +21,27 @@ class ParserToCSS {
 
     parseByJson(json) {
         this.parser = new ParserCore({json});
-        // console.log(JSON.stringify(this.parser.outputJson()))
+        const outputJSON = this.parser.outputJson();
+        this.parseToCode(outputJSON);
     }
 
-    parseByFetch(url) {
-        if (this.fetch) {
-            this.fetch(url).then((json) => {
-                this.parser = new ParserCore({json});
-                const outputJSON = this.parser.outputJson();
-                this.parseAst(outputJSON);
-            })
-        }
+    parseByUrl(url) {
+        return new Promise((resolve, reject) => {
+            if (this.fetch) {
+                this.fetch(url).then((json) => {
+                    this.parser = new ParserCore({json});
+                    const outputJSON = this.parser.outputJson();
+                    const res = this.parseToCode(outputJSON);
+                    return resolve(res);
+                }).catch((e) => {
+                    console.log('error');
+                    return reject('error');
+                })
+            }
+        })
     }
 
-    parseAst(json) {
+    parseToCode(json) {
         // 重新生成ast
         // 基于新ast生成dom树和css树
         // dom生成输出字符串，css生成输出字符串。
@@ -44,16 +51,15 @@ class ParserToCSS {
         const animeTree = this.buildAnimeTree(astTree);
         switch (mode) {
             case 'anime':
-                this.generateAnimeCode({
+                return this.generateAnimeCode({
                     tree: animeTree
                 });
-                break;
             case 'style':
                 break;
             default:
                 break;
         }
-
+        return;
     }
 
     rebuildAst(json) {
@@ -179,7 +185,7 @@ class ParserToCSS {
             let attributes = attrs.join(' ');
             let tmp = template.replace(/\{\{attributes\}\}/, attributes);
             if (children) {
-                let childs = obj.children.map((child) => {
+                let childs = obj.children.reverse().map((child) => {
                     return traverse(child, '');
                 })
                 tmp = tmp.replace(/\{\{slot\}\}/, childs.join(' '));
@@ -198,8 +204,10 @@ class ParserToCSS {
         const domTree = this.buildDOMTree(tree);
         const domContent = this.buildDOMContent(domTree);
         const cssContent = this.buildCSSContent(tree);
-        console.log('domContent', domContent);
-        console.log('cssContent', cssContent);
+        return {
+            domContent,
+            cssContent,
+        }
     }
 
     buildClassString(className, styles) {

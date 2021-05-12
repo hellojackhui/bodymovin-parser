@@ -4,8 +4,8 @@
   "scripts": {
     "build": "rollup --config",
     "test": "jest --no-cache",
-    "core-test": "node scripts/compiler-core.js",
-    "css-test": "node scripts/compiler-css.js",
+    "core-test": "npm run build && node scripts/compiler-core.js",
+    "css-test": "npm run build && node scripts/compiler-css.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start"
   },

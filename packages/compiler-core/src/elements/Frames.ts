@@ -5,6 +5,7 @@ import Position from './Position';
 function buildOpacityFrames({
     layer,
     frames,
+    startFrame,
 }) {
     const layerFrameList = [];
     layer.forEach((item, index) => {
@@ -13,13 +14,14 @@ function buildOpacityFrames({
             nextlayer: index !== layer.length - 1 ? layer[index + 1] : null,
         }))
     })
-    return createOpacityFrameList(frames, layerFrameList);
+    return createOpacityFrameList(frames, layerFrameList, startFrame);
     
 }
 
 function buildRotateFrames({
     layer,
     frames,
+    startFrame,
 }) {
     const layerFrameList = [];
     layer.forEach((item, index) => {
@@ -28,7 +30,7 @@ function buildRotateFrames({
             nextlayer: index !== layer.length - 1 ? layer[index + 1] : null,
         }))
     })
-    return createRotateFrameList(frames, layerFrameList);
+    return createRotateFrameList(frames, layerFrameList, startFrame);
 }
 
 function buildAnchorFrames(layer) {
@@ -38,6 +40,7 @@ function buildAnchorFrames(layer) {
 function buildPositionFrames({
     layer,
     frames,
+    startFrame,
 }) {
     const layerFrameList = [];
     layer.forEach((item, index) => {
@@ -46,12 +49,13 @@ function buildPositionFrames({
             nextlayer: index !== layer.length - 1 ? layer[index + 1] : null,
         }))
     })
-    return createPositionFrameList(frames, layerFrameList);
+    return createPositionFrameList(frames, layerFrameList, startFrame);
 }
 
 function buildScaleFrames({
     layer,
     frames,
+    startFrame,
 }) {
     const layerFrameList = [];
     layer.forEach((item, index) => {
@@ -60,42 +64,47 @@ function buildScaleFrames({
             nextlayer: index !== layer.length - 1 ? layer[index + 1] : null,
         }))
     })
-    return createScaleFrameList(frames, layerFrameList);
+    return createScaleFrameList(frames, layerFrameList, startFrame);
 }
 
-function createOpacityFrameList(frame, frameList) {
+function createOpacityFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
-    for (let i = 0; i <= frame; i++) {
+    let initTime;
+    for (let cur = 0; cur <= frame; cur++) {
+        let i = cur + startFrame;
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
+            if (!initTime) {
+                initTime = `${area[0].startTime}`;
+            }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
                 let ratio = bezierFn(playRatio);
                 let curVal = fix(((endVal - startVal) * ratio) + startVal, 2);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     opacity: curVal,
                     ease: bezierStr,
                 }
             } else {
                 let curVal = fix(((endVal - startVal) * playRatio) + startVal, 2);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     opacity: curVal,
                 }
             }
         } else {
-            if (i == 0) {
-                animeFrames[i] = {
-                    index: i,
+            if (i <= Number(initTime) || !initTime) {
+                animeFrames[cur] = {
+                    index: cur,
                     opacity: frameList[0].startVal,
                 }
             } else {
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     opacity: frameList[len - 1].startVal,
                 }
             }
@@ -104,39 +113,44 @@ function createOpacityFrameList(frame, frameList) {
     return animeFrames;
 }
 
-function createRotateFrameList(frame, frameList) {
+function createRotateFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
-    for (let i = 0; i <= frame; i++) {
+    let initTime;
+    for (let cur = 0; cur <= frame; cur++) {
+        let i = cur + startFrame;
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
+            if (!initTime) {
+                initTime = `${area[0].startTime}`;
+            }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
                 let ratio = bezierFn(playRatio);
                 let curVal = fix(((endVal - startVal) * ratio) + startVal, 2);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     rotate: curVal,
                     ease: bezierStr,
                 }
             } else {
                 let curVal = fix(((endVal - startVal) * playRatio) + startVal, 2);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     rotate: curVal,
                 }
             }
         } else {
-            if (i == 0) {
-                animeFrames[i] = {
-                    index: i,
+            if (i <= Number(initTime) || !initTime) {
+                animeFrames[cur] = {
+                    index: cur,
                     rotate: frameList[0].startVal,
                 }
             } else {
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     rotate: frameList[len - 1].startVal,
                 }
             }
@@ -145,12 +159,17 @@ function createRotateFrameList(frame, frameList) {
     return animeFrames;
 }
 
-function createScaleFrameList(frame, frameList) {
+function createScaleFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
-    for (let i = 0; i <= frame; i++) {
+    let initTime;
+    for (let cur = 0; cur <= frame; cur++) {
+        let i = cur + startFrame;
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
+            if (!initTime) {
+                initTime = `${area[0].startTime}`;
+            }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
             let playRatio = Number((diff / duration).toFixed(2));
@@ -162,8 +181,8 @@ function createScaleFrameList(frame, frameList) {
                 let valX = fix((offsetx * ratio) + startVal[0], 4);
                 let valY = fix((offsety * ratio) + startVal[1], 4);
                 let valZ = fix((offsetz * ratio) + startVal[2], 4);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     scale: [valX, valY, valZ],
                     ease: bezierStr,
                 }
@@ -171,20 +190,20 @@ function createScaleFrameList(frame, frameList) {
                 let valX = fix((offsetx * playRatio) + startVal[0], 4);
                 let valY = fix((offsety * playRatio) + startVal[1], 4);
                 let valZ = fix((offsetz * playRatio) + startVal[2], 4);
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     scale: [valX, valY, valZ],
                 }
             }
         } else {
-            if (i == 0) {
-                animeFrames[i] = {
-                    index: i,
+            if (i <= Number(initTime) || !initTime) {
+                animeFrames[cur] = {
+                    index: cur,
                     scale: frameList[0].startVal,
                 }
             } else {
-                animeFrames[i] = {
-                    index: i,
+                animeFrames[cur] = {
+                    index: cur,
                     scale: frameList[len - 1].startVal,
                 }
             }
@@ -193,12 +212,13 @@ function createScaleFrameList(frame, frameList) {
     return animeFrames;
 }
 
-function createPositionFrameList(frame, frameList) {
+function createPositionFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     // 处理非锚点区域位置轨迹问题
     let initTime;
-    for (let i = 0; i <= frame; i++) {
+    for (let cur = 0; cur <= frame; cur++) {
+        let i = cur + startFrame;
         const area = frameList.filter((item) => (item.startTime <= i && item.endTime > i));
         if (area.length) {
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr, parabolaPointList } = area[0];
@@ -209,7 +229,7 @@ function createPositionFrameList(frame, frameList) {
                 let diff = i - startTime;
                 let offset = Math.floor((diff / duration) * 150);
                 let nextpoint = parabolaPointList.points[offset].point;
-                animeFrames[i] = {
+                animeFrames[cur] = {
                     position: [fix(nextpoint[0], 2), fix(nextpoint[1], 2), fix(nextpoint[2], 2)],
                     ease: bezierStr,
                 }
@@ -224,7 +244,7 @@ function createPositionFrameList(frame, frameList) {
                     let valX = fix((offsetx * ratio) + startVal[0], 2);
                     let valY = fix((offsety * ratio) + startVal[1], 2);
                     let valZ = fix((offsetz * ratio) + startVal[2], 2);
-                    animeFrames[i] = {
+                    animeFrames[cur] = {
                         position: [valX, valY, valZ],
                         ease: bezierStr,
                     }
@@ -232,7 +252,7 @@ function createPositionFrameList(frame, frameList) {
                     let valX = fix((offsetx * playRatio) + startVal[0], 2);
                     let valY = fix((offsety * playRatio) + startVal[1], 2);
                     let valZ = fix((offsetz * playRatio) + startVal[2], 2);
-                    animeFrames[i] = {
+                    animeFrames[cur] = {
                         position: [valX, valY, valZ],
                         ease: bezierStr,
                     }
@@ -240,11 +260,11 @@ function createPositionFrameList(frame, frameList) {
             }
         } else {
             if (i <= Number(initTime) || !initTime) {
-                animeFrames[i] = {
+                animeFrames[cur] = {
                     position: frameList[0].startVal,
                 }
             } else {
-                animeFrames[i] = {
+                animeFrames[cur] = {
                     position: frameList[len - 1].startVal,
                 }
             }

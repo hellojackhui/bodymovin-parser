@@ -5,9 +5,14 @@ class Asset {
     public width: any;
     public height: any;
     public path: any;
+    public _unionId: string;
 
-    constructor(assets) {
-        this.buildAssets(assets);
+    constructor({
+        asset,
+        index,
+    }) {
+        this._unionId = `layer-bm-${index + 1}`;
+        this.buildAssets(asset);
     }
 
     buildAssets(assets) {

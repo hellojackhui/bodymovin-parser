@@ -40,12 +40,12 @@ class CSSParser {
                 });
                 if (children) {
                     target['children'] = [];
-                    children.forEach(child => {
+                    children.reverse().forEach(child => {
                         target['children'].push(traverse(child, {}))
                     });
                 }
             } else {
-                const { styles, _id, _index, animeList, url, _name} = tree;
+                const { styles, _id, _index, animeList, url, _name, children} = tree;
                 target['_id'] = _id;
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
@@ -70,6 +70,12 @@ class CSSParser {
                     }
                     target['keyFramesName'] = `Layer_AnimKeys${_index}`;
                     target['keyFramesList'] = this.getKeyFrames(animeList, target);
+                }
+                if (children) {
+                    target['children'] = [];
+                    children.reverse().forEach(child => {
+                        target['children'].push(traverse(child, {}))
+                    });
                 }
             }
             return target;

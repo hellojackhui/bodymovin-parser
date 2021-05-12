@@ -19,6 +19,7 @@ class ParserCore {
         this.buildWrapperInfo();
         this.buildAssets();
         this.buildLayers();
+        this.buildLayerTree();
     }
 
     buildBaseInfo() {
@@ -45,14 +46,19 @@ class ParserCore {
     }
 
     buildAssets() {
-        const { assets } = this.json;
-        const source = [];
-        assets.forEach((asset) => {
-            const assetInstance = new Asset(asset);
-            source.push(assetInstance);
-            this.assetsObj[asset.id] = assetInstance;
+        const { assets, layers } = this.json;
+        layers.forEach((layer, index) => {
+            let assetId = layer.refId;
+            if (!assetId) return;
+            let assetArr = assets.filter((item) => item.id === assetId);
+            if (assetArr.length) {
+                const assetInstance = new Asset({
+                    asset: assetArr[0],
+                    index,
+                });
+                this.assetsObj[assetInstance._unionId] = assetInstance;
+            }
         })
-        this.layer['children'] = source;
         return;
     }
 
@@ -70,16 +76,36 @@ class ParserCore {
         const { layers } = this.json;
         if (!layers || !layers.length) return;
         const frameCount = this.endframe - this.startframe;
-        layers.forEach(layer => {
+        layers.forEach((layer) => {
             if (layer.ks && layer.refId) {
                 const layerInstance = new Layer({
                     layer,
                     frames: frameCount,
+                    startFrame: this.startframe,
                 });
-                let layerId = layerInstance.getId();
-                this.assetsObj[layerId].layer = layerInstance;
+                let parentId = layerInstance.getParentId();
+                let unionId = layerInstance.getUnionId();
+                this.assetsObj[unionId]['parentId'] = parentId;
+                this.assetsObj[unionId].layer = layerInstance;
             }
         });
+        return;
+    }
+
+    buildLayerTree() {
+        let obj = this.assetsObj;
+        Object.keys(obj).forEach((key) => {
+            let layer = obj[key];
+            if (layer.parentId && obj[layer.parentId]) {
+                let parent = obj[layer.parentId];
+                parent['children'] ? parent['children'].push(layer) : parent['children'] = [layer];
+            }
+            if (layer.parentId !== 'layer-bm-0') {
+                delete obj[key];
+            }
+        });
+        this.layer['children'] = Object.values(this.assetsObj);
+        return;
     }
 
 }

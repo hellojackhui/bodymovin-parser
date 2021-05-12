@@ -22,7 +22,7 @@ class HTMLParser {
             tree['aelayerName'] = _name || 'root';
             if (children) {
                 tree['children'] = [];
-                children.forEach(child => {
+                children.reverse().forEach(child => {
                     tree['children'].push(traverse(child, {}));
                 });
             }
