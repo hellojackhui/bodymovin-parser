@@ -199,11 +199,11 @@ function createPositionFrameList(frame, frameList) {
     // 处理非锚点区域位置轨迹问题
     let initTime;
     for (let i = 0; i <= frame; i++) {
-        const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
+        const area = frameList.filter((item) => (item.startTime <= i && item.endTime > i));
         if (area.length) {
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr, parabolaPointList } = area[0];
             if (!initTime) {
-                initTime = area[0].startTime;
+                initTime = `${area[0].startTime}`;
             }
             if (parabolaPointList) {
                 let diff = i - startTime;
@@ -239,7 +239,7 @@ function createPositionFrameList(frame, frameList) {
                 }
             }
         } else {
-            if (i <= initTime || !initTime) {
+            if (i <= Number(initTime) || !initTime) {
                 animeFrames[i] = {
                     position: frameList[0].startVal,
                 }

@@ -117,11 +117,10 @@ class CSSParser {
                 res[key]['opacity'] = this.fix(opacity, 2);
             }
             if (index === 0) {
-                console.log('opacity', opacity);
                 // 回写数据
                 source.baseStyles = {
                     ...source.baseStyles,
-                    opacity: this.fix(opacity, 2),
+                    opacity: this.fix(opacity == undefined ? 1 : opacity, 2),
                 }
             }
         })

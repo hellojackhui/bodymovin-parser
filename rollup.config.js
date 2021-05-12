@@ -39,7 +39,7 @@ const rollupCss = {
 }
 
 
-const mode = rollupCss;
+const mode = rollupCore;
 
 export default {
   input: mode.input,

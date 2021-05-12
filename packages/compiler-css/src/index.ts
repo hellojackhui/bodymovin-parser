@@ -163,7 +163,6 @@ class ParserToCSS {
             return baseString;
         }
         res = traverse(tree, res);
-        console.log(res);
         return res;
     }
 
@@ -198,6 +197,7 @@ class ParserToCSS {
         const domTree = this.buildDOMTree(tree);
         const domContent = this.buildDOMContent(domTree);
         const cssContent = this.buildCSSContent(tree);
+        console.log('domContent', cssContent);
     }
 
     buildClassString(className, styles) {
