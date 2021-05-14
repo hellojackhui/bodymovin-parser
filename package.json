@@ -2,10 +2,11 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "rollup --config",
+    "build-core": "rollup --config --rollupCore",
+    "build-css": "rollup --config --rollupCss",
     "test": "jest --no-cache",
-    "core-test": "npm run build && node scripts/compiler-core.js",
-    "css-test": "npm run build && node scripts/compiler-css.js",
+    "core-test": "npm run build-core && node scripts/compiler-core.js",
+    "css-test": "npm run build-css && node scripts/compiler-css.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start"
   },

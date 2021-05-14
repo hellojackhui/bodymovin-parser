@@ -5,6 +5,7 @@ import {
     buildScaleFrames,
     buildPositionFrames,
 } from './Frames';
+import Mask from './Mask';
 
 class Layer {
 
@@ -17,6 +18,7 @@ class Layer {
     animeFrames: any[];
     parentId: string;
     _unionId: string;
+    maskList: Array<any>;
 
     constructor({
         layer,
@@ -27,6 +29,7 @@ class Layer {
         this._startFrame = startFrame;
         this.buildBaseInfo(layer);
         this.buildAnimeLayer(layer);
+        this.buildMaskLayer(layer);
     }
 
     buildBaseInfo(layer) {
@@ -45,6 +48,17 @@ class Layer {
             const layer = ks[key];
             this.buildMetricAnime(key, layer);
         });
+    }
+
+    buildMaskLayer(layer) {
+        if (layer.hasMask) {
+            this.maskList = layer.masksProperties.map((mask, index) => {
+                return new Mask({
+                    data: mask,
+                    index,
+                });
+            })
+        }
     }
 
     buildMetricAnime(type, layer) {

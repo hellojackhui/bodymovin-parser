@@ -1,3 +1,6 @@
+
+import { camelCaseToAttrs, isCamelCase } from '../utils/camel';
+import { buildClipPathTree } from '../utils/svgTools';
 class CSSParser {
 
     private _tree: any;
@@ -25,19 +28,21 @@ class CSSParser {
         }
         this.parseTree = this.buildAnimeTree(tree);
     }
+
     buildAnimeTree(tree) {
         const res = {};
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
-                const { styles, children, id, _name} = tree;
+                const { type, styles, children, id, _name, maskList} = tree;
                 target['_id'] = id;
                 target['_name'] = _name;
+                target['type'] = type;
                 target['baseClassName'] = `Layer_Composition`;
-                
                 target['baseStyles'] = this.formatStyles({
                     ...styles,
                     ...this._baseRootStyles,
                 });
+                target['maskContent'] = this.formatMaskContent(maskList);
                 if (children) {
                     target['children'] = [];
                     children.reverse().forEach(child => {
@@ -45,8 +50,9 @@ class CSSParser {
                     });
                 }
             } else {
-                const { styles, _id, _index, animeList, url, _name, children} = tree;
+                const { type, styles, _id, _index, animeList, url, _name, children, hasMask = false} = tree;
                 target['_id'] = _id;
+                target['type'] = type;
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
                 target['baseStyles'] = this.formatStyles({
@@ -77,10 +83,58 @@ class CSSParser {
                         target['children'].push(traverse(child, {}))
                     });
                 }
+                if (hasMask) {
+                    console.log(target.maskList);
+                }
             }
             return target;
         }
         traverse(tree, res);
+        return res;
+    }
+
+    getAnimeTree() {
+        return this.parseTree;
+    }
+
+    buildCSSContent() {
+        let res = '';
+        const traverse = (tree, baseString) => {
+            const { 
+                _id, 
+                baseClassName, 
+                baseStyles, 
+                imageClassName, 
+                imageUrl,
+                animeClassName, 
+                animation,
+                keyFramesName,
+                keyFramesList,
+                children, } = tree;
+            if (baseClassName) {
+                let classStr = this.buildClassString(baseClassName, baseStyles);
+                baseString += `${classStr}\n`;
+            }
+            if (imageClassName) {
+                let classStr = this.buildBgString(imageClassName, imageUrl);
+                baseString += `${classStr}\n`;
+            }
+            if (animeClassName) {
+                let classStr = this.buildClassString(animeClassName, animation);
+                baseString += `${classStr}\n`;
+            }
+            if (keyFramesName) {
+                let classStr = this.buildKeyFramesString(keyFramesName, keyFramesList);
+                baseString += `${classStr}\n`;
+            }
+            if (children) {
+                children.forEach((child) => {
+                    baseString += traverse(child, '');
+                })
+            }
+            return baseString;
+        }
+        res = traverse(this.parseTree, res);
         return res;
     }
 
@@ -132,10 +186,6 @@ class CSSParser {
         return res;
     }
 
-    getAnimeTree() {
-        return this.parseTree;
-    }
-
     formatStyles(styles) {
         let res = {};
         const formList = [
@@ -150,10 +200,62 @@ class CSSParser {
         return res;
     }
 
-
     fix(num, point = 2) {
         return Number(Number(num).toFixed(point));
     }
+
+    buildClassString(className, styles) {
+        let cssTemplate = '.{{className}} {{{content}}}';
+        let classString = cssTemplate.replace(/\{\{className\}\}/, className);
+        let attrs = Object.keys(styles).map((key) => {
+            if (isCamelCase(key)) {
+                let camelKey = camelCaseToAttrs(key);
+                return `${camelKey}: ${styles[key]};`;
+            } else {
+                return `${key}: ${styles[key]};`;
+            }
+        })
+        classString = classString.replace(/\{\{content\}\}/, attrs.join(' '));
+        return classString;
+    }
+
+    buildBgString(className, url) {
+        let cssTemplate = '.{{className}} {{{content}}}';
+        let classString = cssTemplate.replace(/\{\{className\}\}/, className);
+        classString = classString.replace(/\{\{content\}\}/, `background-image: url('${url}')`);
+        return classString;
+    }
+
+    buildKeyFramesString(keyFramesName, keyFramesList) {
+        let keyframesTemplate = '@keyframes {{kfname}} {{{framelist}}}';
+        let kfString = keyframesTemplate.replace(/\{\{kfname\}\}/, keyFramesName);
+        let framelist = Object.keys(keyFramesList).map((key) => {
+            return `${key} {${this.formatKeyFrames(keyFramesList[key])}}`
+        })
+        kfString = kfString.replace(/\{\{framelist\}\}/, framelist.join(' '));
+        return kfString;
+    }
+
+    formatKeyFrames(styles) {
+        let res = [];
+        Object.keys(styles).forEach((key) => {
+            let str = `${key}: ${styles[key]}`;
+            res.push(str);
+        });
+        return res.join(' ');
+    }
+
+    formatMaskContent(maskList) {
+        return maskList.map((mask, index) => {
+            switch (mask.maskType) {
+                case 'clipPath':
+                    return buildClipPathTree(mask);
+                default:
+                    break;
+            }
+        })
+    }
+
 }
 
 export default CSSParser;
