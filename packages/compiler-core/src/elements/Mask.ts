@@ -15,7 +15,7 @@ class Mask {
     }) {
         const { nm, mode, inv, ...rest} = data;
         this.name = nm;
-        this._id = `mask_element${index}`;
+        this._id = `__mask_element_${index}`;
         this.fill = mode === 's' ? '#000000' : '#ffffff';
         this.clipRule = 'nonzero';
         this.getMaskType(data);

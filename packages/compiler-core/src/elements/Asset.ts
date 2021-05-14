@@ -31,7 +31,7 @@ class Asset {
     buildUrlPath(url, path) {
         if (/base64/.test(path)) {
             return path;
-        } else if (url) {
+        } else if (url || path) {
             return `${url}${path}`;
         }
     }

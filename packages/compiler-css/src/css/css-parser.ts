@@ -84,13 +84,38 @@ class CSSParser {
                     });
                 }
                 if (hasMask) {
-                    console.log(target.maskList);
+                    target['type'] = 'svg';
+                    target['children'] = this.buildGImageTree(tree.maskList, target);
+                    if (target['imageClassName']) {
+                        delete target['imageClassName'];
+                    }
                 }
             }
             return target;
         }
         traverse(tree, res);
         return res;
+    }
+
+    buildGImageTree = (maskdata, source) => {
+        return maskdata.map((mask) => {
+            return {
+                type: 'g',
+                attrs: {
+                    clipPath: `url(#${mask._id})`,
+                },
+                children: [
+                    {
+                        type: 'img',
+                        attrs: {
+                            width: source.baseStyles.width,
+                            height: source.baseStyles.height,
+                            href: source.imageUrl,
+                        }
+                    }
+                ]
+            }
+        })
     }
 
     getAnimeTree() {

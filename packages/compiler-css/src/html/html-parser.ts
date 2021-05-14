@@ -21,11 +21,16 @@ class HTMLParser {
         const tree = {};
         const traverse = (json, tree) => {
             if (!json) return;
-            const {type, _name, _id, baseClassName = '', imageClassName = '', animeClassName = '', children} = json;
+            const { type, attrs, _name, _id, baseClassName = '', imageClassName = '', animeClassName = '', children, } = json;
             tree['_id'] = _id;
             tree['type'] = type;
             tree['class'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)$/, '$2');
             tree['aelayerName'] = _name || 'root';
+            if (attrs) {
+                Object.keys(attrs).forEach((key) => {
+                    tree[key] = attrs[key]
+                })
+            }
             if (children) {
                 tree['children'] = [];
                 children.reverse().forEach(child => {
@@ -74,16 +79,17 @@ class HTMLParser {
 
     buildDOMContent() {
         if (!this.htmlTree) return '';
-        let template = '<div {{attributes}}>{{slot}}</div>';
+        let template = '<{{node}} {{attributes}}>{{slot}}</{{node}}>';
         let res = '';
         const traverse = (obj, str) => {
             if (!obj) return str;
-            const {children, _id, ...rest} = obj;
+            const {type, children, _id, ...rest} = obj;
             let attrs = Object.keys(rest).map((key) => {
-                return `${key}="${obj[key]}"`;
+                return `${isCamelCase(key) ? camelCaseToAttrs(key) : key}="${obj[key]}"`;
             });
             let attributes = attrs.join(' ');
             let tmp = template.replace(/\{\{attributes\}\}/, attributes);
+            tmp = tmp.replace(/\{\{node\}\}/g, this.getDomType(type));
             if (children) {
                 let childs = obj.children.reverse().map((child) => {
                     return traverse(child, '');
@@ -176,6 +182,18 @@ class HTMLParser {
 
     getHTMLTree() {
         return this.htmlTree;
+    }
+
+    getDomType(type) {
+        switch (type) {
+            case 'node':
+            case 'image':
+                return 'div';
+            case 'img':
+                return 'image';
+            default:
+                return type;
+        }
     }
 
 }
