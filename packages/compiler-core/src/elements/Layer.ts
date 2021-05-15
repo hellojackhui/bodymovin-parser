@@ -30,6 +30,7 @@ class Layer {
         this.buildBaseInfo(layer);
         this.buildAnimeLayer(layer);
         this.buildMaskLayer(layer);
+        this.buildExtraAttrs(layer);
     }
 
     buildBaseInfo(layer) {
@@ -153,6 +154,19 @@ class Layer {
         }
         this.buildAnimeFrames(scaleFrames);
     }
+
+    
+    buildExtraAttrs = (layer) => {
+        if (layer.sw) {
+            const { sw: width, sh: height, sc: backgroundColor, ...rest} = layer;
+            this.attributes = {
+                ...this.attributes,
+                width,
+                height,
+                backgroundColor,
+            }
+        }
+    };
 
     getOpacityStyle(k: any): any {
         return Number(k / 100);

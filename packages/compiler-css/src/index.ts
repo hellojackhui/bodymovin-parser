@@ -19,10 +19,20 @@ class ParserToCSS {
     }
 
     parseByJson(json) {
-        // @ts-ignore
-        this.parser = new ParserCore({json});
-        const outputJSON = this.parser.outputJson();
-        this.parseToCode(outputJSON);
+        return new Promise((resolve, reject) => {
+            if (json) {
+                try {
+                    // @ts-ignore
+                    this.parser = new ParserCore({json});
+                    const outputJSON = this.parser.outputJson();
+                    const res = this.parseToCode(outputJSON);
+                    return resolve(res);
+                } catch(e) {
+                    console.log('error');
+                    return reject('error');
+                }
+            }
+        })
     }
 
     parseByUrl(url) {
@@ -95,9 +105,10 @@ class ParserToCSS {
             }
             if (layer && Object.keys(layer).length) {
                 const {attributes, animeFrames} = layer;
-                const { position, anchor } = attributes;
+                const { position, anchor, opacity, scale, rotate, ...rest } = attributes;
                 source['styles'] = {
                     ...source['styles'],
+                    ...rest,
                     left: position[0] - anchor[0],
                     top: position[1] - anchor[1],
                     transformOrigin: `${(anchor[0] / width) * 100}% ${(anchor[1] / height) * 100}%`,

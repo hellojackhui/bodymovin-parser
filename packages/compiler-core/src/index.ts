@@ -49,7 +49,22 @@ class ParserCore {
         const { assets, layers } = this.json;
         layers.forEach((layer, index) => {
             let assetId = layer.refId;
-            if (!assetId) return;
+            if (!assetId) {
+                const { sw: w, sh: h } = layer;
+                if (w) {
+                    const assetInstance = new Asset({
+                        asset: {
+                            id: `layer_element-${index}`,
+                            w,
+                            h,
+                            p: '',
+                        },
+                        index,
+                    });
+                    this.assetsObj[assetInstance._unionId] = assetInstance;
+                }
+                return;
+            };
             let assetArr = assets.filter((item) => item.id === assetId);
             if (assetArr.length) {
                 const assetInstance = new Asset({
@@ -76,8 +91,8 @@ class ParserCore {
         const { layers } = this.json;
         if (!layers || !layers.length) return;
         const frameCount = this.endframe - this.startframe;
-        layers.forEach((layer) => {
-            if (layer.ks && layer.refId) {
+        layers.forEach((layer, index) => {
+            if (layer.ks) {
                 const layerInstance = new Layer({
                     layer,
                     frames: frameCount,
@@ -86,7 +101,7 @@ class ParserCore {
                 let parentId = layerInstance.getParentId();
                 let unionId = layerInstance.getUnionId();
                 this.assetsObj[unionId]['parentId'] = parentId;
-                this.assetsObj[unionId].layer = layerInstance;
+                this.assetsObj[unionId].layer = layerInstance;            
             }
         });
         return;

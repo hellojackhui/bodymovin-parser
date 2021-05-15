@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const ParserToCSS = require('../lib/compiler-css/compiler-css.umd');
 
-const json = require('../mock/box.json');
+const json = require('../mock/demo1.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 
 const fetch = (url) => {
@@ -19,7 +19,15 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/demo/6.json').then(({
+// instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/demo/6.json').then(({
+//     cssContent,
+//     domContent
+// }) => {
+//     writeHTMLFile(domContent);
+//     writeCssFile(cssContent);
+// })
+
+instance.parseByJson(json).then(({
     cssContent,
     domContent
 }) => {
