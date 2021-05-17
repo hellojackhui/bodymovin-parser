@@ -1,5 +1,5 @@
 {
-  "name": "@bodymovin-parser/web-css",
+  "name": "@bodymovin-parser/compiler-css",
   "version": "0.0.1",
   "description": "bodymovin-parser to web-css model",
   "main": "index.js",
