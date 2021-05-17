@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "hellojackhui",
   "license": "ISC",
   "dependencies": {
     "@bodymovin-parser/compiler-core": "0.0.1"
