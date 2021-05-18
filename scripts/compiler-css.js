@@ -19,7 +19,7 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/3.json').then(({
+instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading2.json').then(({
     cssContent,
     domContent
 }) => {

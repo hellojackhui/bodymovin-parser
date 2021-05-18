@@ -11,7 +11,7 @@ class Asset {
         asset,
         index,
     }) {
-        this._unionId = `layer-bm-${index + 1}`;
+        this._unionId = `layer-bm-${index}`;
         this.buildAssets(asset);
     }
 

@@ -1,6 +1,31 @@
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios').default;
+
+const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const ParserCore = require('../packages/compiler-core/lib/compiler-core.umd');
 // const tree = require('../mock/demo1.json');
-// const json = require('../mock/loading.json');
-const json = require('../mock/bowl.json');
-const core =  new ParserCore({json: json});
-console.log(JSON.stringify(core.outputJson()));
+
+const url = 'http://portal-portm.meituan.com/test/wmmp/page-loading2.json';
+
+axios.get(url).then((res) => {
+    const data = res.data;
+    const core =  new ParserCore({json: data});
+    const jsonstr = JSON.stringify(core.outputJson());
+    writeJSONFile(jsonstr);
+})
+
+
+function writeJSONFile(content) {
+    fs.writeFile(`${basePath}/mock.json`, content, function(err) {
+        try {
+            if (err) {
+                return Promise.reject('error', err);
+            } else {
+                return Promise.resolve('success');
+            }
+        } catch(e) {
+            console.log(e);
+        }
+    })
+}
