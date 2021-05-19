@@ -1,7 +1,7 @@
 {
   "name": "@bodymovin-parser/compiler-core",
   "version": "0.0.1",
-  "description": "@bodymovin-parser/compiler-core",
+  "description": "bodymovin-parser 核心解析器",
   "main": "index.js",
   "files": [
     "index.ts",
@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser/tree/main/packages/compiler-core",
     "directory": "packages/compiler-core"
   },
   "scripts": {

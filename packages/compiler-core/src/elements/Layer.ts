@@ -18,15 +18,18 @@ class Layer {
     animeFrames: any[];
     parentId: string;
     _unionId: string;
+    _json: any;
     maskList: Array<any>;
 
     constructor({
         layer,
         frames,
         startFrame,
+        json,
     }) {
         this.frames = frames;
         this._startFrame = startFrame;
+        this._json = json;
         this.buildBaseInfo(layer);
         this.buildAnimeLayer(layer);
         this.buildMaskLayer(layer);
@@ -157,15 +160,30 @@ class Layer {
 
     
     buildExtraAttrs = (layer) => {
-        if (layer.sw) {
-            const { sw: width, sh: height, sc: backgroundColor, ...rest} = layer;
+        if (layer.ty === 0) {
+            const { w: jsonWidth, h: jsonHeight } = this._json;
+            const { w: originW, h: originH, } = layer;
+            const scale = {
+                x: this.fix(jsonWidth / originW),
+                y: this.fix(jsonHeight / originH),
+                z: 1
+            };
             this.attributes = {
                 ...this.attributes,
-                width,
-                height,
-                backgroundColor,
+                scale,
+            }
+        } else {
+            if (layer.sw) {
+                const { sw: width, sh: height, sc: backgroundColor, ...rest} = layer;
+                this.attributes = {
+                    ...this.attributes,
+                    width,
+                    height,
+                    backgroundColor,
+                }
             }
         }
+        
     };
 
     getOpacityStyle(k: any): any {
@@ -221,6 +239,10 @@ class Layer {
                 offset: Number(Number(index / this.frames).toFixed(5)),
             }
         })
+    }
+
+    fix(num, point = 2) {
+        return Number(Number(num).toFixed(point))
     }
 }
 

@@ -102,6 +102,7 @@ class ParserCore {
           layer,
           frames: frameCount,
           startFrame: this.startframe,
+          json: this.json,
         });
         let parentId = layerInstance.getParentId();
         let unionId = layerInstance.getUnionId();

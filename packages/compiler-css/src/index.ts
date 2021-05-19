@@ -105,13 +105,18 @@ class ParserToCSS {
             }
             if (layer && Object.keys(layer).length) {
                 const {attributes, animeFrames} = layer;
-                const { position, anchor, opacity, scale, rotate, ...rest } = attributes;
+                const { position, anchor, opacity = 1, scale, rotate, ...rest } = attributes;
                 source['styles'] = {
                     ...source['styles'],
                     ...rest,
                     left: position[0] - anchor[0],
                     top: position[1] - anchor[1],
                     transformOrigin: `${(anchor[0] / width) * 100}% ${(anchor[1] / height) * 100}%`,
+                    opacity,
+                    ...this.buildTransformStyle({
+                        scale,
+                        rotate
+                    }),
                 }
                 source['animeList'] = this.buildAnimeList(animeFrames, attributes);
                 if (layer.maskList) {
@@ -163,6 +168,17 @@ class ParserToCSS {
         }
     }    
     
+    buildTransformStyle(styles) {
+        const { scale, rotate } = styles;
+        let template = 'scale3d({{scale}}) rotate({{rotate}}deg)';
+        let scaleStr = Array.isArray(scale) ? `${scale[0]}, ${scale[1]}, ${scale[2]}` : `${scale.x}, ${scale.y}, ${scale.z}`;
+        template = template.replace(/\{\{scale\}\}/, scaleStr);
+        template = template.replace(/\{\{rotate\}\}/, `${rotate}`);
+        return {
+            transform: template,
+        };
+    }
+
 }
 
 export default ParserToCSS;
