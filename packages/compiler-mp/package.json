@@ -1,5 +1,5 @@
 {
-  "name": "@bodymovin-parser/compiler-miniprogram",
+  "name": "@bodymovin-parser/compiler-mp",
   "version": "0.0.1",
   "description": "bodymovin-parser 小程序帧动画代码生成器",
   "main": "index.js",

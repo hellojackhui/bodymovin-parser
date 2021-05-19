@@ -1,14 +1,13 @@
+import { IRotate } from '../index.d';
 import {
     createBezier,
     createBezierStr,
 } from '../utils/bezier';
 
-class Rotate { 
+class Rotate implements IRotate { 
 
     ksSource: any;
     nextKsSource: any;
-    i: any;
-    o: any;
     startTime: number;
     endTime: number;
     duration: number;

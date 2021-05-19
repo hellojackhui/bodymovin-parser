@@ -1,4 +1,5 @@
-class Asset {
+import { IAsset } from "../index.d";
+class Asset implements IAsset {
     public assetsSource: any;
     public type: string;
     public id: any;
@@ -11,12 +12,12 @@ class Asset {
         asset,
         index,
     }) {
-        this._unionId = `layer-bm-${index}`;
-        this.buildAssets(asset);
+        this.buildAssets(asset, index);
     }
 
-    buildAssets(assets) {
+    buildAssets(assets, index) {
         const { id, w, h, u, p } = assets;
+        this._unionId = `layer-bm-${index}`;
         this.type = this.getNodeType(assets.p);
         this.id = id;
         this.width = w;

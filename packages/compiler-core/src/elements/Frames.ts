@@ -2,6 +2,7 @@ import Opacity from './Opacity';
 import Rotate from './Rotate';
 import Scale from './Scale';
 import Position from './Position';
+
 function buildOpacityFrames({
     layer,
     frames,

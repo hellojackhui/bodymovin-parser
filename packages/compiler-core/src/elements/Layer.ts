@@ -12,6 +12,7 @@ class Layer {
     frames: number; 
     index: any;
     id: any;
+    layer: any;
     _level: number;
     _startFrame: number;
     attributes: {};
@@ -21,23 +22,24 @@ class Layer {
     _json: any;
     maskList: Array<any>;
 
-    constructor({
+    constructor(config) {
+        this.buildBaseInfo(config);
+        this.buildAnimeLayer(this.layer);
+        this.buildMaskLayer(this.layer);
+        this.buildExtraAttrs(this.layer);
+    }
+
+    buildBaseInfo({
         layer,
         frames,
         startFrame,
         json,
     }) {
+        const { ind, refId: id, parent = 0 } = layer;
         this.frames = frames;
+        this.layer = layer;
         this._startFrame = startFrame;
         this._json = json;
-        this.buildBaseInfo(layer);
-        this.buildAnimeLayer(layer);
-        this.buildMaskLayer(layer);
-        this.buildExtraAttrs(layer);
-    }
-
-    buildBaseInfo(layer) {
-        const { ind, refId: id, parent = 0 } = layer;
         this.index = ind;
         this._unionId = `layer-bm-${ind}`;
         this.id = id;

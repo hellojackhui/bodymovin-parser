@@ -2,45 +2,48 @@
 import Asset from "./elements/Asset";
 import Layer from "./elements/Layer";
 import { isCommonAssets, isLayerAssets } from "./utils/utils";
-class ParserCore {
+import * as Compiler from './index.d';
+
+class CoreParser implements Compiler.ICompiler {
+
   public json: any;
+  public bmversion: string;
   public endframe: any;
   public name: any;
   public startframe: any;
   public frame: any;
-  public layer: {};
+  public layer: Compiler.IRootWrapper;
   public assetsObj: {};
 
   constructor({ json }) {
     this.json = json;
     this.buildBaseInfo();
-    this.buildWrapperInfo();
+    this.buildRootWrapperInfo();
     this.buildAssets();
     this.buildLayers();
     this.buildLayerTree();
   }
 
   buildBaseInfo() {
-    const { nm, ip, op, fr } = this.json;
+    const { v, nm, ip, op, fr } = this.json;
+    this.bmversion = v;
     this.name = nm;
     this.startframe = ip;
     this.endframe = op;
     this.frame = fr;
-    this.layer = {};
     this.assetsObj = {};
   }
 
-  buildWrapperInfo() {
-    const { w, h } = this.json;
+  buildRootWrapperInfo() {
+    const { w: width, h: height } = this.json;
     const node = {
       type: "node",
-      width: w,
-      height: h,
+      width,
+      height,
       children: [],
       layer: {},
     };
     this.layer = node;
-    return;
   }
 
   buildAssets() {
@@ -65,13 +68,14 @@ class ParserCore {
       } else {
         const { sw: w, sh: h } = layer;
         if (w) {
+          const tempAsset = {
+            id: `layer_element-${index}`,
+            w,
+            h,
+            p: "",
+          };
           const assetInstance = new Asset({
-            asset: {
-              id: `layer_element-${index}`,
-              w,
-              h,
-              p: "",
-            },
+            asset: tempAsset,
             index,
           });
           this.assetsObj[assetInstance._unionId] = assetInstance;
@@ -104,10 +108,9 @@ class ParserCore {
           startFrame: this.startframe,
           json: this.json,
         });
-        let parentId = layerInstance.getParentId();
-        let unionId = layerInstance.getUnionId();
-        this.assetsObj[unionId]["parentId"] = parentId;
-        this.assetsObj[unionId].layer = layerInstance;
+        this.linkLayerToAsset({
+          layer: layerInstance,
+        });
       }
     });
     return;
@@ -145,17 +148,25 @@ class ParserCore {
     });
     layers.push(...cur.layers);
     assets.splice(targetAssetIndex, 1);
-    assets.push({
+    const templeAssets = {
       id: targetLayer.refId,
       w: targetLayer.w,
       h: targetLayer.h,
       e: 1,
       u: '',
       p: '',
-    })
-    this.buildAssets();
+    };
+    assets.push(templeAssets);
+    return this.buildAssets();
+  }
+
+  linkLayerToAsset({ layer }) {
+    let parentId = layer.getParentId();
+    let unionId = layer.getUnionId();
+    this.assetsObj[unionId]["parentId"] = parentId;
+    this.assetsObj[unionId].layer = layer;
   }
 
 }
 
-export default ParserCore;
+export default CoreParser;

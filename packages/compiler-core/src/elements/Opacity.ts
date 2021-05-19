@@ -1,9 +1,10 @@
+import { IOpacity } from '../index.d';
 import {
     createBezier,
     createBezierStr,
 } from '../utils/bezier';
 
-class Opacity { 
+class Opacity implements IOpacity { 
 
     ksSource: any;
     nextKsSource: any;

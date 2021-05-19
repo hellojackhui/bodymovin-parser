@@ -22,6 +22,7 @@ class Mask {
         this.getOpacity(data.o.k);
         this.buildPathArr(rest.pt.k);
     }
+    
     getMaskType(data) {
         if ((data.mode !== 'a' && data.mode !== 'n') || data.inv || data.o.k !== 100 || data.o.x) {
             this.maskType = 'mask';
@@ -31,9 +32,11 @@ class Mask {
             this.maskRef = 'clip-path';
         }
     }
+
     getOpacity(opacity) {
         this.fillOpacity = Number(opacity / 100);
     }
+
     buildPathArr(data) {
         const { i, o, v} = data;
         let len = v.length;

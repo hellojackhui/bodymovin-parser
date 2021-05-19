@@ -1,9 +1,10 @@
+import { IScale } from '../index.d';
 import {
     createBezier,
     createBezierStr,
 } from '../utils/bezier';
 
-class Scale { 
+class Scale implements IScale{ 
 
     ksSource: any;
     nextKsSource: any;
