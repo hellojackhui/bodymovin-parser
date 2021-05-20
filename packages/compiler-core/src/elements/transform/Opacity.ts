@@ -1,8 +1,8 @@
-import { IOpacity } from '../index.d';
+import { IOpacity } from '../../index.d';
 import {
     createBezier,
     createBezierStr,
-} from '../utils/bezier';
+} from '../../utils/bezier';
 
 class Opacity implements IOpacity { 
 

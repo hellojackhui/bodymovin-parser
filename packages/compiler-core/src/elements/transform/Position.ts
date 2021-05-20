@@ -1,5 +1,5 @@
-import { IPosition } from "../index.d";
-import { createBezier, createBezierStr, createParabolaList } from "../utils/bezier";
+import { IPosition } from "../../index.d";
+import { createBezier, createBezierStr, createParabolaList } from "../../utils/bezier";
 
 class Position implements IPosition {
 

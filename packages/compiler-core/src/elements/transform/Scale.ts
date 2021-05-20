@@ -1,18 +1,20 @@
-import { IRotate } from '../index.d';
+import { IScale } from '../../index.d';
 import {
     createBezier,
     createBezierStr,
-} from '../utils/bezier';
+} from '../../utils/bezier';
 
-class Rotate implements IRotate { 
+class Scale implements IScale{ 
 
     ksSource: any;
     nextKsSource: any;
+    i: any;
+    o: any;
     startTime: number;
     endTime: number;
     duration: number;
-    startVal: number;
-    endVal: number;
+    startVal: number[];
+    endVal: number[];
     bezierFn: any;
     bezierStr: string;
 
@@ -20,12 +22,12 @@ class Rotate implements IRotate {
         layer,
         nextlayer,
     }) {
-        this.buildRotate({
+        this.buildScale({
             layer,
             nextlayer
         });
     }
-    buildRotate({
+    buildScale({
         layer,
         nextlayer
     }) {
@@ -35,20 +37,22 @@ class Rotate implements IRotate {
         this.startTime = t;
         this.endTime = nt;
         this.duration = Math.abs(nt - t);
-        this.startVal = this.getRotate(s);
-        this.endVal = this.getRotate(ns);
-        this.bezierFn = createBezier('r', layer);
+        this.startVal = this.getScale(s);
+        this.endVal = this.getScale(ns);
+        this.bezierFn = createBezier('s', layer);
         this.bezierStr = createBezierStr(layer);
     }
 
-    getRotate(s) {
+    getScale(s) {
         if (Array.isArray(s)) {
-            return Number(s[0]);
-        } else {
-            return Number(s);
+            return [
+                Number(s[0] / 100),
+                Number(s[1] / 100),
+                Number(s[2] / 100),
+            ];
         }
     }
 
 }
 
-export default Rotate;
+export default Scale;

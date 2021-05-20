@@ -1,8 +1,28 @@
+enum BlendModeEnum {
+    'normal',
+    'multiply',
+    'screen',
+    'overlay',
+    'darken',
+    'lighten',
+    'colorDodge',
+    'colorBurn',
+    'hardLight',
+    'softLight',
+    'difference',
+    'exclusion',
+    'hue',
+    'saturation',
+    'color',
+    'luminosity',
+}
+
 class Fill {
 
     type: string;
     name: any;
     hide: any;
+    blendMode: BlendModeEnum;
     color: string;
     opacity: number;
 
@@ -15,6 +35,7 @@ class Fill {
         this.type = 'fill';
         this.name = nm;
         this.hide = hd;
+        this.blendMode = this.getBlendMode(bm);
         this.color = this.getFillColor(source.c);
         this.opacity = this.getOpacity(source.o);
     }
@@ -30,6 +51,10 @@ class Fill {
 
     getOpacity(o) {
         return Number(o.k / 100);
+    }
+
+    getBlendMode(bm) {
+        return BlendModeEnum[bm] as any;
     }
 
 }

@@ -10,10 +10,13 @@ function isAttribute(type, data) {
             return isAnchorAttribute(data);
         case 's':
             return isScaleAttribute(data);
+        case 'sk':
+            return isSkewAttribute(data);
         default:
             break;
     }
 }
+
 
 function isOpacityAttribute(data) {
     const { a: animate, k: keyframes } = data;
@@ -21,6 +24,11 @@ function isOpacityAttribute(data) {
 }
 
 function isRotateAttribute(data) {
+    const { a: animate, k: keyframes } = data;
+    return !animate && typeof keyframes === 'number';
+}
+
+function isSkewAttribute(data) {
     const { a: animate, k: keyframes } = data;
     return !animate && typeof keyframes === 'number';
 }
@@ -39,5 +47,6 @@ function isScaleAttribute(data) {
     const { a: animate, k: keyframes } = data;
     return !animate && Array.isArray(keyframes);
 }
+
 
 export default isAttribute;

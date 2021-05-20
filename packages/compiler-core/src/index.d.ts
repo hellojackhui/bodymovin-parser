@@ -6,6 +6,7 @@ export interface ICompiler {
     endframe: number;
     frame: number;
     layer: IRootWrapper;
+    is3dLayer: boolean;
     assetsObj: {
         [x: string]: IAsset
     };

@@ -14,7 +14,7 @@ class Transform {
         this.buildTransform(source);
     }
     buildTransform(source) {
-        const {nm, ty, p, a, s, r, o, sk, sa} = source;
+        const {nm, p, a, s, r, o, sk, sa} = source;
         this.type = 'transform';
         this.name = nm;
         this.position = this.getPosition(p);

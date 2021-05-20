@@ -1,7 +1,7 @@
-import Opacity from './Opacity';
-import Rotate from './Rotate';
-import Scale from './Scale';
-import Position from './Position';
+import Opacity from './transform/Opacity';
+import Rotate from './transform/Rotate';
+import Scale from './transform/Scale';
+import Position from './transform/Position';
 
 function buildOpacityFrames({
     layer,

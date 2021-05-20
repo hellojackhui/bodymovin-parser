@@ -10,6 +10,7 @@ class CoreParser implements Compiler.ICompiler {
   public bmversion: string;
   public endframe: any;
   public name: any;
+  public is3dLayer: boolean;
   public startframe: any;
   public frame: any;
   public layer: Compiler.IRootWrapper;
@@ -25,12 +26,13 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildBaseInfo() {
-    const { v, nm, ip, op, fr } = this.json;
+    const { v, nm, ip, op, fr, ddd = 0 } = this.json;
     this.bmversion = v;
     this.name = nm;
     this.startframe = ip;
     this.endframe = op;
     this.frame = fr;
+    this.is3dLayer = !!ddd;
     this.assetsObj = {};
   }
 
@@ -56,7 +58,10 @@ class CoreParser implements Compiler.ICompiler {
         if (isCommonAssets(target)) {
           const assetInstance = new Asset({
             asset: target,
-            index: layer.ind,
+            options: {
+              index: layer.ind,
+              layerType: layer.ty,
+            }
           });
           this.assetsObj[assetInstance._unionId] = assetInstance;
         } else if (isLayerAssets(target)){
@@ -76,7 +81,10 @@ class CoreParser implements Compiler.ICompiler {
           };
           const assetInstance = new Asset({
             asset: tempAsset,
-            index,
+            options: {
+              index,
+              layerType: 'image',
+            }
           });
           this.assetsObj[assetInstance._unionId] = assetInstance;
         }

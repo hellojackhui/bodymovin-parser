@@ -7,6 +7,15 @@ import {
 } from './Frames';
 import Mask from './Mask';
 
+enum LayerTypeEnum {
+    'precomp' = 0,
+    'solid' = 1,
+    'image' = 2,
+    'null' = 3,
+    'shape' = 4,
+    'text' = 5,
+}
+
 class Layer {
 
     frames: number; 
@@ -15,18 +24,22 @@ class Layer {
     layer: any;
     _level: number;
     _startFrame: number;
+    _initialFramePoint: number;
+    _finalFramePoint: number;
+    _startTime: number;
     attributes: {};
     animeFrames: any[];
     parentId: string;
     _unionId: string;
     _json: any;
+    _effects: object;
     maskList: Array<any>;
 
     constructor(config) {
         this.buildBaseInfo(config);
         this.buildAnimeLayer(this.layer);
         this.buildMaskLayer(this.layer);
-        this.buildExtraAttrs(this.layer);
+        this.buildExtraAttrsByType(this.layer);
     }
 
     buildBaseInfo({
@@ -35,16 +48,19 @@ class Layer {
         startFrame,
         json,
     }) {
-        const { ind, refId: id, parent = 0 } = layer;
-        this.frames = frames;
+        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st } = layer;
+        this.id = id;
+        this._unionId = `layer-bm-${ind}`;
+        this.parentId = `layer-bm-${parent}`;this.frames = frames;
         this.layer = layer;
         this._startFrame = startFrame;
+        this._initialFramePoint = ip;
+        this._finalFramePoint = ip;
+        this._startTime = st;
         this._json = json;
         this.index = ind;
-        this._unionId = `layer-bm-${ind}`;
-        this.id = id;
-        this.parentId = `layer-bm-${parent}`;
         this.attributes = {};
+        this._effects = effects;
         this.animeFrames = [];
     }
 
@@ -52,22 +68,21 @@ class Layer {
         const { ks } = layer;
         Object.keys(ks).forEach((key) => {
             const layer = ks[key];
-            this.buildMetricAnime(key, layer);
+            return this.buildMetricsAnime(key, layer);
         });
     }
 
     buildMaskLayer(layer) {
-        if (layer.hasMask) {
-            this.maskList = layer.masksProperties.map((mask, index) => {
-                return new Mask({
-                    data: mask,
-                    index,
-                });
-            })
-        }
+        if (!layer.hasMask) return;
+        this.maskList = layer.masksProperties.map((mask, index) => {
+            return new Mask({
+                data: mask,
+                index,
+            });
+        })
     }
 
-    buildMetricAnime(type, layer) {
+    buildMetricsAnime(type, layer) {
         switch (type) {
             case 'o':
                 this.buildOpacityAnime(layer);
@@ -84,6 +99,8 @@ class Layer {
             case 's':
                 this.buildScaleAnime(layer);
                 break;
+            case 'sk':
+                this.buildSkewAnime(layer);
             default:
                 break;
         }
@@ -160,22 +177,18 @@ class Layer {
         this.buildAnimeFrames(scaleFrames);
     }
 
+    buildSkewAnime(layer) {
+        if (isAttribute('sk', layer)) {
+            this.attributes['scale'] = this.getSkewStyle(layer.k);
+            return;
+        }
+        // TODO...
+    }
+
     
-    buildExtraAttrs = (layer) => {
-        if (layer.ty === 0) {
-            const { w: jsonWidth, h: jsonHeight } = this._json;
-            const { w: originW, h: originH, } = layer;
-            const scale = {
-                x: this.fix(jsonWidth / originW),
-                y: this.fix(jsonHeight / originH),
-                z: 1
-            };
-            this.attributes = {
-                ...this.attributes,
-                scale,
-            }
-        } else {
-            if (layer.sw) {
+    buildExtraAttrsByType = (layer) => {
+        switch (layer.ty) {
+            case LayerTypeEnum.solid:
                 const { sw: width, sh: height, sc: backgroundColor, ...rest} = layer;
                 this.attributes = {
                     ...this.attributes,
@@ -183,9 +196,23 @@ class Layer {
                     height,
                     backgroundColor,
                 }
-            }
+                break;
+            case LayerTypeEnum.precomp:
+                const { w: jsonWidth, h: jsonHeight } = this._json;
+                const { w: originW, h: originH, } = layer;
+                const scale = {
+                    x: this.fix(jsonWidth / originW),
+                    y: this.fix(jsonHeight / originH),
+                    z: 1
+                };
+                this.attributes = {
+                    ...this.attributes,
+                    scale,
+                }
+                break;
+            default:
+                break;
         }
-        
     };
 
     getOpacityStyle(k: any): any {
@@ -218,6 +245,10 @@ class Layer {
             y: Number(k[1] / 100),
             z: Number(k[2] / 100),
         }
+    }
+
+    getSkewStyle(k: any): any {
+        return Number(k);
     }
 
     getId() {
