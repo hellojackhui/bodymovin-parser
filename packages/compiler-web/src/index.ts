@@ -1,4 +1,4 @@
-import ParserCore from '@bodymovin-parser/compiler-core';
+import CoreParser from '@bodymovin-parser/compiler-core';
 import HTMLParser from './html/html-parser';
 import CSSParser from './css/css-parser';
 
@@ -23,7 +23,7 @@ class ParserToCSS {
             if (json) {
                 try {
                     // @ts-ignore
-                    this.parser = new ParserCore({json});
+                    this.parser = new CoreParser({json});
                     const outputJSON = this.parser.outputJson();
                     const res = this.parseToCode(outputJSON);
                     return resolve(res);
@@ -40,7 +40,7 @@ class ParserToCSS {
             if (this.fetch) {
                 this.fetch(url).then((json) => {
                     // @ts-ignore
-                    this.parser = new ParserCore({json});
+                    this.parser = new CoreParser({json});
                     const outputJSON = this.parser.outputJson();
                     const res = this.parseToCode(outputJSON);
                     return resolve(res);

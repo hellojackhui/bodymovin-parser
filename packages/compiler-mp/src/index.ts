@@ -6,7 +6,7 @@
  * @desc Miniprogram compiler
  */
 
-import ParserCore from '@bodymovin-parser/compiler-core';
+import CoreParser from '@bodymovin-parser/compiler-core';
 import './index.d';
 import { buildAnimeList, buildTransformStyle } from './utils/utils';
 
@@ -41,7 +41,7 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
 
     parseMPCode() {
         const { mode } = this.options;
-        const coreInstance = new ParserCore({
+        const coreInstance = new CoreParser({
             json: this.json,
         });
         const sourceJSON = coreInstance.outputJson();
@@ -146,7 +146,7 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
 
 
     buildMPAnimateCode(tree) {
-        const coreInstance = new ParserCore({
+        const coreInstance = new CoreParser({
             json: this.json,
         });
         const sourceJSON = coreInstance.outputJson();
