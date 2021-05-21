@@ -6,7 +6,7 @@
     "build-css": "rollup --config --rollupCss",
     "test": "jest --no-cache",
     "core-test": "npm run build-core && node scripts/compiler-core.js",
-    "css-test": "npm run build-css && node scripts/compiler-css.js",
+    "css-test": "npm run build-css && node scripts/compiler-web.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start"
   },

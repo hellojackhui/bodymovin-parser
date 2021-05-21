@@ -58,7 +58,7 @@ class ParserToCSS {
         // dom生成输出字符串，css生成输出字符串。
         // 适配文件输出。
         const { mode } = this._config;
-        const ast = this.rebuildAst(json);
+        const ast = this.buildCommonTree(json);
         switch (mode) {
             case 'anime':
                 return this.generateAnimeCode(ast);
@@ -70,7 +70,7 @@ class ParserToCSS {
         return;
     }
 
-    rebuildAst(json) {
+    buildCommonTree(json) {
         const res = {};
         const { name, startframe, endframe, frame, layer, id } = json;
         res['duration'] = Number((endframe - startframe) / frame);

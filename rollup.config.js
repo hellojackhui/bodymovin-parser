@@ -23,15 +23,15 @@ const configs = {
     ]
   },
   rollupCss: {
-    input: 'packages/compiler-css/src/index.ts',
+    input: 'packages/compiler-web/src/index.ts',
     output: [
       {
-        file: "lib/compiler-css/compiler-css.umd.js",
+        file: "lib/compiler-web/compiler-web.umd.js",
         name: 'core',
         format: "umd",
       },
       {
-        file: "lib/compiler-css/compiler-css.es.js",
+        file: "lib/compiler-web/compiler-web.es.js",
         name: 'core',
         format: "es",
       }

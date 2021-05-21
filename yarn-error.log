@@ -25,7 +25,7 @@ npm manifest:
       "build": "rollup --config",
       "test": "jest --no-cache",
       "core-test": "node scripts/compiler-core.js",
-      "css-test": "node scripts/compiler-css.js",
+      "css-test": "node scripts/compiler-web.js",
       "dev": "rollup --config --watch",
       "bootstrap": "cd example/web && npm run start"
     },

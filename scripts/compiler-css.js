@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios').default;
-const ParserToCSS = require('../lib/compiler-css/compiler-css.umd');
+const ParserToCSS = require('../lib/compiler-web/compiler-web.umd');
 
 const json = require('../mock/demo1.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
@@ -19,22 +19,13 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading2.json').then(({
+instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading.json').then(({
     cssContent,
     domContent
 }) => {
     writeHTMLFile(domContent);
     writeCssFile(cssContent);
 })
-
-// instance.parseByJson(json).then(({
-//     cssContent,
-//     domContent
-// }) => {
-//     writeHTMLFile(domContent);
-//     writeCssFile(cssContent);
-// })
-
 
 function writeHTMLFile(content) {
     let template = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>magic-css-demo</title><link rel="stylesheet" href="./index.css"></script></head><body style="width: 100vw;height: 100vh;box-sizing: border-box;">{{slot}}</body></html>';

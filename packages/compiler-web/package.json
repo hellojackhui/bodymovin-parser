@@ -1,15 +1,15 @@
 {
-  "name": "@bodymovin-parser/compiler-css",
+  "name": "@bodymovin-parser/compiler-web",
   "version": "0.0.1",
-  "description": "bodymovin-parser CSS3动画代码生成器",
+  "description": "bodymovin-parser web动画代码生成器",
   "main": "index.js",
   "files": [
     "index.ts"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser/tree/main/packages/compiler-css",
-    "directory": "packages/compiler-css"
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser/tree/main/packages/compiler-web",
+    "directory": "packages/compiler-web"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
