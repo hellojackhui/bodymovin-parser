@@ -4,6 +4,15 @@ import Layer from "./elements/Layer";
 import { isCommonAssets, isLayerAssets } from "./utils/utils";
 import * as Compiler from './index.d';
 
+enum LayerTypeEnum {
+  'precomp' = 0,
+  'solid' = 1,
+  'image' = 2,
+  'null' = 3,
+  'shape' = 4,
+  'text' = 5,
+}
+
 class CoreParser implements Compiler.ICompiler {
 
   public json: any;
@@ -51,46 +60,71 @@ class CoreParser implements Compiler.ICompiler {
   buildAssets() {
     const { assets, layers } = this.json;
     layers.forEach((layer, index) => {
-      let assetId = layer.refId;
-      let assetArr = assets.filter((item) => item.id === assetId);
-      if (assetArr.length) {
-        let target = assetArr[0];
-        if (isCommonAssets(target)) {
-          const assetInstance = new Asset({
-            asset: target,
-            options: {
-              index: layer.ind,
-              layerType: layer.ty,
-            }
-          });
-          this.assetsObj[assetInstance._unionId] = assetInstance;
-        } else if (isLayerAssets(target)){
-          return this.rebuildAssetsTree({
-            cur: target, 
-            id: assetId,
-          });
-        }
-      } else {
-        const { sw: w, sh: h } = layer;
-        if (w) {
-          const tempAsset = {
-            id: `layer_element-${index}`,
-            w,
-            h,
-            p: "",
-          };
-          const assetInstance = new Asset({
-            asset: tempAsset,
-            options: {
-              index,
-              layerType: 'image',
-            }
-          });
-          this.assetsObj[assetInstance._unionId] = assetInstance;
-        }
-        return;
+      switch (layer.ty) {
+        case LayerTypeEnum.image:
+          this.buildAssetInstance(assets, layer);
+          break;
+        case LayerTypeEnum.precomp:
+          this.buildCompAssetInstance(assets, layer);
+          break;
+        case LayerTypeEnum.solid:
+          this.buildSolidInstance(layer, index);
+          break;
+        case LayerTypeEnum.shape:
+          this.buildShapesInstance(assets, layer);
+          break;
+        default:
+          this.buildAssetInstance(assets, layer);
+          break;
       }
     });
+    return;
+  }
+
+  buildAssetInstance(assets, layer) {
+    let assetId = layer.refId;
+    let assetArr = assets.filter((item) => item.id === assetId);
+    let target = assetArr[0];
+    const assetInstance = new Asset({
+      asset: target,
+      options: {
+        index: layer.ind,
+        layerType: layer.ty,
+      }
+    });
+    this.assetsObj[assetInstance._unionId] = assetInstance;
+  }
+
+  buildCompAssetInstance(assets, layer) {
+    let assetId = layer.refId;
+    let assetArr = assets.filter((item) => item.id === assetId);
+    let target = assetArr[0];
+    return this.rebuildAssetsTree({
+      cur: target, 
+      id: assetId,
+    });
+  }
+
+  buildSolidInstance(layer, index) {
+    const { sw: w, sh: h } = layer;
+    const tempAsset = {
+      id: `layer_element-${index}`,
+      w,
+      h,
+      p: "",
+    };
+    const assetInstance = new Asset({
+      asset: tempAsset,
+      options: {
+        index,
+        layerType: LayerTypeEnum.image,
+      }
+    });
+    this.assetsObj[assetInstance._unionId] = assetInstance;
+  }
+
+  buildShapesInstance(assets, layer) {
+    // TODO...
     return;
   }
 
@@ -171,8 +205,12 @@ class CoreParser implements Compiler.ICompiler {
   linkLayerToAsset({ layer }) {
     let parentId = layer.getParentId();
     let unionId = layer.getUnionId();
-    this.assetsObj[unionId]["parentId"] = parentId;
-    this.assetsObj[unionId].layer = layer;
+    if (this.assetsObj[unionId]) {
+      this.assetsObj[unionId]["parentId"] = parentId;
+      this.assetsObj[unionId].layer = layer;
+    } else {
+      console.warn('layer cannot link to asset, please check your asset. unionid:', layer._unionId)
+    }
   }
 
 }

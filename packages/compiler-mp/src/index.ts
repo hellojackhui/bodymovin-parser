@@ -7,16 +7,35 @@
  */
 
 import CoreParser from '@bodymovin-parser/compiler-core';
-import './index.d';
+import isEqual from './utils/is-equal';
 import { buildAnimeList, buildTransformStyle } from './utils/utils';
+import CSSParser from './CSSParser';
+import HTMLParser from './HTMLParser';
 
-class MpCompiler implements MpCompilerNS.MpCompilerClass {
 
-    mode: typeof MpCompilerNS.MpCompilerMode;
+interface MpCompilerClass {
+    mode: typeof MpCompilerMode;
+    request: any;
+    hooks: {[x: string]: () => {}};
+    json: Object | string;
+    options: MpCompilerOptions;
+}
+
+enum MpCompilerMode {
+    CSS = 'css',
+    ANIMATE = 'animate',
+}
+interface MpCompilerOptions {
+    mode: keyof MpCompilerMode;
+}
+
+class MpCompiler implements MpCompilerClass {
+
+    mode: typeof MpCompilerMode;
     request: any;
     hooks: { [x: string]: () => {}; };
     json: string | Object;
-    options: MpCompilerNS.MpCompilerOptions;
+    options: MpCompilerOptions;
 
     constructor(config) {
         const { request, hooks, options } = config;
@@ -31,25 +50,30 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
     }
 
     parseByUrl(url) {
-        if (this.request) {
-            this.request(url).then((json) => {
-                this.json = json
-                this.parseMPCode();
-            })
-        }
+        return new Promise((resolve, reject) => {
+            if (this.request) {
+                this.request(url).then((json) => {
+                    this.json = json
+                    const res = this.parseMPCode();
+                    return resolve(res);
+                })
+            }
+        })
+        
     }
 
     parseMPCode() {
         const { mode } = this.options;
+        // @ts-ignore
         const coreInstance = new CoreParser({
             json: this.json,
         });
         const sourceJSON = coreInstance.outputJson();
         const commonTree = this.buildCommonTree(sourceJSON);
         switch (mode) {
-            case MpCompilerNS.MpCompilerMode.CSS:
+            case MpCompilerMode.CSS:
                 return this.buildMPCssCode(commonTree);
-            case MpCompilerNS.MpCompilerMode.ANIMATE:
+            case MpCompilerMode.ANIMATE:
                 return this.buildMPAnimateCode(commonTree);
             default:
                 break;
@@ -58,7 +82,7 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
 
     buildCommonTree(json) {
         const res = {};
-        const { name, startframe, endframe, frame, layer, id } = json;
+        const { name, startframe, endframe, frame, layer } = json;
         res['duration'] = Number((endframe - startframe) / frame);
         res['_name'] = name;
         this.rebuildLayerList(layer, res);
@@ -71,7 +95,7 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
             if (!json) return;
             const { type, id, width, height, children, path, layer, name} = json;
             source['type'] = type;
-            source['_name'] = name || id;
+            source['_name'] = source['_name'] || (name || id);
             source['id'] = id || 'root';
             source['styles'] = {
                 width,
@@ -111,45 +135,114 @@ class MpCompiler implements MpCompilerNS.MpCompilerClass {
     }
 
     buildMPCssCode(tree) {
-        const domTree = this.buildDOMTree(tree);
-        const cssTree = this.buildCSSTree(tree);
-        this.outputCSSCode({
-            domTree,
-            cssTree,
-        });
+        const cssInstance = this.getCssParserInstance(tree);
+        const animeTree = cssInstance.getAnimeTree();
+        const domContent = this.buildDOMTree(animeTree);
+        const cssContent = cssInstance.buildCSSContent();
+        return {
+            domContent,
+            cssContent,
+        };
+    }
+
+    getCssParserInstance(tree) {
+        const animeInstance = new CSSParser(tree);
+        return animeInstance;
     }
 
     buildDOMTree(tree) {
-
+        const domInstance = new HTMLParser(tree);
+        return domInstance.buildHTMLContent();
     }
 
-    buildCSSTree(tree) {
-
-    }
-    
-    outputCSSCode({
-        domTree,
-        cssTree,
-    }) {
-        const domContent = this.buildDOMContent(domTree);
-        const cssContent = this.buildCSSContent(cssTree);
-    }
-
-    buildDOMContent(dom) {
-        return '';
+    buildMPAnimateCode(commonTree) {
+        const cssInstance = this.getCssParserInstance(commonTree);
+        const animeTree = cssInstance.getAnimeTree();
+        const domContent = this.buildDOMTree(animeTree);
+        const cssContent = this.buildAnimateFrames(animeTree);
+        return {
+            domContent,
+            cssContent,
+        };
     }
 
-    buildCSSContent(css) {
-        return '';
+    buildAnimateFrames(tree) {
+        const res = {};
+        const transform = (source) => {
+            if (source.keyFramesList) {
+                const { baseStyles, imageClassName, imageUrl } = source;
+                res[source.id] = {
+                    styles: {
+                        ...baseStyles,
+                        imageClassName,
+                        imageUrl,
+                    },
+                    frames: this.rebuildKeyFrames(source.keyFramesList),
+                }
+            }
+            if (source.children) {
+                source.children.forEach((item) => {
+                    return transform(item);
+                })
+            }
+        }
+        transform(tree);
+        return res;
     }
 
+    rebuildKeyFrames(keyframes) {
+        let res = [];
+        Object.keys(keyframes).map((key) => {
+            let offset = this.fix(Number(key.split('%')[0]) / 100, 4);
+            const { transform, transitionTimingFunction: ease, ...rest }  = keyframes[key];
+            let tranformAttrs = this.rebuildTranformAttrs(transform, ease);
+            return res.push({
+                offset,
+                ...rest,
+                ...tranformAttrs,
+            })
+        })
+        res = this.filterFrames(res);
+        return res;
+    }
 
+    rebuildTranformAttrs(str, ease) {
+        let attr = {};
+        if (str.indexOf('translate3D') >= 0) {
+            let translateReg = str.match(/translate3D\(([^\)]+)\)/);
+            attr['translate3d'] = translateReg[1].split(',');
+        }
+        if (str.indexOf('scale3D') >= 0) {
+            let scaleReg = str.match(/scale3D\(([^\)]+)\)/);
+            attr['scale3d'] = scaleReg[1].split(',');
+        }
+        if (str.indexOf('rotate') >= 0) {
+            let scaleReg = str.match(/rotate\((\d+)deg\)/);
+            attr['rotate'] = Number(scaleReg[1]);
+        }
+        if (ease) {
+            attr['ease'] = 'linear';
+        }
+        return attr;
+    }
 
-    buildMPAnimateCode(tree) {
-        const coreInstance = new CoreParser({
-            json: this.json,
-        });
-        const sourceJSON = coreInstance.outputJson();
+    filterFrames(frames) {
+        return frames.reduce((prev, next) => {
+            if (!prev.length) {
+                return [...prev, next];
+            } else {
+                let last = prev[prev.length - 1];
+                if (!isEqual(last, next, ['offset']) || next.offset == 1) {
+                    return [...prev, next];
+                } else {
+                    return prev;
+                }
+            }
+        }, [])
+    }
+
+    fix(num, points) {
+        return Number(Number(num).toFixed(points));
     }
 
 

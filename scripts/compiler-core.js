@@ -6,7 +6,7 @@ const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const CoreParser = require('../packages/compiler-core/lib/compiler-core.umd');
 // const tree = require('../mock/demo1.json');
 
-const url = 'http://portal-portm.meituan.com/test/wmmp/page-loading2.json';
+const url = 'http://portal-portm.meituan.com/test/wmmp/page-loading.json';
 
 axios.get(url).then((res) => {
     const data = res.data;

@@ -22,6 +22,25 @@ const configs = {
       }
     ]
   },
+  rollupMp: {
+    input: 'packages/compiler-mp/src/index.ts',
+    output: [
+      {
+        file: "packages/compiler-mp/lib/compiler-mp.iife.js",
+        format: "iife",
+      },
+      {
+        file: "packages/compiler-mp/lib/compiler-mp.umd.js",
+        name: 'core',
+        format: "umd",
+      },
+      {
+        file: "packages/compiler-mp/lib/compiler-mp.es.js",
+        name: 'core',
+        format: "es",
+      }
+    ]
+  },
   rollupCss: {
     input: 'packages/compiler-web/src/index.ts',
     output: [
