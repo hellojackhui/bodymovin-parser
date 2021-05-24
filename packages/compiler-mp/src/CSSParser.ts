@@ -150,7 +150,7 @@ class CSSParser {
             let transformStr = '';
             const {opacity, ease, ...rest} = item;
             if (ease) {
-                res[key]['transitionTimingFunction'] = ease;
+                res[key]['transitionTimeFunction'] = `${ease}`;
             }
             if (rest) {
                 const { position, rotate, scale } = rest;
@@ -245,9 +245,15 @@ class CSSParser {
     formatKeyFrames(styles) {
         let res = [];
         Object.keys(styles).forEach((key) => {
-            let str = `${key}: ${styles[key]}`;
+            let str = '';
+            if (key === 'transitionTimeFunction') {
+                str = `${isCamelCase(key) ? camelCaseToAttrs(key) : key}: ${styles[key]}; `;
+            } else {
+                str = `${isCamelCase(key) ? camelCaseToAttrs(key) : key}: ${styles[key]}`;
+            }
+            
             res.push(str);
-        });
+        });``
         return res.join(' ');
     }
 

@@ -19,7 +19,7 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading.json').then((data) => {
+instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/2.json').then((data) => {
     console.log(data.cssContent.image_0.frames);
     // writeMpWXMLFile(data.domContent);
     // writeMpWXSSFile(data.cssContent);

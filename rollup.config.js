@@ -1,6 +1,13 @@
 import typescript from "rollup-plugin-typescript";
+import sourceMaps from 'rollup-plugin-sourcemaps'
 import commonjs from "rollup-plugin-commonjs";
 import { uglify } from 'rollup-plugin-uglify';
+const pkg = require('./package.json')
+const banner = '/*!\n' +
+` * bodymovin-parser v${pkg.version}\n` +
+` * (c) 2020-${new Date().getFullYear()} hellojackhui\n` +
+' * Released under the MIT License.\n' +
+' */'
 
 const configs = {
   rollupCore: {
@@ -9,16 +16,19 @@ const configs = {
       {
         file: "packages/compiler-core/lib/compiler-core.iife.js",
         format: "iife",
+        banner,
       },
       {
         file: "packages/compiler-core/lib/compiler-core.umd.js",
         name: 'core',
         format: "umd",
+        banner,
       },
       {
         file: "packages/compiler-core/lib/compiler-core.es.js",
         name: 'core',
         format: "es",
+        banner,
       }
     ]
   },
@@ -28,16 +38,19 @@ const configs = {
       {
         file: "packages/compiler-mp/lib/compiler-mp.iife.js",
         format: "iife",
+        banner,
       },
       {
         file: "packages/compiler-mp/lib/compiler-mp.umd.js",
         name: 'core',
         format: "umd",
+        banner,
       },
       {
         file: "packages/compiler-mp/lib/compiler-mp.es.js",
         name: 'core',
         format: "es",
+        banner,
       }
     ]
   },
@@ -48,11 +61,13 @@ const configs = {
         file: "lib/compiler-web/compiler-web.umd.js",
         name: 'core',
         format: "umd",
+        banner,
       },
       {
         file: "lib/compiler-web/compiler-web.es.js",
         name: 'core',
         format: "es",
+        banner,
       }
     ]
   }
@@ -69,6 +84,9 @@ praseEnv();
 export default {
   input: mode.input,
   output: mode.output,
+  watch: {
+    include: 'src/**',
+  },
   plugins: [
     typescript({
       exclude: "node_modules/**",
@@ -79,7 +97,7 @@ export default {
       include: ['packages/**/*.js'],
       exclude: ['node_modules/'],
       extensions: [ '.js', '.coffee' ],
-
-    })
+    }),
+    sourceMaps()
   ],
 };

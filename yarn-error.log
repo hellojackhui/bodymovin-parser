@@ -19,13 +19,17 @@ Trace:
 
 npm manifest: 
   {
-    "name": "root",
+    "name": "bodymovin-parser",
+    "version": "0.0.1",
     "private": true,
     "scripts": {
-      "build": "rollup --config",
+      "build-core": "rollup --config --rollupCore",
+      "build-css": "rollup --config --rollupCss",
+      "build-mp": "rollup --config --rollupMp",
       "test": "jest --no-cache",
-      "core-test": "node scripts/compiler-core.js",
-      "css-test": "node scripts/compiler-web.js",
+      "core-test": "npm run build-core && node scripts/compiler-core.js",
+      "css-test": "npm run build-css && node scripts/compiler-web.js",
+      "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
       "dev": "rollup --config --watch",
       "bootstrap": "cd example/web && npm run start"
     },
@@ -38,9 +42,12 @@ npm manifest:
       "rollup-plugin-commonjs": "^10.1.0",
       "rollup-plugin-typescript": "^1.0.1",
       "rollup-plugin-uglify": "6.0.4",
+      "rollup-plugin-sourcemaps": "0.6.3",
       "ts-jest": "^26.5.5",
       "tslib": "^2.2.0",
-      "typescript": "^4.2.4"
+      "typescript": "^4.2.4",
+      "fs-extra": "10.0.0",
+      "chalk": "4.1.1"
     }
   }
 
@@ -1440,6 +1447,11 @@ Lockfile:
     dependencies:
       "@babel/types" "^7.3.0"
   
+  "@types/estree@*":
+    version "0.0.47"
+    resolved "http://r.npm.sankuai.com/@types/estree/download/@types/estree-0.0.47.tgz#d7a51db20f0650efec24cd04994f523d93172ed4"
+    integrity sha1-16Udsg8GUO/sJM0EmU9SPZMXLtQ=
+  
   "@types/graceful-fs@^4.1.2":
     version "4.1.5"
     resolved "http://r.npm.sankuai.com/@types/graceful-fs/download/@types/graceful-fs-4.1.5.tgz#21ffba0d98da4350db64891f92a9e5db3cdb4e15"
@@ -2054,6 +2066,14 @@ Lockfile:
     resolved "http://r.npm.sankuai.com/caseless/download/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
     integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
   
+  chalk@4.1.1, chalk@^4.0.0, chalk@^4.1.0:
+    version "4.1.1"
+    resolved "http://r.npm.sankuai.com/chalk/download/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
+    integrity sha1-yAs/qyi/Y3HmhjMl7uZ+YYt35q0=
+    dependencies:
+      ansi-styles "^4.1.0"
+      supports-color "^7.1.0"
+  
   chalk@^2.0.0:
     version "2.4.2"
     resolved "http://r.npm.sankuai.com/chalk/download/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -2062,14 +2082,6 @@ Lockfile:
       ansi-styles "^3.2.1"
       escape-string-regexp "^1.0.5"
       supports-color "^5.3.0"
-  
-  chalk@^4.0.0, chalk@^4.1.0:
-    version "4.1.1"
-    resolved "http://r.npm.sankuai.com/chalk/download/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
-    integrity sha1-yAs/qyi/Y3HmhjMl7uZ+YYt35q0=
-    dependencies:
-      ansi-styles "^4.1.0"
-      supports-color "^7.1.0"
   
   char-regex@^1.0.2:
     version "1.0.2"
@@ -3029,6 +3041,15 @@ Lockfile:
     dependencies:
       map-cache "^0.2.2"
   
+  fs-extra@10.0.0:
+    version "10.0.0"
+    resolved "http://r.npm.sankuai.com/fs-extra/download/fs-extra-10.0.0.tgz#9ff61b655dde53fb34a82df84bb214ce802e17c1"
+    integrity sha1-n/YbZV3eU/s0qC34S7IUzoAuF8E=
+    dependencies:
+      graceful-fs "^4.2.0"
+      jsonfile "^6.0.1"
+      universalify "^2.0.0"
+  
   fs-extra@^9.1.0:
     version "9.1.0"
     resolved "http://r.npm.sankuai.com/fs-extra/download/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
@@ -3749,6 +3770,13 @@ Lockfile:
     version "1.0.1"
     resolved "http://r.npm.sankuai.com/is-potential-custom-element-name/download/is-potential-custom-element-name-1.0.1.tgz#171ed6f19e3ac554394edf78caa05784a45bebb5"
     integrity sha1-Fx7W8Z46xVQ5Tt94yqBXhKRb67U=
+  
+  is-reference@^1.1.2:
+    version "1.2.1"
+    resolved "http://r.npm.sankuai.com/is-reference/download/is-reference-1.2.1.tgz#8b2dac0b371f4bc994fdeaba9eb542d03002d0b7"
+    integrity sha1-iy2sCzcfS8mU/eq6nrVC0DAC0Lc=
+    dependencies:
+      "@types/estree" "*"
   
   is-regex@^1.1.2:
     version "1.1.2"
@@ -4558,6 +4586,13 @@ Lockfile:
     integrity sha1-bW/mVw69lqr5D8rR2vo7JWbbOpQ=
     dependencies:
       yallist "^4.0.0"
+  
+  magic-string@^0.25.2:
+    version "0.25.7"
+    resolved "http://r.npm.sankuai.com/magic-string/download/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
+    integrity sha1-P0l9b9NMZpxnmNy4IfLvMfVEUFE=
+    dependencies:
+      sourcemap-codec "^1.4.4"
   
   make-dir@^2.1.0:
     version "2.1.0"
@@ -5944,7 +5979,7 @@ Lockfile:
     resolved "http://r.npm.sankuai.com/resolve-url/download/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
     integrity sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
   
-  resolve@^1.1.6, resolve@^1.10.0, resolve@^1.18.1, resolve@^1.20.0:
+  resolve@^1.1.6, resolve@^1.10.0, resolve@^1.11.0, resolve@^1.18.1, resolve@^1.20.0:
     version "1.20.0"
     resolved "http://r.npm.sankuai.com/resolve/download/resolve-1.20.0.tgz#629a013fb3f70755d6f0b7935cc1c2c5378b1975"
     integrity sha1-YpoBP7P3B1XW8LeTXMHCxTeLGXU=
@@ -5989,6 +6024,17 @@ Lockfile:
     dependencies:
       glob "^7.1.3"
   
+  rollup-plugin-commonjs@^10.1.0:
+    version "10.1.0"
+    resolved "http://r.npm.sankuai.com/rollup-plugin-commonjs/download/rollup-plugin-commonjs-10.1.0.tgz#417af3b54503878e084d127adf4d1caf8beb86fb"
+    integrity sha1-QXrztUUDh44ITRJ6300cr4vrhvs=
+    dependencies:
+      estree-walker "^0.6.1"
+      is-reference "^1.1.2"
+      magic-string "^0.25.2"
+      resolve "^1.11.0"
+      rollup-pluginutils "^2.8.1"
+  
   rollup-plugin-typescript@^1.0.1:
     version "1.0.1"
     resolved "http://r.npm.sankuai.com/rollup-plugin-typescript/download/rollup-plugin-typescript-1.0.1.tgz#86565033b714c3d1f3aba510aad3dc519f7091e9"
@@ -6007,7 +6053,7 @@ Lockfile:
       serialize-javascript "^2.1.2"
       uglify-js "^3.4.9"
   
-  rollup-pluginutils@^2.5.0:
+  rollup-pluginutils@^2.5.0, rollup-pluginutils@^2.8.1:
     version "2.8.2"
     resolved "http://r.npm.sankuai.com/rollup-pluginutils/download/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
     integrity sha1-cvKvB0i1kjZNvTOJ5gDlqURKNR4=
@@ -6304,6 +6350,11 @@ Lockfile:
     version "0.7.3"
     resolved "http://r.npm.sankuai.com/source-map/download/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
     integrity sha1-UwL4FpAxc1ImVECS5kmB91F1A4M=
+  
+  sourcemap-codec@^1.4.4:
+    version "1.4.8"
+    resolved "http://r.npm.sankuai.com/sourcemap-codec/download/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
+    integrity sha1-6oBL2UhXQC5pktBaOO8a41qatMQ=
   
   spdx-correct@^3.0.0:
     version "3.1.1"

@@ -45,7 +45,7 @@ class HTMLParser {
 
     buildHTMLContent() {
         let domContent = this.buildDOMContent();
-        let template = '<view style="width:100%;height:100%;background-color:#333;" id="magic-demo">{{dom}}</view>';
+        let template = '<view id="magic-demo">{{dom}}</view>';
         template = template.replace(/\{\{dom\}\}/, domContent);
         return template;
     }

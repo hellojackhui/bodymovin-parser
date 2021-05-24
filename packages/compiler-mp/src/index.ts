@@ -194,8 +194,8 @@ class MpCompiler implements MpCompilerClass {
         let res = [];
         Object.keys(keyframes).map((key) => {
             let offset = this.fix(Number(key.split('%')[0]) / 100, 4);
-            const { transform, transitionTimingFunction: ease, ...rest }  = keyframes[key];
-            let tranformAttrs = this.rebuildTranformAttrs(transform, ease);
+            const { transform, ...rest }  = keyframes[key];
+            let tranformAttrs = this.rebuildTranformAttrs(transform);
             return res.push({
                 offset,
                 ...rest,
@@ -206,7 +206,7 @@ class MpCompiler implements MpCompilerClass {
         return res;
     }
 
-    rebuildTranformAttrs(str, ease) {
+    rebuildTranformAttrs(str) {
         let attr = {};
         if (str.indexOf('translate3D') >= 0) {
             let translateReg = str.match(/translate3D\(([^\)]+)\)/);
@@ -217,11 +217,8 @@ class MpCompiler implements MpCompilerClass {
             attr['scale3d'] = scaleReg[1].split(',');
         }
         if (str.indexOf('rotate') >= 0) {
-            let scaleReg = str.match(/rotate\((\d+)deg\)/);
-            attr['rotate'] = Number(scaleReg[1]);
-        }
-        if (ease) {
-            attr['ease'] = 'linear';
+            let rotateReg = str.match(/rotate\(([^d]+)deg\)/);
+            attr['rotate'] = Number(rotateReg[1]);
         }
         return attr;
     }
@@ -232,8 +229,13 @@ class MpCompiler implements MpCompilerClass {
                 return [...prev, next];
             } else {
                 let last = prev[prev.length - 1];
-                if (!isEqual(last, next, ['offset']) || next.offset == 1) {
+                if (!isEqual(last, next, ['offset']) && next.offset !== 1) {
                     return [...prev, next];
+                } else if (isEqual(last, next, ['offset']) && next.offset === 1) {
+                    let cache = [...prev];
+                    let previtem = cache.pop();
+                    previtem.offset = 1;
+                    return [...cache, previtem];
                 } else {
                     return prev;
                 }
