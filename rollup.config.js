@@ -1,91 +1,84 @@
 import typescript from "rollup-plugin-typescript";
-import sourceMaps from 'rollup-plugin-sourcemaps'
+import sourceMaps from "rollup-plugin-sourcemaps";
 import commonjs from "rollup-plugin-commonjs";
-import { uglify } from 'rollup-plugin-uglify';
-const pkg = require('./package.json')
-const banner = '/*!\n' +
-` * bodymovin-parser v${pkg.version}\n` +
-` * (c) 2020-${new Date().getFullYear()} hellojackhui\n` +
-' * Released under the MIT License.\n' +
-' */'
+import { uglify } from "rollup-plugin-uglify";
+import banner from "rollup-plugin-banner";
+
+const pkg = require("./package.json");
+const bannerText =
+  ` bodymovin-parser v${pkg.version}\n` +
+  ` (c) 2020-${new Date().getFullYear()} hellojackhui\n` +
+  " Released under the MIT License."
 
 const configs = {
   rollupCore: {
-    input: 'packages/compiler-core/src/index.ts',
+    input: "packages/compiler-core/src/index.ts",
     output: [
       {
         file: "packages/compiler-core/lib/compiler-core.iife.js",
         format: "iife",
-        banner,
       },
       {
         file: "packages/compiler-core/lib/compiler-core.umd.js",
-        name: 'core',
+        name: "core",
         format: "umd",
-        banner,
       },
       {
         file: "packages/compiler-core/lib/compiler-core.es.js",
-        name: 'core',
+        name: "core",
         format: "es",
-        banner,
-      }
-    ]
+      },
+    ],
   },
   rollupMp: {
-    input: 'packages/compiler-mp/src/index.ts',
+    input: "packages/compiler-mp/src/index.ts",
     output: [
       {
         file: "packages/compiler-mp/lib/compiler-mp.iife.js",
         format: "iife",
-        banner,
       },
       {
         file: "packages/compiler-mp/lib/compiler-mp.umd.js",
-        name: 'core',
+        name: "core",
         format: "umd",
-        banner,
       },
       {
         file: "packages/compiler-mp/lib/compiler-mp.es.js",
-        name: 'core',
+        name: "core",
         format: "es",
-        banner,
-      }
-    ]
+      },
+    ],
   },
   rollupCss: {
-    input: 'packages/compiler-web/src/index.ts',
+    input: "packages/compiler-web/src/index.ts",
     output: [
       {
         file: "lib/compiler-web/compiler-web.umd.js",
-        name: 'core',
+        name: "core",
         format: "umd",
-        banner,
       },
       {
         file: "lib/compiler-web/compiler-web.es.js",
-        name: 'core',
+        name: "core",
         format: "es",
-        banner,
-      }
-    ]
-  }
-}
+      },
+    ],
+  },
+};
 
 let mode;
 const praseEnv = () => {
-  const [ , , , args] = process.argv;
-  let envName = args.split('--')[1];
+  const [, , , args] = process.argv;
+  let envName = args.split("--")[1];
   mode = configs[envName];
-}
+};
 praseEnv();
 
 export default {
   input: mode.input,
   output: mode.output,
   watch: {
-    include: 'src/**',
+    include: "src/**",
   },
   plugins: [
     typescript({
@@ -94,10 +87,11 @@ export default {
     }),
     uglify(),
     commonjs({
-      include: ['packages/**/*.js'],
-      exclude: ['node_modules/'],
-      extensions: [ '.js', '.coffee' ],
+      include: ["packages/**/*.js"],
+      exclude: ["node_modules/"],
+      extensions: [".js", ".coffee"],
     }),
-    sourceMaps()
+    sourceMaps(),
+    banner(bannerText),
   ],
 };
