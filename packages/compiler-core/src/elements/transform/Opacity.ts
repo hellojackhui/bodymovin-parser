@@ -2,6 +2,7 @@ import { IOpacity } from '../../index.d';
 import {
     createBezier,
     createBezierStr,
+    expression,
 } from '../../utils/bezier';
 
 class Opacity implements IOpacity { 
@@ -17,6 +18,7 @@ class Opacity implements IOpacity {
     endVal: number;
     bezierFn: any;
     bezierStr: string;
+    expression?: any;
 
     constructor({
         layer,
@@ -31,7 +33,7 @@ class Opacity implements IOpacity {
         layer,
         nextLayer
     }) {
-        const {t, s} = layer;
+        const {t, s, x = ''} = layer;
         const next = nextLayer ? nextLayer : layer;
         const {t: nt, s: ns} = next;
         this.startTime = t;
@@ -41,6 +43,7 @@ class Opacity implements IOpacity {
         this.endVal = this.getOpacity(ns);
         this.bezierFn = createBezier('o', layer);
         this.bezierStr = createBezierStr(layer);
+        this.expression = x ? expression(x) : null;
     }
 
     getOpacity(s) {

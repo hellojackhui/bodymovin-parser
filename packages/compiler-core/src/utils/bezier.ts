@@ -106,8 +106,13 @@ function createParabolaList(layer, nextLayer) {
     return points;
 }
 
+function expression(exp) {
+    // TODO...
+}
+
 export {
     createBezier,
     createBezierStr,
     createParabolaList,
+    expression,
 };
