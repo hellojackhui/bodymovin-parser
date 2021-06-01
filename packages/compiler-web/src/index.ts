@@ -130,7 +130,8 @@ class WebBMParser {
         switch (mode) {
             case 'html':
                 return this.generateAnimeCode();
-            case 'style':
+            case 'component':
+                // return this.generateCompCode();
                 break;
             default:
                 break;
@@ -157,7 +158,7 @@ class WebBMParser {
             domContent,
             cssContent,
         }
-    }    
+    }
     
     buildTransformStyle(styles) {
         const { scale, rotate } = styles;
