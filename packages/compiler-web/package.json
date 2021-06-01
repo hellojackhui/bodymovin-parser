@@ -23,6 +23,6 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-core": "0.0.1"
+    "@bodymovin-parser/compiler-core": "^0.0.1"
   }
 }
