@@ -53,12 +53,12 @@ const configs = {
     input: "packages/compiler-web/src/index.ts",
     output: [
       {
-        file: "lib/compiler-web/compiler-web.umd.js",
+        file: "packages/compiler-web/lib/compiler-web.umd.js",
         name: "core",
         format: "umd",
       },
       {
-        file: "lib/compiler-web/compiler-web.es.js",
+        file: "packages/compiler-web/lib/compiler-web.es.js",
         name: "core",
         format: "es",
       },

@@ -2,7 +2,7 @@
   "name": "@bodymovin-parser/compiler-web",
   "version": "0.0.3",
   "description": "bodymovin-parser web动画代码生成器",
-  "main": "index.js",
+  "main": "lib/compiler-web.umd.js",
   "files": [
     "index.ts"
   ],

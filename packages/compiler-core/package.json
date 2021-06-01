@@ -2,7 +2,7 @@
   "name": "@bodymovin-parser/compiler-core",
   "version": "0.0.3",
   "description": "bodymovin-parser 核心解析器",
-  "main": "index.js",
+  "main": "lib/compiler-core.umd.js",
   "files": [
     "index.ts",
     "dist"
