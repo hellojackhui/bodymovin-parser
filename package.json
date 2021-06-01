@@ -11,7 +11,8 @@
     "css-test": "npm run build-css && node scripts/compiler-web.js",
     "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
     "dev": "rollup --config --watch",
-    "bootstrap": "cd example/web && npm run start"
+    "bootstrap": "cd example/web && npm run start",
+    "publish": "lerna publish"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
