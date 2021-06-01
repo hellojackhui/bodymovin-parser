@@ -20,19 +20,19 @@ class Opacity implements IOpacity {
 
     constructor({
         layer,
-        nextlayer,
+        nextLayer,
     }) {
         this.buildOpacity({
             layer,
-            nextlayer
+            nextLayer
         });
     }
     buildOpacity({
         layer,
-        nextlayer
+        nextLayer
     }) {
         const {t, s} = layer;
-        const next = nextlayer ? nextlayer : layer;
+        const next = nextLayer ? nextLayer : layer;
         const {t: nt, s: ns} = next;
         this.startTime = t;
         this.endTime = nt;

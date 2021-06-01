@@ -1,9 +1,9 @@
 export interface ICompiler {
     json: JSON;
-    bmversion: string;
+    bmVersion: string;
     name: string;
-    startframe: number;
-    endframe: number;
+    startFrame: number;
+    endFrame: number;
     frame: number;
     layer: IRootWrapper;
     is3dLayer: boolean;
@@ -15,8 +15,8 @@ export interface ICompiler {
 export interface ICompilerOutput {
     version: string;
     name: string;
-    startframe: number;
-    endframe: number;
+    startFrame: number;
+    endFrame: number;
     frame: number;
 }
 

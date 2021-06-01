@@ -14,20 +14,20 @@ class Position implements IPosition {
 
     constructor({
         layer,
-        nextlayer,
+        nextLayer,
     }) {
         this.buildPosition({
             layer,
-            nextlayer,
+            nextLayer,
         })
     }
 
     buildPosition({
         layer,
-        nextlayer,
+        nextLayer,
     }) {
         const {t, s} = layer;
-        const next = nextlayer ? nextlayer : layer;
+        const next = nextLayer ? nextLayer : layer;
         const {t: nt, s: ns} = next;
         this.startTime = nt < t ? nt : t;
         this.endTime = nt < t ? t : nt;
@@ -36,7 +36,7 @@ class Position implements IPosition {
         this.endVal = this.getPosition(ns);
         this.bezierFn = createBezier('p', layer);
         this.bezierStr = createBezierStr(layer);
-        this.parabolaPointList = createParabolaList(layer, nextlayer);
+        this.parabolaPointList = createParabolaList(layer, nextLayer);
     }
 
     getPosition(s) {

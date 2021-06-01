@@ -19,7 +19,15 @@ const instance = new ParserToCSS({
     }
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading.json').then(({
+// instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading.json').then(({
+//     cssContent,
+//     domContent
+// }) => {
+//     writeHTMLFile(domContent);
+//     writeCssFile(cssContent);
+// })
+
+Promise.resolve(instance.parseByJson(json)).then(({
     cssContent,
     domContent
 }) => {

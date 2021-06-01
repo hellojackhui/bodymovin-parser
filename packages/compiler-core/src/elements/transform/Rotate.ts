@@ -18,19 +18,19 @@ class Rotate implements IRotate {
 
     constructor({
         layer,
-        nextlayer,
+        nextLayer,
     }) {
         this.buildRotate({
             layer,
-            nextlayer
+            nextLayer
         });
     }
     buildRotate({
         layer,
-        nextlayer
+        nextLayer
     }) {
         const {t, s} = layer;
-        const next = nextlayer ? nextlayer : layer;
+        const next = nextLayer ? nextLayer : layer;
         const {t: nt, s: ns} = next;
         this.startTime = t;
         this.endTime = nt;

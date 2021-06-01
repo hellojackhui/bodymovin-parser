@@ -32,7 +32,7 @@ class PointData {
   }
 }
 
-function bezierdata(pt1, pt2, pt3, pt4) {
+function buildBezierPoints(pt1, pt2, pt3, pt4) {
   var bezierName = (
     pt1[0] +
     "_" +
@@ -115,4 +115,4 @@ function bezierdata(pt1, pt2, pt3, pt4) {
 }
 
 
-export default bezierdata;
+export default buildBezierPoints;

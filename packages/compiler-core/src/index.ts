@@ -16,11 +16,11 @@ enum LayerTypeEnum {
 class CoreParser implements Compiler.ICompiler {
 
   public json: any;
-  public bmversion: string;
-  public endframe: any;
+  public bmVersion: string;
+  public endFrame: any;
   public name: any;
   public is3dLayer: boolean;
-  public startframe: any;
+  public startFrame: any;
   public frame: any;
   public layer: Compiler.IRootWrapper;
   public assetsObj: {};
@@ -36,10 +36,10 @@ class CoreParser implements Compiler.ICompiler {
 
   buildBaseInfo() {
     const { v, nm, ip, op, fr, ddd = 0 } = this.json;
-    this.bmversion = v;
+    this.bmVersion = v;
     this.name = nm;
-    this.startframe = ip;
-    this.endframe = op;
+    this.startFrame = ip;
+    this.endFrame = op;
     this.frame = fr;
     this.is3dLayer = !!ddd;
     this.assetsObj = {};
@@ -68,7 +68,7 @@ class CoreParser implements Compiler.ICompiler {
           this.buildCompAssetInstance(assets, layer);
           break;
         case LayerTypeEnum.solid:
-          this.buildSolidInstance(layer, index);
+          this.buildSolidInstance(layer);
           break;
         case LayerTypeEnum.shape:
           this.buildShapesInstance(assets, layer);
@@ -111,8 +111,8 @@ class CoreParser implements Compiler.ICompiler {
     });
   }
 
-  buildSolidInstance(layer, index) {
-    const { sw: w, sh: h } = layer;
+  buildSolidInstance(layer) {
+    const { sw: w, sh: h, ind: index } = layer;
     const tempAsset = {
       id: `layer_element-${index}`,
       w,
@@ -137,8 +137,8 @@ class CoreParser implements Compiler.ICompiler {
   outputJson() {
     return {
       name: this.name,
-      startframe: this.startframe,
-      endframe: this.endframe,
+      startFrame: this.startFrame,
+      endFrame: this.endFrame,
       frame: this.frame,
       layer: this.layer,
     };
@@ -147,13 +147,13 @@ class CoreParser implements Compiler.ICompiler {
   buildLayers() {
     const { layers } = this.json;
     if (!layers || !layers.length) return;
-    const frameCount = this.endframe - this.startframe;
+    const frameCount = this.endFrame - this.startFrame;
     layers.forEach((layer) => {
       if (layer.ks) {
         const layerInstance = new Layer({
           layer,
           frames: frameCount,
-          startFrame: this.startframe,
+          startFrame: this.startFrame,
           json: this.json,
         });
         this.linkLayerToAsset({
@@ -215,7 +215,7 @@ class CoreParser implements Compiler.ICompiler {
       this.assetsObj[unionId]["parentId"] = parentId;
       this.assetsObj[unionId].layer = layer;
     } else {
-      console.warn('layer cannot link to asset, please check your asset. unionid:', layer._unionId)
+      console.warn('layer cannot link to asset, please check your asset. unionId:', layer._unionId)
     }
   }
 

@@ -23,8 +23,8 @@ class WebBMParser {
 
     buildCommonTree(json) {
         const res = {};
-        const { name, startframe, endframe, frame, layer, id } = json;
-        res['duration'] = Number((endframe - startframe) / frame);
+        const { name, startFrame, endFrame, frame, layer, id } = json;
+        res['duration'] = Number((endFrame - startFrame) / frame);
         res['_name'] = name;
         res['maskList'] = [];
         this.rebuildLayer(layer, res);
