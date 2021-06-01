@@ -145,7 +145,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildLayers() {
-    const { layers } = this.json;
+    const { layers, w, h } = this.json;
     if (!layers || !layers.length) return;
     const frameCount = this.endFrame - this.startFrame;
     layers.forEach((layer) => {
@@ -154,7 +154,9 @@ class CoreParser implements Compiler.ICompiler {
           layer,
           frames: frameCount,
           startFrame: this.startFrame,
-          json: this.json,
+          options: {
+            w, h
+          },
         });
         this.linkLayerToAsset({
           layer: layerInstance,

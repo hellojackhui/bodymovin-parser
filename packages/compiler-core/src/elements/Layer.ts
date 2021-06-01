@@ -31,7 +31,7 @@ class Layer {
     animeFrames: any[];
     parentId: string;
     _unionId: string;
-    _json: any;
+    _options: any;
     _effects: object;
     maskList: Array<any>;
 
@@ -46,7 +46,7 @@ class Layer {
         layer,
         frames,
         startFrame,
-        json,
+        options,
     }) {
         const { ind, refId: id, parent = 0, ip, ef: effects = {}, st } = layer;
         this.id = id;
@@ -57,7 +57,7 @@ class Layer {
         this._initialFramePoint = ip;
         this._finalFramePoint = ip;
         this._startTime = st;
-        this._json = json;
+        this._options = options;
         this.index = ind;
         this.attributes = {};
         this._effects = effects;
@@ -198,7 +198,7 @@ class Layer {
                 }
                 break;
             case LayerTypeEnum.precomp:
-                const { w: jsonWidth, h: jsonHeight } = this._json;
+                const { w: jsonWidth, h: jsonHeight } = this._options;
                 const { w: originW, h: originH, } = layer;
                 const scale = {
                     x: this.fix(jsonWidth / originW),
