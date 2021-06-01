@@ -1,12 +1,15 @@
 import CoreParser from '@bodymovin-parser/compiler-core';
 import HTMLParser from './html/html-parser';
 import CSSParser from './css/css-parser';
+import TreeBuilder from './TreeBuilder';
 
-class ParserToCSS {
+class WebBMParser {
     public fetch: any;
     public json: any;
     public parser: any;
     public _config: any;
+    private domParserInstance: HTMLParser;
+    private cssParserInstance: CSSParser;
 
     constructor({
         requestFn,
@@ -16,58 +19,6 @@ class ParserToCSS {
         this.fetch = requestFn || fetch;
         this._config = config;
         this.json = json;
-    }
-
-    parseByJson(json) {
-        return new Promise((resolve, reject) => {
-            if (json) {
-                try {
-                    // @ts-ignore
-                    this.parser = new CoreParser({json});
-                    const outputJSON = this.parser.outputJson();
-                    const res = this.parseToCode(outputJSON);
-                    return resolve(res);
-                } catch(e) {
-                    console.log('error');
-                    return reject('error');
-                }
-            }
-        })
-    }
-
-    parseByUrl(url) {
-        return new Promise((resolve, reject) => {
-            if (this.fetch) {
-                this.fetch(url).then((json) => {
-                    // @ts-ignore
-                    this.parser = new CoreParser({json});
-                    const outputJSON = this.parser.outputJson();
-                    const res = this.parseToCode(outputJSON);
-                    return resolve(res);
-                }).catch((e) => {
-                    console.log('error');
-                    return reject('error');
-                })
-            }
-        })
-    }
-
-    parseToCode(json) {
-        // 重新生成ast
-        // 基于新ast生成dom树和css树
-        // dom生成输出字符串，css生成输出字符串。
-        // 适配文件输出。
-        const { mode } = this._config;
-        const ast = this.buildCommonTree(json);
-        switch (mode) {
-            case 'anime':
-                return this.generateAnimeCode(ast);
-            case 'style':
-                break;
-            default:
-                break;
-        }
-        return;
     }
 
     buildCommonTree(json) {
@@ -93,7 +44,7 @@ class ParserToCSS {
                 height,
             }
             source['_index'] = index;
-            source['_id'] = `AElayer-${index++}`;
+            source['_id'] = `AELayer-${index++}`;
             if (children) {
                 source['children'] = [];
                 children.forEach((child, index) => {
@@ -133,6 +84,60 @@ class ParserToCSS {
         return traverse(res, json);
     }
 
+    getParserInstance(tree) {
+        this.domParserInstance = new HTMLParser(tree);
+        this.cssParserInstance = new CSSParser(tree);
+    }
+
+    getWebCommonTree(tree) {
+        const ast = this.buildCommonTree(tree);
+        const animeTree = new TreeBuilder(ast).getAnimeTree();
+        return animeTree;
+    }
+
+    parseByJson(json) {
+        this.parser = new CoreParser({json});
+        const outputJSON = this.parser.outputJson();
+        const res = this.parseToCode(outputJSON);
+        return res;
+    }
+
+    parseByUrl(url) {
+        return new Promise((resolve, reject) => {
+            if (this.fetch) {
+                this.fetch(url).then((json) => {
+                    // @ts-ignore
+                    this.parser = new CoreParser({json});
+                    const outputJSON = this.parser.outputJson();
+                    const res = this.parseToCode(outputJSON);
+                    return resolve(res);
+                }).catch((e) => {
+                    console.log('error');
+                    return reject('error');
+                })
+            }
+        })
+    }
+
+    parseToCode(json) {
+        // 重新生成ast
+        // 基于新ast生成dom树和css树
+        // dom生成输出字符串，css生成输出字符串。
+        // 适配文件输出。
+        const { mode } = this._config;
+        const webTree = this.getWebCommonTree(json);
+        this.getParserInstance(webTree);
+        switch (mode) {
+            case 'html':
+                return this.generateAnimeCode();
+            case 'style':
+                break;
+            default:
+                break;
+        }
+        return;
+    }
+
     buildAnimeList(list, attributes) {
         const res = {};
         const { width, height, opacity, anchor, ...rest} = attributes;
@@ -145,23 +150,9 @@ class ParserToCSS {
         return res;
     }
 
-    getDomParserInstance(tree) {
-        const animeInstance = new HTMLParser(tree);
-        return animeInstance;
-    }
-
-    getCssParserInstance(tree) {
-        const animeInstance = new CSSParser(tree);
-        return animeInstance;
-    }
-
-    generateAnimeCode(ast) {
-        const cssInstance = this.getCssParserInstance(ast);
-        const animeTree = cssInstance.getAnimeTree();
-        const domInstance = this.getDomParserInstance(animeTree);
-        
-        const domContent = domInstance.buildHTMLContent();
-        const cssContent = cssInstance.buildCSSContent();
+    generateAnimeCode() {
+        const domContent = this.domParserInstance.buildHTMLContent();
+        const cssContent = this.cssParserInstance.buildCSSContent();
         return {
             domContent,
             cssContent,
@@ -181,4 +172,4 @@ class ParserToCSS {
 
 }
 
-export default ParserToCSS;
+export default WebBMParser;

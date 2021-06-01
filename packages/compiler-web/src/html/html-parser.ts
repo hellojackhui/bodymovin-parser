@@ -16,8 +16,8 @@ class HTMLParser {
         this._id = 1;
     }
 
-    buildHtmlTree(layerjson) {
-        if (!layerjson) return null;
+    buildHtmlTree(layerJSON) {
+        if (!layerJSON) return null;
         const tree = {};
         const traverse = (json, tree) => {
             if (!json) return;
@@ -25,7 +25,7 @@ class HTMLParser {
             tree['_id'] = _id;
             tree['type'] = type;
             tree['class'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)$/, '$2');
-            tree['aelayerName'] = _name || 'root';
+            tree['aeLayerName'] = _name || 'root';
             if (attrs) {
                 Object.keys(attrs).forEach((key) => {
                     tree[key] = attrs[key]
@@ -39,12 +39,12 @@ class HTMLParser {
             }
             return tree;
         }
-        traverse(layerjson, tree);
+        traverse(layerJSON, tree);
         return tree;
     }
 
-    buildMaskTree(layerjson) {
-        if (!layerjson.maskContent || !layerjson.maskContent.length) return null;
+    buildMaskTree(layerJSON) {
+        if (!layerJSON.maskContent || !layerJSON.maskContent.length) return null;
         const tree = {
             type: 'svg',
             width: 1,
@@ -61,7 +61,7 @@ class HTMLParser {
             children: [
                 {
                     type: 'def',
-                    children: layerjson.maskContent,
+                    children: layerJSON.maskContent,
                 }
             ],
         };
@@ -91,10 +91,10 @@ class HTMLParser {
             let tmp = template.replace(/\{\{attributes\}\}/, attributes);
             tmp = tmp.replace(/\{\{node\}\}/g, this.getDomType(type));
             if (children) {
-                let childs = obj.children.reverse().map((child) => {
+                let child = obj.children.reverse().map((child) => {
                     return traverse(child, '');
                 })
-                tmp = tmp.replace(/\{\{slot\}\}/, childs.join(' '));
+                tmp = tmp.replace(/\{\{slot\}\}/, child.join(' '));
             } else {
                 tmp = tmp.replace(/\{\{slot\}\}/, '');
             }
@@ -132,9 +132,9 @@ class HTMLParser {
         return svgTemplate;
     }
 
-    buildDefContent(datas) {
-        if (!datas || !datas.length) return '';
-        return datas.map((data) => {
+    buildDefContent(defData) {
+        if (!defData || !defData.length) return '';
+        return defData.map((data) => {
             let defTemplate = '<defs>{{slot}}</defs>';
             const { type, children } = data;
             if (type === 'def') {
@@ -146,9 +146,9 @@ class HTMLParser {
         }).join(' ');
     }
 
-    buildClipPathContent(datas) {
-        if (!datas || !datas.length) return '';
-        return datas.map((data) => {
+    buildClipPathContent(defData) {
+        if (!defData || !defData.length) return '';
+        return defData.map((data) => {
             let defTemplate = '<clipPath {{attributes}}>{{slot}}</clipPath>';
             const { type, id, children } = data;
             if (type === 'clipPath') {
@@ -161,9 +161,9 @@ class HTMLParser {
         }).join(' ');
     }
 
-    buildPathContent(datas) {
-        if (!datas || !datas.length) return '';
-        return datas.map((data) => {
+    buildPathContent(defData) {
+        if (!defData || !defData.length) return '';
+        return defData.map((data) => {
             let clipPathTemplate = '<path {{attributes}}></path>';
             const { type, ...rest } = data;
             if (type === 'path') {
