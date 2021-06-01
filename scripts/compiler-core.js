@@ -4,13 +4,13 @@ const axios = require('axios').default;
 
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const CoreParser = require('../packages/compiler-core/lib/compiler-core.umd');
-// const tree = require('../mock/demo1.json');
+const tree = require('../mock/hand.json');
 
-const url = 'http://portal-portm.meituan.com/test/wmmp/page-loading.json';
+const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 
 axios.get(url).then((res) => {
-    const data = res.data;
-    const core =  new CoreParser({json: data});
+    // const data = res.data;
+    const core =  new CoreParser({json: tree});
     const jsonstr = JSON.stringify(core.outputJson());
     writeJSONFile(jsonstr);
 })

@@ -84,6 +84,9 @@ class CoreParser implements Compiler.ICompiler {
   buildAssetInstance(assets, layer) {
     let assetId = layer.refId;
     let assetArr = assets.filter((item) => item.id === assetId);
+    if (!assetArr || !assetArr.length) {
+      return;
+    }
     let target = assetArr[0];
     const assetInstance = new Asset({
       asset: target,
@@ -98,6 +101,9 @@ class CoreParser implements Compiler.ICompiler {
   buildCompAssetInstance(assets, layer) {
     let assetId = layer.refId;
     let assetArr = assets.filter((item) => item.id === assetId);
+    if (!assetArr || !assetArr.length) {
+      return;
+    }
     let target = assetArr[0];
     return this.rebuildAssetsTree({
       cur: target, 
