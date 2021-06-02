@@ -14,7 +14,7 @@ class WebBMParser {
     constructor({
         requestFn,
         config,
-        json = {},
+        json,
     }) {
         this.fetch = requestFn || fetch;
         this._config = config;
@@ -96,7 +96,10 @@ class WebBMParser {
     }
 
     parseByJson(json) {
-        this.parser = new CoreParser({json});
+        if (!this.json && json) {
+            this.json = json;
+        }
+        this.parser = new CoreParser({json: this.json});
         const outputJSON = this.parser.outputJson();
         const res = this.parseToCode(outputJSON);
         return res;
