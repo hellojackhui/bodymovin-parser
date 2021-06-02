@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-web",
-  "version": "0.0.4-beta.4",
+  "version": "0.0.4-beta.5",
   "description": "bodymovin-parser web动画代码生成器",
   "main": "lib/compiler-web.umd.js",
   "files": [
