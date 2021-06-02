@@ -71,7 +71,7 @@ class HTMLParser {
     buildHTMLContent() {
         let domContent = this.buildDOMContent();
         let svgContent = this.buildSVGContent();
-        let template = '<div style="width:100%;height:100%;background-color:#333;" id="magic-demo">{{svg}}{{dom}}</div>';
+        let template = '<div id="magic-demo">{{svg}}{{dom}}</div>';
         template = template.replace(/\{\{svg\}\}/, svgContent);
         template = template.replace(/\{\{dom\}\}/, domContent);
         return template;
