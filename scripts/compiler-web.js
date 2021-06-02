@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const ParserToCSS = require('../packages/compiler-web/lib/compiler-web.umd');
 
-const json = require('../mock/demo1.json');
+const json = require('../mock/hand.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 
 const fetch = (url) => {
