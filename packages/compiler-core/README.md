@@ -14,7 +14,18 @@ bodymovin通用解析器
 
 ## 能力范围
 
-能够实现基于图层 + 蒙板的json解析，shapes解析正在开发中。
+能够实现基于图层 + 蒙板的json解析，shapes解析、表达式解析正在开发中。
 
-## 渲染效果
+## 如何使用
+```javascript
+import Parser from '@bodymovin-parser/compiler-core';
+
+const inst = new Parser({
+    json: json
+})
+
+// output parsed json
+const output = inst.outputJSON();
+
+```
 

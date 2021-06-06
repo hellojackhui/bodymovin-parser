@@ -134,7 +134,7 @@ class CoreParser implements Compiler.ICompiler {
     return;
   }
 
-  outputJson() {
+  outputJSON() {
     return {
       name: this.name,
       startFrame: this.startFrame,
