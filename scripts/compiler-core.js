@@ -11,7 +11,7 @@ const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 // axios.get(url).then((res) => {
 //     // const data = res.data;
 //     const core =  new CoreParser({json: tree});
-//     const jsonstr = JSON.stringify(core.outputJson());
+//     const jsonstr = JSON.stringify(core.outputJSON());
 //     writeJSONFile(jsonstr);
 // })
 
@@ -19,7 +19,7 @@ const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 Promise.resolve(tree).then((tree) => {
     // const data = res.data;
     const core =  new CoreParser({json: tree});
-    const jsonstr = JSON.stringify(core.outputJson());
+    const jsonstr = JSON.stringify(core.outputJSON());
     writeJSONFile(jsonstr);
 })
 

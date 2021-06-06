@@ -100,7 +100,7 @@ class WebBMParser {
             this.json = json;
         }
         this.parser = new CoreParser({json: this.json});
-        const outputJSON = this.parser.outputJson();
+        const outputJSON = this.parser.outputJSON();
         const res = this.parseToCode(outputJSON);
         return res;
     }
@@ -111,7 +111,7 @@ class WebBMParser {
                 this.fetch(url).then((json) => {
                     // @ts-ignore
                     this.parser = new CoreParser({json});
-                    const outputJSON = this.parser.outputJson();
+                    const outputJSON = this.parser.outputJSON();
                     const res = this.parseToCode(outputJSON);
                     return resolve(res);
                 }).catch((e) => {

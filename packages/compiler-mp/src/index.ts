@@ -68,7 +68,7 @@ class MpCompiler implements MpCompilerClass {
         const coreInstance = new CoreParser({
             json: this.json,
         });
-        const sourceJSON = coreInstance.outputJson();
+        const sourceJSON = coreInstance.outputJSON();
         const commonTree = this.buildCommonTree(sourceJSON);
         switch (mode) {
             case MpCompilerMode.CSS:
