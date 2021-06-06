@@ -1,0 +1,15 @@
+.container {
+    height: 84vh;
+}
+
+.top {
+    height: 65%;
+}
+
+.bottom {
+    height: 35%;
+}
+
+.ant-row {
+    height: 100%;
+}

@@ -1,0 +1,36 @@
+.preview {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "a"
+                         "b";
+    height: 490px;
+    border-right: 1px solid #b8b4b4;
+    box-sizing: border-box;
+}
+
+.preview-header {
+    grid-area: a;
+    background-color: white;
+    border-left: 1px solid #dddddd;
+    line-height: 80px;
+}
+
+.preview-wrapper {
+    grid-area: b;
+    background-color: #dddddd;
+}
+
+.preview-container {
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+textarea {
+    background-color: antiquewhite;
+}

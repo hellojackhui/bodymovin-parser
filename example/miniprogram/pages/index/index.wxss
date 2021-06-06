@@ -1,0 +1,2 @@
+.wrapper {display: flex; justify-content: center; align-items: center; width: 100vw; height: 100vh; background-color: black; } .Layer_Composition {width: 80px; height: 80px; display: block; overflow: hidden; position: relative; transform-origin: 50.00% 0%; backface-visibility: visible; transform: translate3D(0,0,0) scale(1,1); transform-style: preserve-3d;}
+.Layer_1 {display: block; position: absolute; transform-style: preserve-3d; width: 66px; height: 65px; left: 7.5px; top: 6.5px; transform-origin: 50% 50%; opacity: 1; transform: scale3d(1, 1, 1) rotate(14deg);}

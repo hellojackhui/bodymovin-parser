@@ -42,6 +42,23 @@ lottie库完成对web侧的渲染，也可以基于渲染引擎完成对移动we
 2021年5月25日|完成基于解析器的小程序代码生成
 
 
+## 调试入口
+
+```shell
+
+// 进入web调试工程
+cd example/web
+// 启动页面
+npm run start
+// 启动文件处理服务
+npm run server
+
+// 打开页面
+http://localhost:3000/
+
+```
+
+
 ## 整体架构
 
 ![架构图](https://p1.meituan.net/travelcube/1edf60e0a47e35c36d33c6ece1070aae169327.png)

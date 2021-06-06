@@ -31,6 +31,7 @@ Promise.resolve(instance.parseByJson(json)).then(({
     cssContent,
     domContent
 }) => {
+    console.log(cssContent);
     writeHTMLFile(domContent);
     writeCssFile(cssContent);
 })
