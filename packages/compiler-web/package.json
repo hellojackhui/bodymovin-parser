@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-web",
-  "version": "0.0.4-beta.10",
+  "version": "0.0.4-beta.11",
   "description": "bodymovin-parser web动画代码生成器",
   "main": "lib/compiler-web.umd.js",
   "files": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-core": "^0.0.4-beta.10"
+    "@bodymovin-parser/compiler-core": "^0.0.4-beta.11"
   },
   "gitHead": "779bdffe19c8568ead28b763bbd259f9077755f5"
 }

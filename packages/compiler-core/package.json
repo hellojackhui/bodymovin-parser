@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-core",
-  "version": "0.0.4-beta.10",
+  "version": "0.0.4-beta.11",
   "description": "bodymovin-parser 核心解析器",
   "main": "lib/compiler-core.umd.js",
   "files": [
