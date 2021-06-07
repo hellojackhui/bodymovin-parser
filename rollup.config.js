@@ -4,9 +4,9 @@ import commonjs from "rollup-plugin-commonjs";
 import { uglify } from "rollup-plugin-uglify";
 import banner from "rollup-plugin-banner";
 
-const pkg = require("./package.json");
+const lerna = require("./lerna.json");
 const bannerText =
-  ` bodymovin-parser v${pkg.version}\n` +
+  ` bodymovin-parser v${lerna.version}\n` +
   ` (c) 2021-${new Date().getFullYear()} hellojackhui\n` +
   " Released under the MIT License."
 
