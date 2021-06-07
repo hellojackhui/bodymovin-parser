@@ -21,6 +21,7 @@ class Layer {
     frames: number; 
     index: any;
     id: any;
+    name: string;
     layer: any;
     _level: number;
     _startFrame: number;
@@ -38,7 +39,7 @@ class Layer {
     constructor(config) {
         this.buildBaseInfo(config);
         this.buildAnimeLayer(this.layer);
-        this.buildMaskLayer(this.layer);
+        this.buildMaskLayer(this.layer, config.ctx);
         this.buildExtraAttrsByType(this.layer);
     }
 
@@ -48,8 +49,9 @@ class Layer {
         startFrame,
         options,
     }) {
-        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st } = layer;
+        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm } = layer;
         this.id = id;
+        this.name = nm;
         this._unionId = `layer-bm-${ind}`;
         this.parentId = `layer-bm-${parent}`;this.frames = frames;
         this.layer = layer;
@@ -72,12 +74,12 @@ class Layer {
         });
     }
 
-    buildMaskLayer(layer) {
+    buildMaskLayer(layer, ctx) {
         if (!layer.hasMask) return;
-        this.maskList = layer.masksProperties.map((mask, index) => {
+        this.maskList = layer.masksProperties.map((mask) => {
             return new Mask({
                 data: mask,
-                index,
+                index: ctx.maskIndex++,
             });
         })
     }

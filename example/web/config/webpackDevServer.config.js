@@ -99,7 +99,7 @@ module.exports = function (proxy, allowedHost) {
       index: paths.publicUrlOrPath,
     },
     proxy: [{
-      context: ["/css", "/upload", "/proxy"],
+      context: ["/css", "/upload", "/proxy", "/clean"],
       target: "http://localhost:3001",
       changeOrigin: true,
     }],

@@ -1,0 +1,41 @@
+.preview-ast-page .container {
+    height: 84vh;
+    display: grid;
+    grid-template-rows: 80px 150px 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "d e"
+                         "a b"
+                         "c b";
+}
+
+.preview-ast-page .area-a {
+    grid-area: a;
+}
+
+.preview-ast-page .area-b {
+    grid-area: b;
+}
+
+.preview-ast-page .area-c {
+    grid-area: c;
+}
+
+.preview-ast-page .area-d {
+    grid-area: d;
+}
+
+.preview-ast-page .area-e {
+    grid-area: e;
+}
+
+
+.preview-ast-page  .textarea-wrapper {
+    outline: none;
+    border: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    resize: none;
+}

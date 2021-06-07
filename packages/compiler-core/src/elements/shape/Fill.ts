@@ -1,25 +1,9 @@
-enum BlendModeEnum {
-    'normal',
-    'multiply',
-    'screen',
-    'overlay',
-    'darken',
-    'lighten',
-    'colorDodge',
-    'colorBurn',
-    'hardLight',
-    'softLight',
-    'difference',
-    'exclusion',
-    'hue',
-    'saturation',
-    'color',
-    'luminosity',
-}
+import { BlendModeEnum } from './enum';
 
 class Fill {
 
     type: string;
+    _json: JSON;
     name: any;
     hide: any;
     blendMode: BlendModeEnum;
@@ -27,34 +11,51 @@ class Fill {
     opacity: number;
 
     constructor(source) {
-        this.buildFill(source);
+        this.buildFillModal(source);
     }
 
-    buildFill(source) {
-        const {bm, nm, hd, ty, c, o} = source;
+    buildFillModal(source) {
+        const {bm, nm, hd = false, c, o} = source;
+
+        this._json = source;
         this.type = 'fill';
         this.name = nm;
         this.hide = hd;
         this.blendMode = this.getBlendMode(bm);
-        this.color = this.getFillColor(source.c);
-        this.opacity = this.getOpacity(source.o);
+        this.color = this.getFillColor(c.k);
+        this.opacity = this.getOpacity(o.k);
     }
 
     getFillColor(c) {
+        let color = c;
+        if (c.length === 3) {
+            color = [c[0], c[1], c[2], 1];
+        }
         const data = [
-            Number(c[0] * 255),
-            Number(c[1] * 255),
-            Number(c[2] * 255),
+            Number(color[0] * 255),
+            Number(color[1] * 255),
+            Number(color[2] * 255),
+            Number(color[3])
         ]
         return `rgb(${data.join(',')})`
     }
 
     getOpacity(o) {
-        return Number(o.k / 100);
+        return Number(o / 100);
     }
 
     getBlendMode(bm) {
         return BlendModeEnum[bm] as any;
+    }
+
+    output() {
+        return {
+            name: this.name,
+            hide: this.hide,
+            blendMode: this.blendMode,
+            color: this.color,
+            opacity: this.opacity,
+        }
     }
 
 }

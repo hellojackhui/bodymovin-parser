@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import Prettier from 'prettier/standalone';
+import HTMLPlugins from 'prettier/parser-html';
 import Markdown from 'markdown-it';
 import "./index.css";
 
 const markdownInstance = new Markdown({
   linkify: true,
-  typographer: true
+  typographer: true,
+  breaks: true,
 });
 
 function HtmlPreview(props) {
@@ -17,7 +20,11 @@ function HtmlPreview(props) {
   }, [props.data])
 
   const parseByMarkdown = (content) => {
-    const output = markdownInstance.render(content);
+    const prettierHTML = Prettier.format(content, {
+      parser: "html",
+      plugins: [HTMLPlugins],
+    })
+    const output = markdownInstance.render(prettierHTML);
     setHtmlContent(output);
   }
 

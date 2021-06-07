@@ -17,6 +17,14 @@ function PreviewPage() {
     parseToContent(JSON.parse(data.content));
   };
 
+  useEffect(() => {
+    return () => {
+      fetch('/clean', {
+        method: 'GET'
+      });
+    }
+  }, [])
+
   const parseToContent = (data) => {
     try {
       if (!data || !Object.keys(data).length) {

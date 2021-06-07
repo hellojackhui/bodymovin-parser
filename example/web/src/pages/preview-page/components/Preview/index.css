@@ -1,4 +1,4 @@
-.preview {
+.preview-page .preview {
     display: grid;
     grid-template-rows: 80px 1fr;
     grid-template-columns: 1fr;
@@ -9,19 +9,19 @@
     box-sizing: border-box;
 }
 
-.preview-header {
+.preview-page .preview-header {
     grid-area: a;
     background-color: white;
     border-left: 1px solid #dddddd;
     line-height: 80px;
 }
 
-.preview-wrapper {
+.preview-page .preview-wrapper {
     grid-area: b;
     background-color: #dddddd;
 }
 
-.preview-container {
+.preview-page .preview-container {
     width: 100%;
     height: 100%;
     display: flex;

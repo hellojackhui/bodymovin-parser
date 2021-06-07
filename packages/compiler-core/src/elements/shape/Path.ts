@@ -1,18 +1,20 @@
 class Path {
 
-    a: any;
+    isAnimated: boolean;
+    isClosed: boolean;
     pathList: void;
     
     constructor(source) {
-        this.buildPath(source);
+        this.buildShapePathModal(source);
     }
-    buildPath(source) {
+    buildShapePathModal(source) {
         const {a, k} = source;
-        this.a = a;
-        this.pathList = this.builPathList(k);
+        this.isAnimated = !!a;
+        this.isClosed = k.c;
+        this.pathList = this.buildPathList(k);
     }
 
-    builPathList(path) {
+    buildPathList(path) {
         let i;
         let len = path.i.length;
         for (i = 0; i < len; i += 1) {
@@ -21,7 +23,17 @@ class Path {
             path.o[i][0] += path.v[i][0];
             path.o[i][1] += path.v[i][1];
         }
+        return path;
     }
+
+    output() {
+        return {
+            isAnimated: this.isAnimated,
+            isClosed: this.isClosed,
+            pathList: this.pathList,
+          };
+    }
+
 }
 
 export default Path;

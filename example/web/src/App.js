@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 
 import PreviewPage from "./pages/preview-page/previewPage";
+import PreviewAst from './pages/preview-ast/previewAst'
 import "./App.css";
 
 const { Sider } = Layout;
@@ -62,7 +63,10 @@ function App() {
             </Menu.Item> */}
           </Menu>
         </Sider>
-        <Layout>{state === "1" && <PreviewPage />}</Layout>
+        <Layout>
+          {state === "1" && <PreviewPage />}
+          {state === "2" && <PreviewAst />}
+          </Layout>
       </Layout>
       ,
     </div>

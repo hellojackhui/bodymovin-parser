@@ -1,0 +1,30 @@
+.preview-ast-page .preview {
+    display: grid;
+    grid-template-rows: 80px 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "a"
+                         "b";
+    height: 490px;
+    border-right: 1px solid #b8b4b4;
+    box-sizing: border-box;
+}
+
+.preview-ast-page .preview-header {
+    grid-area: a;
+    background-color: white;
+    border-left: 1px solid #dddddd;
+    line-height: 80px;
+}
+
+.preview-ast-page .preview-wrapper {
+    grid-area: b;
+    background-color: #dddddd;
+}
+
+.preview-ast-page .preview-container p {
+    width: 530px;
+    height: 410px;
+    word-break: break-all;
+    overflow-y: scroll;
+    text-align: left;
+}

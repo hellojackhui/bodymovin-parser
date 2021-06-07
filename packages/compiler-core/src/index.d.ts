@@ -7,6 +7,7 @@ export interface ICompiler {
     frame: number;
     layer: IRootWrapper;
     is3dLayer: boolean;
+    maskIndex: number;
     assetsObj: {
         [x: string]: IAsset
     };
@@ -30,6 +31,11 @@ export interface IRootWrapper {
 
 export interface IRootLayer {
 
+}
+
+export interface ErrorItem {
+    type: string;
+    name: number | string;
 }
 
 export interface IAsset {

@@ -1,7 +1,7 @@
 // 解析器核心类
 import Asset from "./elements/Asset";
 import Layer from "./elements/Layer";
-import { isCommonAssets, isLayerAssets } from "./utils/utils";
+import Shapes from "./elements/Shapes";
 import * as Compiler from './index.d';
 
 enum LayerTypeEnum {
@@ -22,8 +22,10 @@ class CoreParser implements Compiler.ICompiler {
   public is3dLayer: boolean;
   public startFrame: any;
   public frame: any;
+  public maskIndex: number;
   public layer: Compiler.IRootWrapper;
   public assetsObj: {};
+  public errorList: Array<Compiler.ErrorItem>;
 
   constructor({ json }) {
     this.json = json;
@@ -42,7 +44,9 @@ class CoreParser implements Compiler.ICompiler {
     this.endFrame = op;
     this.frame = fr;
     this.is3dLayer = !!ddd;
+    this.maskIndex = 0;
     this.assetsObj = {};
+    this.errorList = [];
   }
 
   buildRootWrapperInfo() {
@@ -59,7 +63,7 @@ class CoreParser implements Compiler.ICompiler {
 
   buildAssets() {
     const { assets, layers } = this.json;
-    layers.forEach((layer, index) => {
+    layers.forEach((layer) => {
       switch (layer.ty) {
         case LayerTypeEnum.image:
           this.buildAssetInstance(assets, layer);
@@ -71,7 +75,7 @@ class CoreParser implements Compiler.ICompiler {
           this.buildSolidInstance(layer);
           break;
         case LayerTypeEnum.shape:
-          this.buildShapesInstance(assets, layer);
+          this.buildShapesInstance(layer);
           break;
         default:
           this.buildAssetInstance(assets, layer);
@@ -129,19 +133,36 @@ class CoreParser implements Compiler.ICompiler {
     this.assetsObj[assetInstance._unionId] = assetInstance;
   }
 
-  buildShapesInstance(assets, layer) {
-    // TODO...
-    return;
+  buildShapesInstance(layer) {
+    if (!layer.shapes) return;
+    const shapesList = layer.shapes.map((shape) => {
+      return new Shapes({
+        global: this,
+        json: shape,
+      })
+    });
+    const shapeModal = {
+      shapeSource: shapesList,
+      _unionId: `layer-bm-${layer.ind}`,
+      type: LayerTypeEnum.shape,
+    }
+    this.assetsObj[`layer-bm-${layer.ind}`] = shapeModal;
   }
 
   outputJSON() {
-    return {
+    const baseOutput = {
       name: this.name,
       startFrame: this.startFrame,
       endFrame: this.endFrame,
       frame: this.frame,
       layer: this.layer,
     };
+    if (this.errorList) {
+      Object.assign(baseOutput, {
+        errorList: this.errorList,
+      })
+    }
+    return baseOutput;
   }
 
   buildLayers() {
@@ -155,8 +176,10 @@ class CoreParser implements Compiler.ICompiler {
           frames: frameCount,
           startFrame: this.startFrame,
           options: {
-            w, h
+            w, 
+            h,
           },
+          ctx: this,
         });
         this.linkLayerToAsset({
           layer: layerInstance,
@@ -217,7 +240,10 @@ class CoreParser implements Compiler.ICompiler {
       this.assetsObj[unionId]["parentId"] = parentId;
       this.assetsObj[unionId].layer = layer;
     } else {
-      console.warn('layer cannot link to asset, please check your asset. unionId:', layer._unionId)
+      this.errorList.push({
+        name: layer.name,
+        type: 'lose asset link', 
+      });
     }
   }
 

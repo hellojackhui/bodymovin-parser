@@ -1,15 +1,15 @@
-.container {
+.preview-page .container {
     height: 84vh;
 }
 
-.top {
+.preview-page .top {
     height: 65%;
 }
 
-.bottom {
+.preview-page .bottom {
     height: 35%;
 }
 
-.ant-row {
+.preview-page .ant-row {
     height: 100%;
 }

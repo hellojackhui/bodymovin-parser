@@ -17,7 +17,7 @@ router.post('/upload', async (ctx) => {
     ctx.body = '上传成功';
 });
 
-router.post('/clean', async (ctx) => {
+router.get('/clean', async (ctx) => {
     await fileManager.cleanCssContent();
     ctx.body = '清除完成';
 });
