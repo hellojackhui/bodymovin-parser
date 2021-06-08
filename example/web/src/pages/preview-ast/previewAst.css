@@ -1,18 +1,20 @@
 .preview-ast-page .container {
     height: 84vh;
+    overflow-x: hidden;
     display: grid;
-    grid-template-rows: 80px 150px 1fr;
+    grid-template-rows: 80px 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas: "d e"
-                         "a b"
-                         "c b";
+                         "a b";
 }
 
 .preview-ast-page .area-a {
+    max-height: calc(84vh - 80px);
     grid-area: a;
 }
 
 .preview-ast-page .area-b {
+    max-height: calc(84vh - 80px);
     grid-area: b;
 }
 

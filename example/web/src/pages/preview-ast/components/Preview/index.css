@@ -1,12 +1,13 @@
 .preview-ast-page .preview {
     display: grid;
-    grid-template-rows: 80px 1fr;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "a"
                          "b";
-    height: 490px;
+    height: 100%;
     border-right: 1px solid #b8b4b4;
     box-sizing: border-box;
+    overflow: scroll;
 }
 
 .preview-ast-page .preview-header {
@@ -21,10 +22,23 @@
     background-color: #dddddd;
 }
 
-.preview-ast-page .preview-container p {
-    width: 530px;
-    height: 410px;
-    word-break: break-all;
+.preview-ast-page .preview-container {
+    font-size: 16px;
+    padding: 20px;
+    box-sizing: border-box;
     overflow-y: scroll;
     text-align: left;
+    height: 100%;
+    background-color: antiquewhite;
+}
+
+.preview-ast-page .preview-container .json-formatter-string {
+    display: inline-block;
+    position: relative;
+    word-break: break-all;
+    max-width: 500px;
+}
+
+.preview-ast-page .preview-container div {
+    padding-left: 10px;
 }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { message, PageHeader, Layout } from "antd";
-import Parser from "@bodymovin-parser/compiler-core";
 import UploadJSON from "./components/UploadJSON/index";
 import PreView from "./components/Preview/index";
 
@@ -13,10 +12,6 @@ function PreviewAst() {
 
   const jsonChangeHandler = (data) => {
     setSource(JSON.parse(data.content));
-  };
-
-  const textAreaHandler = (e) => {
-    const value = e.target.value;
   };
 
   useEffect(() => {
@@ -38,13 +33,7 @@ function PreviewAst() {
             <UploadJSON onChange={jsonChangeHandler} />
         </div>
         <div className="area-b">
-            <div className="ast-wrapper"></div>
-        </div>
-        <div className="area-c">
-            <textarea
-                className="textarea-wrapper"
-                onChange={textAreaHandler}
-            />
+            <PreView data={source} />
         </div>
         <div className="area-d">
             <header className="preview-header">json输入</header>

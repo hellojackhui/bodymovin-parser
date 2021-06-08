@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Prettier from 'prettier/standalone';
-import HTMLPlugins from 'prettier/parser-html';
 import Markdown from 'markdown-it';
 import "./index.css";
 
@@ -15,27 +13,18 @@ function HtmlPreview(props) {
   
   useEffect(() => {
     if (typeof props.data.domContent === 'string' && props.data.domContent) {
-      parseByMarkdown(props.data.domContent);
+      setHtmlContent(props.data.domContent);
     }
-  }, [props.data])
-
-  const parseByMarkdown = (content) => {
-    const prettierHTML = Prettier.format(content, {
-      parser: "html",
-      plugins: [HTMLPlugins],
-    })
-    const output = markdownInstance.render(prettierHTML);
-    setHtmlContent(output);
-  }
+  }, [props.data]);
 
   return (
     <div className="preview">
       <header className="preview-header">html代码展示</header>
       <section>
-        <div
-          className="preview-container"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
-        ></div>
+        <textarea 
+          className="preview-container preview-html"
+          defaultValue={htmlContent}
+        />
       </section>
     </div>
   );
