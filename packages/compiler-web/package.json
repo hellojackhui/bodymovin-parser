@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser/tree/main/packages/compiler-web",
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
     "directory": "packages/compiler-web"
   },
   "scripts": {
