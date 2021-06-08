@@ -29,15 +29,14 @@ class CoreParser implements Compiler.ICompiler {
 
   constructor({ json }) {
     this.json = json;
-    this.buildBaseInfo();
-    this.buildRootWrapperInfo();
-    this.buildAssets();
-    this.buildLayers();
+    this.buildCoreParseModal();
+    this.buildAssetsModal();
+    this.buildLayersModal();
     this.buildLayerTree();
   }
 
-  buildBaseInfo() {
-    const { v, nm, ip, op, fr, ddd = 0 } = this.json;
+  buildCoreParseModal() {
+    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this.json;
     this.bmVersion = v;
     this.name = nm;
     this.startFrame = ip;
@@ -47,21 +46,16 @@ class CoreParser implements Compiler.ICompiler {
     this.maskIndex = 0;
     this.assetsObj = {};
     this.errorList = [];
-  }
-
-  buildRootWrapperInfo() {
-    const { w: width, h: height } = this.json;
-    const node = {
+    this.layer = {
       type: "node",
       width,
       height,
       children: [],
       layer: {},
     };
-    this.layer = node;
   }
 
-  buildAssets() {
+  buildAssetsModal() {
     const { assets, layers } = this.json;
     layers.forEach((layer) => {
       switch (layer.ty) {
@@ -165,7 +159,7 @@ class CoreParser implements Compiler.ICompiler {
     return baseOutput;
   }
 
-  buildLayers() {
+  buildLayersModal() {
     const { layers, w, h } = this.json;
     if (!layers || !layers.length) return;
     const frameCount = this.endFrame - this.startFrame;
@@ -230,7 +224,7 @@ class CoreParser implements Compiler.ICompiler {
       p: '',
     };
     assets.push(templeAssets);
-    return this.buildAssets();
+    return this.buildAssetsModal();
   }
 
   linkLayerToAsset({ layer }) {
