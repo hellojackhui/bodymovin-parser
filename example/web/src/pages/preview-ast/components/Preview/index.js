@@ -1,42 +1,28 @@
-import { useEffect, useState } from "react";
-import Prettier from 'prettier/standalone';
-import HTMLPlugins from 'prettier/parser-html';
-import Markdown from 'markdown-it';
+import { useEffect, useRef } from "react";
+import Parser from '@bodymovin-parser/compiler-core';
+import JSONFormatter from 'json-formatter-js';
 import "./index.css";
 
-const markdownInstance = new Markdown({
-  linkify: true,
-  typographer: true,
-  breaks: true,
-});
-
 function HtmlPreview(props) {
-  const [htmlContent, setHtmlContent] = useState("");
+  const wrapperRef = useRef(null);
   
   useEffect(() => {
-    if (typeof props.data.domContent === 'string' && props.data.domContent) {
-      parseByMarkdown(props.data.domContent);
+    if (props.data && Object.keys(props.data).length) {
+      parseByMarkdown(props.data);
     }
   }, [props.data])
 
   const parseByMarkdown = (content) => {
-    const prettierHTML = Prettier.format(content, {
-      parser: "html",
-      plugins: [HTMLPlugins],
-    })
-    const output = markdownInstance.render(prettierHTML);
-    setHtmlContent(output);
+    const parsedJSON = new Parser({json: content}).outputJSON();
+    const prettierJSON = new JSONFormatter(parsedJSON);
+    wrapperRef.current.appendChild(prettierJSON.render());
   }
 
   return (
-    <div className="preview">
-      <section>
-        <div
-          className="preview-container"
-          dangerouslySetInnerHTML={{ __html: htmlContent }}
-        ></div>
-      </section>
-    </div>
+    <div
+        className="preview-container"
+        ref={wrapperRef}
+    />
   );
 }
 

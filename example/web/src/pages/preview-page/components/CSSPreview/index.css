@@ -4,7 +4,7 @@
     grid-template-columns: 1fr;
     grid-template-areas: "a"
                          "b";
-    height: 490px;
+    height: 100%;
     border-right: 1px solid #b8b4b4;
     box-sizing: border-box;
 }

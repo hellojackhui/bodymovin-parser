@@ -3,8 +3,8 @@ import "antd/dist/antd.css";
 import { Layout, Menu } from "antd";
 import {
   UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
+  IeOutlined,
+  GithubOutlined,
 } from "@ant-design/icons";
 
 import PreviewPage from "./pages/preview-page/previewPage";
@@ -49,16 +49,16 @@ function App() {
             defaultSelectedKeys={[state]}
             onClick={handleClick}
           >
-            <Menu.Item key="1" icon={<UserOutlined />}>
+            <Menu.Item key="1" icon={<IeOutlined />}>
               web预览
             </Menu.Item>
-            <Menu.Item key="2" icon={<VideoCameraOutlined />}>
+            <Menu.Item key="2" icon={<GithubOutlined />}>
               核心库调试
             </Menu.Item>
             {/* <Menu.Item key="3" icon={<UploadOutlined />}>
               nav 3
             </Menu.Item>
-            <Menu.Item key="4" icon={<UserOutlined />}>
+            <Menu.Item key="4" icon={<IeOutlined />}>
               nav 4
             </Menu.Item> */}
           </Menu>

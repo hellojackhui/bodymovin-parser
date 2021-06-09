@@ -155,6 +155,7 @@
     "@bodymovin-parser/compiler-web": "0.0.4-beta.11",
     "antd": "^4.16.1",
     "install": "^0.13.0",
+    "json-formatter-js": "^2.3.4",
     "koa": "2.13.1",
     "koa-cors": "0.0.16",
     "koa-router": "10.0.0",
