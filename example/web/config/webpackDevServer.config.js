@@ -8,6 +8,8 @@ const ignoredFiles = require('react-dev-utils/ignoredFiles');
 const redirectServedPath = require('react-dev-utils/redirectServedPathMiddleware');
 const paths = require('./paths');
 const getHttpsConfig = require('./getHttpsConfig');
+const fileManager = require('../server/fileManager');
+
 
 const host = process.env.HOST || '0.0.0.0';
 const sockHost = process.env.WDS_SOCKET_HOST;
@@ -98,11 +100,6 @@ module.exports = function (proxy, allowedHost) {
       disableDotRule: true,
       index: paths.publicUrlOrPath,
     },
-    proxy: [{
-      context: ["/css", "/upload", "/proxy", "/clean"],
-      target: "http://localhost:3001",
-      changeOrigin: true,
-    }],
     // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     before(app, server) {
       // Keep `evalSourceMapMiddleware` and `errorOverlayMiddleware`
@@ -132,6 +129,32 @@ module.exports = function (proxy, allowedHost) {
       //   console.log(res);
       //   res.send('aaa');
       // })
+
+      // copy output CSS content to preview.css
+      app.post('/css', async(req, res) => {
+        let source = '';
+        req.on('data', (chunk) => {
+          source += chunk;
+        })
+        req.on('end', async () => {
+          try {
+            await fileManager.cleanCssContent();
+            await fileManager.rewriteContent(source);
+            res.end('finished');
+          } catch(e) {
+            res.end('parse error');
+          }
+        })
+      });
+
+      app.get('/clean', async (req, res) => {
+        await fileManager.cleanCssContent();
+        res.end('cleaned');
+      });
+
+      app.post('/upload', async (req, res) => {
+        res.end('upload complete');
+      });
     },
   };
 };
