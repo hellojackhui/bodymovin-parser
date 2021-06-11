@@ -2,7 +2,7 @@ import { isCamelCase, camelCaseToAttrs } from "../utils/camel";
 
 class HTMLParser {
 
-    layerJson: any;
+    layerJSON: any;
     ast: object;
     _id: number;
     htmlStr: string;
@@ -10,10 +10,14 @@ class HTMLParser {
     maskTree: any;
 
     constructor(layer) {
-        this.layerJson = layer;
+        this.layerJSON = layer;
         this.htmlTree = this.buildHtmlTree(layer);
         this.maskTree = this.buildMaskTree(layer);
         this._id = 1;
+    }
+    
+    outputJSON() {
+        return this.layerJSON;
     }
 
     buildHtmlTree(layerJSON) {

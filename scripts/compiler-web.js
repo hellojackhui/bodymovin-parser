@@ -15,26 +15,27 @@ const fetch = (url) => {
 const instance = new ParserToCSS({
     requestFn: fetch,
     config: {
-        mode: 'html'
+        mode: 'html',
+        assetsOrigin: 'https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie/'
     }
 })
 
-// instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading.json').then(({
-//     cssContent,
-//     domContent
-// }) => {
-//     writeHTMLFile(domContent);
-//     writeCssFile(cssContent);
-// })
-
-Promise.resolve(instance.parseByJson(json)).then(({
+instance.parseByUrl('https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie/bowl1.json').then(({
     cssContent,
     domContent
 }) => {
-    console.log(cssContent);
     writeHTMLFile(domContent);
     writeCssFile(cssContent);
 })
+
+// Promise.resolve(instance.parseByJson(json)).then(({
+//     cssContent,
+//     domContent
+// }) => {
+//     console.log(cssContent);
+//     writeHTMLFile(domContent);
+//     writeCssFile(cssContent);
+// })
 
 function writeHTMLFile(content) {
     let template = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>magic-css-demo</title><link rel="stylesheet" href="./index.css"></script></head><body style="width: 100vw;height: 100vh;box-sizing: border-box;">{{slot}}</body></html>';

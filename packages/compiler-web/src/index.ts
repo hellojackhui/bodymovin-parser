@@ -2,12 +2,18 @@ import CoreParser from '@bodymovin-parser/compiler-core';
 import HTMLParser from './html/html-parser';
 import CSSParser from './css/css-parser';
 import TreeBuilder from './TreeBuilder';
+import { isBase64 } from './utils/utils';
+
+interface IWebBMParserConfig {
+    mode: 'html' | 'component'
+    assetsOrigin?: string;
+}
 
 class WebBMParser {
     public fetch: any;
-    public json: any;
+    public json: JSON;
     public parser: any;
-    public _config: any;
+    public config: IWebBMParserConfig;
     private domParserInstance: HTMLParser;
     private cssParserInstance: CSSParser;
 
@@ -17,7 +23,7 @@ class WebBMParser {
         json,
     }) {
         this.fetch = requestFn || fetch;
-        this._config = config;
+        this.config = config;
         this.json = json;
     }
 
@@ -36,6 +42,7 @@ class WebBMParser {
         const traverse = (source, json) => {
             if (!json) return;
             const { type, id, width, height, children, path, layer, name} = json;
+            const { assetsOrigin = '' } = this.config;
             source['type'] = type;
             source['_name'] = name || id;
             source['id'] = id || 'root';
@@ -52,7 +59,7 @@ class WebBMParser {
                 })
             }
             if (path) {
-                source['url'] = path;
+                source['url'] = isBase64(path) ? path : `${assetsOrigin}${path}`;
             }
             if (layer && Object.keys(layer).length) {
                 const {attributes, animeFrames} = layer;
@@ -127,7 +134,7 @@ class WebBMParser {
         // 基于新ast生成dom树和css树
         // dom生成输出字符串，css生成输出字符串。
         // 适配文件输出。
-        const { mode } = this._config;
+        const { mode } = this.config;
         const webTree = this.getWebCommonTree(json);
         this.getParserInstance(webTree);
         switch (mode) {
@@ -172,6 +179,10 @@ class WebBMParser {
         return {
             transform: template,
         };
+    }
+
+    outputJSON() {
+        return this.json;
     }
 
 }

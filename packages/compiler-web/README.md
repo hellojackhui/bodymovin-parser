@@ -12,7 +12,8 @@ const WebParser = require('@bodymovin-parser/compiler-web');
 const json = require('xxx.json');
 
 const ins = new WebParser({
-    mode: 'html',
+    mode: 'html',   // 输出模式
+    assetsOrigin: '',   // 资源源路径
 })
 
 const {
