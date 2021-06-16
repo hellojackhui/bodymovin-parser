@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-mp",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "bodymovin-parser 小程序帧动画代码生成器",
   "main": "lib/compiler-mp.umd.js",
   "files": [
@@ -21,7 +21,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-core": "^0.0.4"
+    "@bodymovin-parser/compiler-core": "^0.0.5"
   },
   "gitHead": "779bdffe19c8568ead28b763bbd259f9077755f5"
 }
