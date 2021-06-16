@@ -18,12 +18,12 @@ function PreviewPage() {
   };
 
   useEffect(() => {
-    return () => {
-      fetch('/clean', {
-        method: 'GET'
-      });
-    }
+    setSource({});
+    fetch('/clean', {
+      method: 'GET'
+    });
   }, [])
+  
 
   const parseToContent = (data) => {
     try {
@@ -33,6 +33,7 @@ function PreviewPage() {
       const instance = new ParserToCSS({
         config: {
           mode: "html",
+          assetsOrigin: 'https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie-test/loading/'
         },
       });
       Promise.resolve(instance.parseByJson(data)).then((res) => {
@@ -57,12 +58,6 @@ function PreviewPage() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      setSource({});
-    };
-  }, []);
-
   return (
     <div className="preview-page">
       <PageHeader
@@ -70,7 +65,8 @@ function PreviewPage() {
         backIcon={false}
         title="bodymovin预览页面"
         subTitle="文件 -> 预览"
-      />
+      >
+      </PageHeader>
       <div className="container">
         <div className="top">
           <Row>
