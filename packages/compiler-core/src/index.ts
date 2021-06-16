@@ -159,6 +159,10 @@ class CoreParser implements Compiler.ICompiler {
     return baseOutput;
   }
 
+  outputSource() {
+    return this.json;
+  }
+
   buildLayersModal() {
     const { layers, w, h } = this.json;
     if (!layers || !layers.length) return;

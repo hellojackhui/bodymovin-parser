@@ -53,7 +53,8 @@ class Layer {
         this.id = id;
         this.name = nm;
         this._unionId = `layer-bm-${ind}`;
-        this.parentId = `layer-bm-${parent}`;this.frames = frames;
+        this.parentId = `layer-bm-${parent}`;
+        this.frames = frames;
         this.layer = layer;
         this._startFrame = startFrame;
         this._initialFramePoint = ip;
@@ -64,6 +65,10 @@ class Layer {
         this.attributes = {};
         this._effects = effects;
         this.animeFrames = [];
+    }
+
+    outputSource() {
+        return this.layer;
     }
 
     buildAnimeLayer(layer) {
