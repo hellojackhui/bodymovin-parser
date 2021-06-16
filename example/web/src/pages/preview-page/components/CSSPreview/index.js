@@ -16,6 +16,7 @@ function CSSPreview(props) {
       <section>
         <textarea 
           className="preview-container"
+          style={{height: '100%'}}
           defaultValue={cssContent}
         />
       </section>

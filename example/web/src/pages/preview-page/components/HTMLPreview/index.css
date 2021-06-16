@@ -23,4 +23,5 @@
 
 .preview-page .preview-container.preview-html {
     background-color: #e8e8e8;
+    resize: none;
 }

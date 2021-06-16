@@ -23,6 +23,7 @@ function HtmlPreview(props) {
       <section>
         <textarea 
           className="preview-container preview-html"
+          style={{height: '100%'}}
           defaultValue={htmlContent}
         />
       </section>
