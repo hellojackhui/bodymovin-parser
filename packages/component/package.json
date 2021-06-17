@@ -1,0 +1,32 @@
+{
+  "name": "@bodymovin-parser/component",
+  "version": "0.0.5",
+  "description": "bodymovin-parser 动画组件",
+  "main": "src/index.ts",
+  "files": [
+    "index.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
+    "directory": "packages/compiler-web"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bodymovin",
+    "bodymovin-parser",
+    "css3",
+    "keyframes"
+  ],
+  "license": "MIT",
+  "author": "hellojackhui",
+  "dependencies": {
+    "@bodymovin-parser/compiler-web": "^0.0.5"
+  },
+  "devDependencies": {
+    "react": "^17.0.2"
+  },
+  "gitHead": "779bdffe19c8568ead28b763bbd259f9077755f5"
+}

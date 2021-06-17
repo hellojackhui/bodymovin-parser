@@ -4,9 +4,16 @@ import CSSParser from './css/css-parser';
 import TreeBuilder from './TreeBuilder';
 import { isBase64 } from './utils/utils';
 
+
+interface IAnimeConfig {
+    mode: 'linear' | 'ease' | 'auto' | 'steps(1)';
+    iterationCount: number;
+    direction: 'normal' | 'alternate';
+    fillMode: 'none' | 'forwards' | 'backwards' | 'none' | 'both' | 'initial' | 'inherit';
+}
 interface IWebBMParserConfig {
-    mode: 'html' | 'component'
     assetsOrigin?: string;
+    animeConfig: IAnimeConfig;
 }
 
 class WebBMParser {
@@ -16,6 +23,7 @@ class WebBMParser {
     public config: IWebBMParserConfig;
     private domParserInstance: HTMLParser;
     private cssParserInstance: CSSParser;
+    private parserTree: any;
 
     constructor({
         requestFn,
@@ -25,6 +33,7 @@ class WebBMParser {
         this.fetch = requestFn || fetch;
         this.config = config;
         this.json = json;
+        this.parserTree = this.getParserTree(this.json);
     }
 
     buildCommonTree(json) {
@@ -35,6 +44,15 @@ class WebBMParser {
         res['maskList'] = [];
         this.rebuildLayer(layer, res);
         return res;
+    }
+
+    getParserTree(json) {
+        if (!json) return;
+        this.parser = new CoreParser({json});
+        const outputJSON = this.parser.outputJSON();
+        const parserTree = this.getWebCommonTree(outputJSON);
+        this.getParserInstance(parserTree);
+        return parserTree;
     }
 
     rebuildLayer(json, res) {
@@ -92,23 +110,31 @@ class WebBMParser {
     }
 
     getParserInstance(tree) {
-        this.domParserInstance = new HTMLParser(tree);
-        this.cssParserInstance = new CSSParser(tree);
+        this.domParserInstance = new HTMLParser({
+            source: tree,
+            ctx: this,
+        });
+        this.cssParserInstance = new CSSParser({
+            source: tree,
+            ctx: this,
+        });
     }
 
     getWebCommonTree(tree) {
         const ast = this.buildCommonTree(tree);
-        const animeTree = new TreeBuilder(ast).getAnimeTree();
+        const animeTree = new TreeBuilder({
+            source: ast,
+            ctx: this,
+        }).getAnimeTree();
         return animeTree;
     }
 
     parseByJson(json) {
         if (!this.json && json) {
             this.json = json;
+            this.parserTree = this.getParserTree(this.json);
         }
-        this.parser = new CoreParser({json: this.json});
-        const outputJSON = this.parser.outputJSON();
-        const res = this.parseToCode(outputJSON);
+        const res = this.generateAnimeCode();
         return res;
     }
 
@@ -117,9 +143,8 @@ class WebBMParser {
             if (this.fetch) {
                 this.fetch(url).then((json) => {
                     // @ts-ignore
-                    this.parser = new CoreParser({json});
-                    const outputJSON = this.parser.outputJSON();
-                    const res = this.parseToCode(outputJSON);
+                    this.parserTree = this.getParserTree(json);
+                    const res = this.generateAnimeCode();
                     return resolve(res);
                 }).catch((e) => {
                     console.log('error');
@@ -127,26 +152,6 @@ class WebBMParser {
                 })
             }
         })
-    }
-
-    parseToCode(json) {
-        // 重新生成ast
-        // 基于新ast生成dom树和css树
-        // dom生成输出字符串，css生成输出字符串。
-        // 适配文件输出。
-        const { mode } = this.config;
-        const webTree = this.getWebCommonTree(json);
-        this.getParserInstance(webTree);
-        switch (mode) {
-            case 'html':
-                return this.generateAnimeCode();
-            case 'component':
-                // return this.generateCompCode();
-                break;
-            default:
-                break;
-        }
-        return;
     }
 
     buildAnimeList(list, attributes) {
@@ -183,6 +188,14 @@ class WebBMParser {
 
     outputJSON() {
         return this.json;
+    }
+
+    outputDOMTree() {
+        return this.domParserInstance.getHTMLTree();
+    }
+
+    outputCSSTree() {
+        return this.parserTree;
     }
 
 }

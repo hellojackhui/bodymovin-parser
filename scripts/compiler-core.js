@@ -4,7 +4,7 @@ const axios = require('axios').default;
 
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const CoreParser = require('../packages/compiler-core/lib/compiler-core.umd');
-const tree = require('../mock/envelope.json');
+const tree = require('../mock/bowl.json');
 
 const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 

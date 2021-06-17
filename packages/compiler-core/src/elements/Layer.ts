@@ -1,4 +1,5 @@
 import isAttribute from '../utils/isAttribute';
+import { parseExpression } from '../utils/expression';
 import {
     buildOpacityFrames,
     buildRotateFrames,
@@ -34,6 +35,7 @@ class Layer {
     _unionId: string;
     _options: any;
     _effects: object;
+    animeOptions: object;
     maskList: Array<any>;
 
     constructor(config) {
@@ -65,6 +67,26 @@ class Layer {
         this.attributes = {};
         this._effects = effects;
         this.animeFrames = [];
+        this.animeOptions = {};
+    }
+
+    outputJSON() {
+        return {
+            id: this.id,
+            unionId: this._unionId,
+            parentId: this.parentId,
+            name: this.name,
+            totalFrames: this.frames, 
+            startFrame: this._startFrame,
+            initialFramePoint: this._initialFramePoint,
+            finalFramePoint: this._finalFramePoint,
+            attributes: this.attributes,
+            animeFrames: this.animeFrames,
+            _options: this._options,
+            _effects: this._effects,
+            animeOptions: this.animeOptions,
+            maskList: this.maskList,
+        }
     }
 
     outputSource() {
@@ -126,6 +148,10 @@ class Layer {
         if (!this.attributes['opacity']) {
             this.attributes['opacity'] = opacityFrames[0].opacity;
         }
+        this.animeOptions = {
+            ...this.animeOptions,
+            ...parseExpression(layer.x)
+        };
         this.buildAnimeFrames(opacityFrames);
     }
 
@@ -142,6 +168,10 @@ class Layer {
         if (!this.attributes['rotate']) {
             this.attributes['rotate'] = rotateFrames[0].rotate;
         }
+        this.animeOptions = {
+            ...this.animeOptions,
+            ...parseExpression(layer.x)
+        };
         this.buildAnimeFrames(rotateFrames);
     }
 
@@ -158,6 +188,10 @@ class Layer {
         if (!this.attributes['position']) {
             this.attributes['position'] = positionFrames[0].position;
         }
+        this.animeOptions = {
+            ...this.animeOptions,
+            ...parseExpression(layer.x)
+        };
         this.buildAnimeFrames(positionFrames);
     }
     
@@ -181,6 +215,10 @@ class Layer {
         if (!this.attributes['scale']) {
             this.attributes['scale'] = scaleFrames[0].scale;
         }
+        this.animeOptions = {
+            ...this.animeOptions,
+            ...parseExpression(layer.x)
+        };
         this.buildAnimeFrames(scaleFrames);
     }
 

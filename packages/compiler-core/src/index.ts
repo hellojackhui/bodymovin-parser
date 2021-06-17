@@ -236,7 +236,7 @@ class CoreParser implements Compiler.ICompiler {
     let unionId = layer.getUnionId();
     if (this.assetsObj[unionId]) {
       this.assetsObj[unionId]["parentId"] = parentId;
-      this.assetsObj[unionId].layer = layer;
+      this.assetsObj[unionId].layer = layer.outputJSON();
     } else {
       this.errorList.push({
         name: layer.name,

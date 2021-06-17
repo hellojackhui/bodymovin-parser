@@ -31,7 +31,7 @@ class Opacity implements IOpacity {
         layer,
         nextLayer
     }) {
-        const {t, s} = layer;
+        const {t, s, x} = layer;
         const next = nextLayer ? nextLayer : layer;
         const {t: nt, s: ns} = next;
         this.startTime = t;

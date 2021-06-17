@@ -7,9 +7,12 @@ class TreeBuilder {
     public parseTree: object;
     private _baseChildStyles: object;
 
-    constructor(tree) {
-        this._tree = tree;
-        this._duration = tree.duration;
+    constructor({
+        source,
+        ctx,
+    }) {
+        this._tree = source;
+        this._duration = source.duration;
         this._baseRootStyles = {
             display: 'block',
             overflow: 'hidden',
@@ -24,7 +27,7 @@ class TreeBuilder {
             position: 'absolute',
             transformStyle: 'preserve-3d',
         }
-        this.parseTree = this.buildAnimeTree(tree);
+        this.parseTree = this.buildAnimeTree(source, ctx);
     }
 
     getSourceAst() {
@@ -35,8 +38,15 @@ class TreeBuilder {
         return this.parseTree;
     }
 
-    buildAnimeTree(tree) {
+    buildAnimeTree(tree, ctx) {
         const res = {};
+        const { config: { animeConfig } } = ctx;
+        const {
+            mode = 'step(1)',
+            iterationCount = 'infinite',
+            direction = 'normal',
+            fillMode = 'none',
+        } = animeConfig;
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
                 const { type, styles, children, id, _name, maskList} = tree;
@@ -75,10 +85,10 @@ class TreeBuilder {
                         'animationName': `Layer_AnimKeys${_index}`,
                         'animationDuration': `${Number(this._duration.toFixed(3))}s`,
                         'animationDelay': '0.00s',
-                        'animationTimingFunction': 'steps(1)',
-                        'animationIterationCount': 'infinite',
-                        'animationDirection': 'normal',
-                        'animationFillMode': 'none'
+                        'animationTimingFunction': mode,
+                        'animationIterationCount': iterationCount,
+                        'animationDirection': direction,
+                        'animationFillMode': fillMode
                     }
                     target['keyFramesName'] = `Layer_AnimKeys${_index}`;
                     target['keyFramesList'] = this.getKeyFrames(animeList, target);

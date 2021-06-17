@@ -9,10 +9,13 @@ class HTMLParser {
     htmlTree: any;
     maskTree: any;
 
-    constructor(layer) {
-        this.layerJSON = layer;
-        this.htmlTree = this.buildHtmlTree(layer);
-        this.maskTree = this.buildMaskTree(layer);
+    constructor({
+        source,
+        ctx,
+    }) {
+        this.layerJSON = source;
+        this.htmlTree = this.buildHtmlTree(source);
+        this.maskTree = this.buildMaskTree(source);
         this._id = 1;
     }
     

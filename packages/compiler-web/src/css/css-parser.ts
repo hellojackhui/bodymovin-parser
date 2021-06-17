@@ -5,8 +5,11 @@ class CSSParser {
 
     public parseTree: object;
 
-    constructor(tree) {
-        this.parseTree = tree;
+    constructor({
+        source,
+        ctx,
+    }) {
+        this.parseTree = source;
     }
 
     getAnimeTree() {
