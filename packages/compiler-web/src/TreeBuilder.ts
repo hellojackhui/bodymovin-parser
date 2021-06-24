@@ -40,13 +40,12 @@ class TreeBuilder {
 
     buildAnimeTree(tree, ctx) {
         const res = {};
-        const { config: { animeConfig } } = ctx;
-        const {
-            mode = 'step(1)',
-            iterationCount = 'infinite',
-            direction = 'normal',
-            fillMode = 'none',
-        } = animeConfig;
+        let {
+            mode,
+            iterationCount,
+            direction,
+            fillMode,
+        } = ctx.config.animeConfig;
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
                 const { type, styles, children, id, _name, maskList} = tree;
@@ -66,7 +65,7 @@ class TreeBuilder {
                     });
                 }
             } else {
-                const { type, styles, _id, _index, animeList, url, _name, children, hasMask = false} = tree;
+                const { type, styles, _id, _index, animeList, url, _name, children, hasMask = false, animeOptions} = tree;
                 target['_id'] = _id;
                 target['type'] = type;
                 target['_name'] = _name;
@@ -80,6 +79,12 @@ class TreeBuilder {
                     target['imageUrl'] = url;
                 }
                 if (animeList) {
+                    if (animeOptions) {
+                        mode = animeOptions.mode;
+                        iterationCount = animeOptions.itemCount;
+                        direction = animeOptions.direction;
+                        fillMode = animeOptions.fillMode;
+                    }
                     target['animeClassName'] =  `Layer_Anim${_index}`;
                     target['animation'] = {
                         'animationName': `Layer_AnimKeys${_index}`,

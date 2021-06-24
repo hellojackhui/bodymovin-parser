@@ -2,6 +2,7 @@
 import Asset from "./elements/Asset";
 import Layer from "./elements/Layer";
 import Shapes from "./elements/Shapes";
+import Text from "./elements/Text";
 import * as Compiler from './index.d';
 
 enum LayerTypeEnum {
@@ -63,13 +64,16 @@ class CoreParser implements Compiler.ICompiler {
           this.buildAssetInstance(assets, layer);
           break;
         case LayerTypeEnum.precomp:
-          this.buildCompAssetInstance(assets, layer);
+          this.buildCompInstance(assets, layer);
           break;
         case LayerTypeEnum.solid:
           this.buildSolidInstance(layer);
           break;
         case LayerTypeEnum.shape:
           this.buildShapesInstance(layer);
+          break;
+        case LayerTypeEnum.text:
+          this.buildTextInstance(layer);
           break;
         default:
           this.buildAssetInstance(assets, layer);
@@ -96,7 +100,7 @@ class CoreParser implements Compiler.ICompiler {
     this.assetsObj[assetInstance._unionId] = assetInstance;
   }
 
-  buildCompAssetInstance(assets, layer) {
+  buildCompInstance(assets, layer) {
     let assetId = layer.refId;
     let assetArr = assets.filter((item) => item.id === assetId);
     if (!assetArr || !assetArr.length) {
@@ -122,6 +126,18 @@ class CoreParser implements Compiler.ICompiler {
       options: {
         index,
         layerType: LayerTypeEnum.image,
+      }
+    });
+    this.assetsObj[assetInstance._unionId] = assetInstance;
+  }
+
+  buildTextInstance(layer) {
+    const { t: text, ind: index } = layer;
+    const assetInstance = new Text({
+      asset: text,
+      options: {
+        index,
+        layerType: LayerTypeEnum.text,
       }
     });
     this.assetsObj[assetInstance._unionId] = assetInstance;
@@ -211,14 +227,17 @@ class CoreParser implements Compiler.ICompiler {
   }) {
     let { layers, assets } = this.json;
     let targetLayerIndex = layers.findIndex((layer) => layer.refId === id);
-    let targetAssetIndex = assets.findIndex((asset) => asset.refId === id);
+    let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || assets.id === id);
     let targetLayer = layers[targetLayerIndex];
-    cur.layers.forEach((layer) => {
-      layer.parent = targetLayerIndex + 1;
-      layer.ind += targetLayerIndex + 1;
-    });
-    layers.push(...cur.layers);
+    if (cur.layers) {
+      cur.layers.forEach((layer) => {
+        layer.parent = targetLayerIndex + 1;
+        layer.ind += targetLayerIndex + 1;
+      });
+      layers.push(...cur.layers);
+    }
     assets.splice(targetAssetIndex, 1);
+    targetLayer.ty = LayerTypeEnum.image;
     const templeAssets = {
       id: targetLayer.refId,
       w: targetLayer.w,

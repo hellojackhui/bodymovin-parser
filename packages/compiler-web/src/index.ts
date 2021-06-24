@@ -31,9 +31,21 @@ class WebBMParser {
         json,
     }) {
         this.fetch = requestFn || fetch;
-        this.config = config;
+        this.config = this.buildConfig(config);
         this.json = json;
         this.parserTree = this.getParserTree(this.json);
+    }
+
+    buildConfig(config) {
+        return {
+            ...config,
+            animeConfig: {
+                mode: (config.animeConfig && config.animeConfig.mode) ? config.animeConfig.mode : 'steps(1)',
+                iterationCount: (config.animeConfig && config.animeConfig.iterationCount) ? config.animeConfig.iterationCount : 'infinite',
+                direction: (config.animeConfig && config.animeConfig.direction) ? config.animeConfig.direction : 'normal',
+                fillMode: (config.animeConfig && config.animeConfig.fillMode) ? config.animeConfig.fillMode : 'none',
+            }
+        }
     }
 
     buildCommonTree(json) {
@@ -80,7 +92,7 @@ class WebBMParser {
                 source['url'] = isBase64(path) ? path : `${assetsOrigin}${path}`;
             }
             if (layer && Object.keys(layer).length) {
-                const {attributes, animeFrames} = layer;
+                const {attributes, animeFrames, animeOptions} = layer;
                 const { position, anchor, opacity = 1, scale, rotate, ...rest } = attributes;
                 source['styles'] = {
                     ...source['styles'],
@@ -102,6 +114,7 @@ class WebBMParser {
                     ]
                     source['hasMask'] = true;
                     source['maskList'] = layer.maskList;
+                    source['animeOptions'] = animeOptions;
                 }
             }
             return source;

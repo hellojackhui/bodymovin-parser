@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const ParserToCSS = require('../packages/compiler-web/lib/compiler-web.umd');
 
-const json = require('../mock/hand.json');
+const json = require('../mock/loading.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 
 const fetch = (url) => {
@@ -16,7 +16,7 @@ const instance = new ParserToCSS({
     requestFn: fetch,
     config: {
         mode: 'html',
-        assetsOrigin: 'https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie/'
+        assetsOrigin: 'https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie/',
     },
     json,
 })

@@ -4,10 +4,14 @@ const expRegEnum = {
 }
 
 function parseExpression(exp) {
-    const options = {};
+    const options: any = {
+        cycleType: 'none',
+        itemCount: 1,
+        mode: 'steps(1)',
+        fillMode: 'forward'
+    };
     let regRes = null;
     if (!exp) return options;
-
     if (regRes = exp.match(expRegEnum.loopOutExpReg)) {
         const [, mode, numkeyFrames] = regRes;
         if (mode === "'cycle'") {
@@ -23,7 +27,7 @@ function parseExpression(exp) {
             }
         }
         if (mode === "'Offset'") {
-            options['mode'] = 'step(1)';
+            options['mode'] = 'steps(1)';
         }
         if (mode === "'Offset'") {
             options['fillMode'] = 'forward';
@@ -49,9 +53,9 @@ function parseExpression(exp) {
             }
         }
         if (mode === "'Offset'") {
-            options['mode'] = 'step(1)';
+            options['mode'] = 'steps(1)';
         }
-        if (mode === "'Offset'") {
+        if (mode === "'continue'") {
             options['fillMode'] = 'forward';
         }
 
