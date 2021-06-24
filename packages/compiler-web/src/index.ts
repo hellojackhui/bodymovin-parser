@@ -71,7 +71,7 @@ class WebBMParser {
         let index = 0;
         const traverse = (source, json) => {
             if (!json) return;
-            const { type, id, width, height, children, path, layer, name} = json;
+            const { type, id, width, height, children, path, layer, name, shapeSource} = json;
             const { assetsOrigin = '' } = this.config;
             source['type'] = type;
             source['_name'] = name || id;
@@ -90,6 +90,9 @@ class WebBMParser {
             }
             if (path) {
                 source['url'] = isBase64(path) ? path : `${assetsOrigin}${path}`;
+            }
+            if (shapeSource) {
+                source['shapeSource'] = this.formatShapeSource(shapeSource);
             }
             if (layer && Object.keys(layer).length) {
                 const {attributes, animeFrames, animeOptions} = layer;
@@ -197,6 +200,10 @@ class WebBMParser {
         return {
             transform: template,
         };
+    }
+
+    formatShapeSource(data) {
+        // TODO...
     }
 
     outputJSON() {

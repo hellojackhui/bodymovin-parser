@@ -8,6 +8,7 @@ function parseExpression(exp) {
         cycleType: 'none',
         itemCount: 1,
         mode: 'steps(1)',
+        direction: 'normal',
         fillMode: 'forwards'
     };
     let regRes = null;
