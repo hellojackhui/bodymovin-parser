@@ -43,7 +43,7 @@ function PreviewAst() {
         </div>
       </div>
       <Footer style={{ textAlign: "center" }}>
-        Bodymovin-parse ©2021 Created by Jackhui
+        Bodymovin-parser ©2021 Created by Jackhui
       </Footer>
     </div>
   );

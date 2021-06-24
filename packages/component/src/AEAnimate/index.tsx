@@ -2,13 +2,13 @@ import React from 'react';
 
 interface IAEAnimate {
     source: string | JSON;
-    animeType: 'loop' | 'forward';
+    animeType: 'loop' | 'forwards';
 }
 
 export class AEAnimate extends React.PureComponent implements IAEAnimate {
 
     source: string | JSON;
-    animeType: 'loop' | 'forward';
+    animeType: 'loop' | 'forwards';
 
     constructor(props) {
         super(props);

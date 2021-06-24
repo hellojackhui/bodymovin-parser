@@ -8,7 +8,7 @@ function parseExpression(exp) {
         cycleType: 'none',
         itemCount: 1,
         mode: 'steps(1)',
-        fillMode: 'forward'
+        fillMode: 'forwards'
     };
     let regRes = null;
     if (!exp) return options;
@@ -30,7 +30,7 @@ function parseExpression(exp) {
             options['mode'] = 'steps(1)';
         }
         if (mode === "'Offset'") {
-            options['fillMode'] = 'forward';
+            options['fillMode'] = 'forwards';
         }
 
         if (numkeyFrames) {
@@ -56,7 +56,7 @@ function parseExpression(exp) {
             options['mode'] = 'steps(1)';
         }
         if (mode === "'continue'") {
-            options['fillMode'] = 'forward';
+            options['fillMode'] = 'forwards';
         }
 
         if (numkeyFrames) {
