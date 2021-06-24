@@ -12,7 +12,8 @@
     "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start",
-    "publish": "lerna publish"
+    "publish": "lerna publish",
+    "publish-force": "lerna publish --force-publish"
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",
