@@ -1,6 +1,6 @@
 {
   "packages": [
-    "packages/*"
+    "packages/compiler-core"
   ],
   "version": "0.0.5"
 }
