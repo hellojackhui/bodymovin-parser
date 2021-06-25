@@ -19,8 +19,7 @@ class CSSParser {
     buildCSSContent() {
         let res = '';
         const traverse = (tree, baseString) => {
-            const { 
-                _id, 
+            const {
                 baseClassName, 
                 baseStyles, 
                 imageClassName, 

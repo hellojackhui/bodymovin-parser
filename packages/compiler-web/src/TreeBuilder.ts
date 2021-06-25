@@ -1,4 +1,4 @@
-import { buildClipPathTree } from './utils/svgTools';
+import { buildClipPathTree, buildSvgContentTree } from './utils/svgTools';
 
 class TreeBuilder {
     private _tree: any;
@@ -58,14 +58,14 @@ class TreeBuilder {
                     ...this._baseRootStyles,
                 });
                 target['maskContent'] = this.formatMaskContent(maskList);
-                if (children) {
+                if (children && children.length) {
                     target['children'] = [];
                     children.reverse().forEach(child => {
                         target['children'].push(traverse(child, {}))
                     });
                 }
             } else {
-                const { type, styles, _id, _index, animeList, url, _name, children, hasMask = false, animeOptions} = tree;
+                const { type, styles, _id, _index, animeList, url, _name, children, hasMask = false, animeOptions, shapeSource = []} = tree;
                 target['_id'] = _id;
                 target['type'] = type;
                 target['_name'] = _name;
@@ -98,11 +98,22 @@ class TreeBuilder {
                     target['keyFramesName'] = `Layer_AnimKeys${_index}`;
                     target['keyFramesList'] = this.getKeyFrames(animeList, target);
                 }
-                if (children) {
+                if (children && children.length) {
                     target['children'] = [];
                     children.reverse().forEach(child => {
                         target['children'].push(traverse(child, {}))
                     });
+                }
+                if (shapeSource && shapeSource.length) {
+                    target['type'] = 'node';
+                    target['baseStyles'] = {
+                        ...target['baseStyles'],
+                        width: '0px',
+                        height: '0px',
+                        transformOrigin: '0px 0px',
+                        transformStyle: 'flat',
+                    }
+                    target['children'] = buildSvgContentTree(tree.shapeSource);
                 }
                 if (hasMask) {
                     target['type'] = 'svg';
@@ -202,6 +213,7 @@ class TreeBuilder {
     }
 
     formatMaskContent(maskList) {
+        if (!maskList || !maskList.length) return {};
         return maskList.map((mask, index) => {
             switch (mask.maskType) {
                 case 'clipPath':

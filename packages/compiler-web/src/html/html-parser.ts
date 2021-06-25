@@ -114,12 +114,15 @@ class HTMLParser {
     buildSVGContent() {
         if (!this.maskTree) return '';
         let svgTemplate = '<svg {{attributes}} style="{{styles}}">{{slot}}</svg>';
-        const {type, width, height, style, children} = this.maskTree;
+        const {type, width, height, style, children, viewBox} = this.maskTree;
         if (type === 'svg') {
             const attrs = {width, height};
             let attrsArr = Object.keys(attrs).map((key) => {
                 return `${isCamelCase(key) ? camelCaseToAttrs(key) : key}=${attrs[key]}px`;
             });
+            if (viewBox) {
+                attrsArr.push(`viewBox=${viewBox}`)
+            }
             let attributes = attrsArr.join(' ');
             svgTemplate = svgTemplate.replace(/\{\{attributes\}\}/, attributes);
             let stylesArr = Object.keys(style).map((key) => {
@@ -146,6 +149,14 @@ class HTMLParser {
             const { type, children } = data;
             if (type === 'def') {
                 defTemplate = defTemplate.replace(/\{\{slot\}\}/, this.buildClipPathContent(children));
+            } else if (type === 'g') {
+                defTemplate = '<g {{attributes}}>{{slot}}<g>';
+                let attrsArr = Object.keys(data.attrs).map((key) => {
+                    return `${isCamelCase(key) ? camelCaseToAttrs(key) : key}="${data.attrs[key]}"`;
+                });
+                let attributes = attrsArr.join(' ');
+                defTemplate = defTemplate.replace(/\{\{attributes\}\}/, attributes);
+                defTemplate = defTemplate.replace(/\{\{slot\}\}/, this.buildPathContent(children));
             } else {
                 defTemplate = '';
             }

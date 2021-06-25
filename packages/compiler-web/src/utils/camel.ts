@@ -1,8 +1,12 @@
 type TisCamelCase = (str: string) => boolean;
 type TSetAttrName = (str: string) => string;
 
+const specialTag = [
+    'viewBox'
+]
+
 const isCamelCase: TisCamelCase = (str) => {
-    return !!/([A-Z])/g.exec(str);
+    return !!/([A-Z])/g.exec(str) && !specialTag.includes(str);
 }
 
 const camelCaseToAttrs: TSetAttrName = (str) => {

@@ -50,6 +50,7 @@ class Fill {
 
     output() {
         return {
+            type: this.type,
             name: this.name,
             hide: this.hide,
             blendMode: this.blendMode,

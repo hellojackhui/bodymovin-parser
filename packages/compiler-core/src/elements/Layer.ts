@@ -52,10 +52,10 @@ class Layer {
         options,
     }) {
         const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm } = layer;
-        this.id = id;
-        this.name = nm;
         this._unionId = `layer-bm-${ind}`;
         this.parentId = `layer-bm-${parent}`;
+        this.name = nm;
+        this.id = id || this.name;
         this.frames = frames;
         this.layer = layer;
         this._startFrame = startFrame;

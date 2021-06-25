@@ -17,7 +17,6 @@ class Shape {
   buildItemModel(data) {
     const {
       ind: index,
-      ty: type,
       ix: eIndex,
       ks: keyFrames,
       nm: name,
@@ -26,7 +25,7 @@ class Shape {
     } = data;
     this._data = data;
     this.index = index;
-    this.type = type;
+    this.type = 'shape';
     this.eIndex = eIndex;
     this.keyFrames = new Path(keyFrames).output();
     this.name = name;

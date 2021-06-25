@@ -82,17 +82,8 @@ class WebBMParser {
             }
             source['_index'] = index;
             source['_id'] = `AELayer-${index++}`;
-            if (children) {
-                source['children'] = [];
-                children.forEach((child, index) => {
-                    source.children.push(traverse({}, child))
-                })
-            }
             if (path) {
                 source['url'] = isBase64(path) ? path : `${assetsOrigin}${path}`;
-            }
-            if (shapeSource) {
-                source['shapeSource'] = this.formatShapeSource(shapeSource);
             }
             if (layer && Object.keys(layer).length) {
                 const {attributes, animeFrames, animeOptions} = layer;
@@ -119,6 +110,15 @@ class WebBMParser {
                     source['maskList'] = layer.maskList;
                     source['animeOptions'] = animeOptions;
                 }
+            }
+            if (shapeSource) {
+                source['shapeSource'] = shapeSource;
+            }
+            if (children && children.length) {
+                source['children'] = [];
+                children.forEach((child, index) => {
+                    source.children.push(traverse({}, child))
+                })
             }
             return source;
         }
@@ -200,10 +200,6 @@ class WebBMParser {
         return {
             transform: template,
         };
-    }
-
-    formatShapeSource(data) {
-        // TODO...
     }
 
     outputJSON() {

@@ -154,6 +154,7 @@ class CoreParser implements Compiler.ICompiler {
     const shapeModal = {
       shapeSource: shapesList,
       _unionId: `layer-bm-${layer.ind}`,
+      id: layer.nm,
       type: LayerTypeEnum.shape,
     }
     this.assetsObj[`layer-bm-${layer.ind}`] = shapeModal;
