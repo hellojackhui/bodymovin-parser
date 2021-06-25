@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/component",
-  "version": "0.0.5-beta.2",
+  "version": "0.0.5-beta.3",
   "description": "bodymovin-parser 动画组件",
   "main": "src/index.ts",
   "files": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-web": "^0.0.5-beta.2"
+    "@bodymovin-parser/compiler-web": "^0.0.5-beta.3"
   },
   "devDependencies": {
     "react": "^17.0.2"
