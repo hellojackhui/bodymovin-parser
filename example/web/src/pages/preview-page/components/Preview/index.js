@@ -9,6 +9,10 @@ function PreView(props) {
     setHtmlContent(props.data.domContent);
   }, [props.data]);
 
+  useEffect(() => {
+    setHtmlContent('');
+  }, []);
+
   
 
   return (

@@ -33,7 +33,7 @@ function PreviewPage() {
       const instance = new ParserToCSS({
         config: {
           mode: "html",
-          assetsOrigin: 'https://s3plus.meituan.net/v1/mss_e2fc5719a5b64fa4b3686b72e677a48e/wmmp/lottie-test/loading/'
+          assetsOrigin: ''
         },
       });
       Promise.resolve(instance.parseByJson(data)).then((res) => {

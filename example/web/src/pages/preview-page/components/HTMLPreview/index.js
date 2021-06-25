@@ -17,6 +17,10 @@ function HtmlPreview(props) {
     }
   }, [props.data]);
 
+  useEffect(() => {
+    setHtmlContent('');
+  }, []);
+
   return (
     <div className="preview">
       <header className="preview-header">html代码展示</header>

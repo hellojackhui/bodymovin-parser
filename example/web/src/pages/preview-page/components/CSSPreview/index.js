@@ -10,6 +10,10 @@ function CSSPreview(props) {
     }
   }, [props.data])
 
+  useEffect(() => {
+    setCssContent('');
+  }, []);
+
   return (
     <div className="preview">
       <header className="preview-header">css代码展示</header>
