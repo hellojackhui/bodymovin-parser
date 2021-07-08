@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios').default;
-const ParserToCSS = require('../packages/compiler-mp/lib/compiler-mp.umd');
+const MpCompiler = require('../packages/compiler-mp/lib/compiler-mp.umd');
 
 const json = require('../mock/demo1.json');
 const basePath = path.resolve(__dirname, '../example/miniprogram/pages/index/');
@@ -12,17 +12,15 @@ const fetch = (url) => {
     })
 }
 
-const instance = new ParserToCSS({
+const instance = new MpCompiler({
+    mode: 'css',
     request: fetch,
-    options: {
-        mode: 'animate',
-    }
 })
 
 instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/2.json').then((data) => {
-    console.log(data.cssContent.image_0.frames);
-    // writeMpWXMLFile(data.domContent);
-    // writeMpWXSSFile(data.cssContent);
+    // console.log(data);
+    writeMpWXMLFile(data.domContent);
+    writeMpWXSSFile(data.cssContent);
 })
 
 function writeMpWXMLFile(content) {

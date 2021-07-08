@@ -14,9 +14,7 @@ import HTMLParser from './HTMLParser';
 
 
 interface MpCompilerClass {
-    mode: typeof MpCompilerMode;
     request: any;
-    hooks: {[x: string]: () => {}};
     json: Object | string;
     options: MpCompilerOptions;
 }
@@ -26,22 +24,24 @@ enum MpCompilerMode {
     ANIMATE = 'animate',
 }
 interface MpCompilerOptions {
-    mode: keyof MpCompilerMode;
+    speed?: number;
+    duration?: number;
 }
 
 class MpCompiler implements MpCompilerClass {
-
-    mode: typeof MpCompilerMode;
+    
+    mode: keyof MpCompilerMode;
     request: any;
-    hooks: { [x: string]: () => {}; };
     json: string | Object;
     options: MpCompilerOptions;
+    domInstance: HTMLParser;
+    animeInstance: CSSParser;
 
     constructor(config) {
-        const { request, hooks, options } = config;
+        const { request, options, mode } = config;
+        this.mode = mode;
         this.options = options;
         this.request = request;
-        this.hooks = hooks;
     }
 
     parseByJson(json) {
@@ -63,18 +63,18 @@ class MpCompiler implements MpCompilerClass {
     }
 
     parseMPCode() {
-        const { mode } = this.options;
         // @ts-ignore
         const coreInstance = new CoreParser({
             json: this.json,
         });
         const sourceJSON = coreInstance.outputJSON();
         const commonTree = this.buildCommonTree(sourceJSON);
-        switch (mode) {
+        this.buildInstance(commonTree);
+        switch (this.mode) {
             case MpCompilerMode.CSS:
-                return this.buildMPCssCode(commonTree);
+                return this.buildMPCssCode();
             case MpCompilerMode.ANIMATE:
-                return this.buildMPAnimateCode(commonTree);
+                return this.buildMPAnimateCode();
             default:
                 break;
         }
@@ -82,8 +82,8 @@ class MpCompiler implements MpCompilerClass {
 
     buildCommonTree(json) {
         const res = {};
-        const { name, startframe, endframe, frame, layer } = json;
-        res['duration'] = Number((endframe - startframe) / frame);
+        const { name, startFrame, endFrame, frame, layer } = json;
+        res['duration'] = Number((endFrame - startFrame) / frame);
         res['_name'] = name;
         this.rebuildLayerList(layer, res);
         return res;
@@ -134,35 +134,27 @@ class MpCompiler implements MpCompilerClass {
         return traverse(res, json);
     }
 
-    buildMPCssCode(tree) {
-        const cssInstance = this.getCssParserInstance(tree);
-        const animeTree = cssInstance.getAnimeTree();
-        const domContent = this.buildDOMTree(animeTree);
-        const cssContent = cssInstance.buildCSSContent();
+    buildInstance(tree) {
+        this.animeInstance = new CSSParser(tree);
+        this.domInstance = new HTMLParser(this.animeInstance.getAnimeTree());
+    }
+
+    buildMPCssCode() {
+        const domContent = this.domInstance.buildHTMLContent();
+        const cssContent = this.animeInstance.buildCSSContent();
         return {
             domContent,
             cssContent,
         };
     }
 
-    getCssParserInstance(tree) {
-        const animeInstance = new CSSParser(tree);
-        return animeInstance;
-    }
-
-    buildDOMTree(tree) {
-        const domInstance = new HTMLParser(tree);
-        return domInstance.buildHTMLContent();
-    }
-
-    buildMPAnimateCode(commonTree) {
-        const cssInstance = this.getCssParserInstance(commonTree);
-        const animeTree = cssInstance.getAnimeTree();
-        const domContent = this.buildDOMTree(animeTree);
-        const cssContent = this.buildAnimateFrames(animeTree);
+    buildMPAnimateCode() {
+        const animeTree = this.animeInstance.getAnimeTree();
+        const domTree = this.domInstance.getHTMLTree();
+        const frames = this.buildAnimateFrames(animeTree);
         return {
-            domContent,
-            cssContent,
+            domTree,
+            frames,
         };
     }
 
@@ -224,23 +216,14 @@ class MpCompiler implements MpCompilerClass {
     }
 
     filterFrames(frames) {
-        return frames.reduce((prev, next) => {
-            if (!prev.length) {
-                return [...prev, next];
-            } else {
-                let last = prev[prev.length - 1];
-                if (!isEqual(last, next, ['offset']) && next.offset !== 1) {
-                    return [...prev, next];
-                } else if (isEqual(last, next, ['offset']) && next.offset === 1) {
-                    let cache = [...prev];
-                    let previtem = cache.pop();
-                    previtem.offset = 1;
-                    return [...cache, previtem];
-                } else {
-                    return prev;
-                }
+        for (let i = 0; i < frames.length - 1; i++) {
+            if (isEqual(frames[i], frames[i+1], ['offset'])) {
+                frames.splice(i+1, 1);
+                --i;
             }
-        }, [])
+        }
+        // console.log('frames', frames);
+        return frames;
     }
 
     fix(num, points) {

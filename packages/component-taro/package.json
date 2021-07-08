@@ -1,7 +1,7 @@
 {
-  "name": "@bodymovin-parser/component",
+  "name": "@bodymovin-parser/component-taro",
   "version": "0.0.5-beta.3",
-  "description": "bodymovin-parser 动画组件",
+  "description": "bodymovin-parser taro动效播放组件",
   "main": "src/index.ts",
   "files": [
     "index.ts"
@@ -23,7 +23,9 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-web": "^0.0.5-beta.3"
+    "@bodymovin-parser/compiler-mp": "0.0.5",
+    "@tarojs/components": "3.2.14",
+    "@tarojs/taro": "3.2.14"
   },
   "devDependencies": {
     "react": "^17.0.2"
