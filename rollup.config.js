@@ -74,12 +74,18 @@ const praseEnv = () => {
 };
 praseEnv();
 
-export default {
+const outputConf = {
   input: mode.input,
   output: mode.output,
+}
+
+const commonConf = {
   watch: {
     include: "src/**",
   },
+}
+
+const pluginConf = {
   plugins: [
     typescript({
       exclude: "node_modules/**",
@@ -94,4 +100,6 @@ export default {
     sourceMaps(),
     banner(bannerText),
   ],
-};
+}
+
+export default Object.assign({}, outputConf, commonConf, pluginConf);
