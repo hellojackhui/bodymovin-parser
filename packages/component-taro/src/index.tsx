@@ -17,6 +17,7 @@ export default class AEAnimate extends PureComponent<IAEAnimate, IAEAnimateState
     infinite: boolean;
     duration: number;
     animateJSON: Object;
+    parserInstance: MpAnimateCompiler;
     onStart?: Function;
     onLoad?: Function;
     onFinish?: Function;
@@ -29,13 +30,13 @@ export default class AEAnimate extends PureComponent<IAEAnimate, IAEAnimateState
     }
 
     componentDidMount() {
-        this.loadJSON();
+        this.loadParserInstance();
         this.startAnimation();
     }
 
 
-    async loadJSON() {
-        const instance = new MpAnimateCompiler({
+    loadParserInstance() {
+        this.parserInstance = new MpAnimateCompiler({
             mode: 'animate',
             request: (url) => {
                 return new Promise((resolve, reject) => {
@@ -49,11 +50,9 @@ export default class AEAnimate extends PureComponent<IAEAnimate, IAEAnimateState
                 })
             }
         });
-        this.animateJSON = await instance.parseByUrl(this.props.source);
-        console.log('json', this.animateJSON);
     }
 
-    startAnimation() {
+    async startAnimation() {
         const { autoPlay, onStart, onFinish, duration } = this.props;
         if (!autoPlay) return;
         onStart();
@@ -62,6 +61,9 @@ export default class AEAnimate extends PureComponent<IAEAnimate, IAEAnimateState
             return;
         }
         this.stopAnimation();
+        this.animateJSON = await this.parserInstance.parseByUrl(this.props.source);
+        // this.animateJSON = 
+        console.log('json', this.animateJSON);
     }
 
     stopAnimation() {

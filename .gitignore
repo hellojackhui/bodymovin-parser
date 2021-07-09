@@ -3,4 +3,5 @@ mock/
 lib/
 .vscode/
 coverage/
+example/
 test.js

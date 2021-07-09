@@ -13,12 +13,12 @@ const fetch = (url) => {
 }
 
 const instance = new MpCompiler({
-    mode: 'css',
+    mode: 'animate',
     request: fetch,
 })
 
-instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/2.json').then((data) => {
-    // console.log(data);
+instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/hand2.json').then((data) => {
+    console.log(data);
     writeMpWXMLFile(data.domContent);
     writeMpWXSSFile(data.cssContent);
 })
