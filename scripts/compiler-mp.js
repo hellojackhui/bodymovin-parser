@@ -14,10 +14,14 @@ const fetch = (url) => {
 
 const instance = new ParserToCSS({
     request: fetch,
-    mode: 'animate',
+    mode: 'css',
+    options: {
+        duration: 2000,
+    }
 })
 
 instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/1.json').then((data) => {
+    console.log(JSON.stringify(data));
     // writeMpWXMLFile(data.domContent);
     // writeMpWXSSFile(data.cssContent);
 })

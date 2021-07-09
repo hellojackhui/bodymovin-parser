@@ -8,7 +8,10 @@ class CSSParser {
     public parseTree: object;
     private _baseChildStyles: object;
 
-    constructor(tree) {
+    constructor({
+        tree,
+        ctx,
+    }) {
         this._tree = tree;
         this._duration = tree.duration;
         this._baseRootStyles = {
@@ -25,11 +28,12 @@ class CSSParser {
             position: 'absolute',
             transformStyle: 'preserve-3d',
         }
-        this.parseTree = this.buildAnimeTree(tree);
+        this.parseTree = this.buildAnimeTree(tree, ctx);
     }
 
-    buildAnimeTree(tree) {
+    buildAnimeTree(tree, ctx) {
         const res = {};
+        let infinite = ctx.options.infinite !== undefined ? ctx.options.infinite ? 'infinite' : '1' : 'infinite';
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
                 const { type, styles, children, id, _name, } = tree;
@@ -70,7 +74,7 @@ class CSSParser {
                         'animationDuration': `${Number(this._duration.toFixed(3))}s`,
                         'animationDelay': '0.00s',
                         'animationTimingFunction': 'steps(1)',
-                        'animationIterationCount': 'infinite',
+                        'animationIterationCount': infinite,
                         'animationDirection': 'normal',
                         'animationFillMode': 'none'
                     }
@@ -88,6 +92,10 @@ class CSSParser {
         }
         traverse(tree, res);
         return res;
+    }
+
+    getSourceAst() {
+        return this._tree;
     }
 
     getAnimeTree() {

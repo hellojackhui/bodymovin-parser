@@ -23,8 +23,8 @@ enum MpCompilerMode {
   ANIMATE = "animate",
 }
 interface MpCompilerOptions {
-  speed?: number;
   duration?: number;
+  infinite?: boolean;
 }
 
 class MpCompiler implements MpCompilerClass {
@@ -80,7 +80,8 @@ class MpCompiler implements MpCompilerClass {
   buildCommonTree(json) {
     const res = {};
     const { name, startFrame, endFrame, frame, layer } = json;
-    res["duration"] = Number((endFrame - startFrame) / frame);
+    const { duration } = this.options;
+    res["duration"] = duration !== undefined ? duration : Number((endFrame - startFrame) / frame);
     res["_name"] = name;
     this.rebuildLayerList(layer, res);
     return res;
@@ -141,7 +142,10 @@ class MpCompiler implements MpCompilerClass {
   }
 
   buildInstance(tree) {
-    this.animeInstance = new CSSParser(tree);
+    this.animeInstance = new CSSParser({
+      tree,
+      ctx: this,
+    });
     this.domInstance = new HTMLParser(this.animeInstance.getAnimeTree());
   }
 
