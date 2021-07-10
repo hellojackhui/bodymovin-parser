@@ -33,7 +33,7 @@ class CSSParser {
 
     buildAnimeTree(tree, ctx) {
         const res = {};
-        let infinite = ctx.options.infinite !== undefined ? ctx.options.infinite ? 'infinite' : '1' : 'infinite';
+        let infinite = (ctx.options && ctx.options.infinite !== undefined) ? ctx.options.infinite ? 'infinite' : '1' : 'infinite';
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
                 const { type, styles, children, id, _name, } = tree;

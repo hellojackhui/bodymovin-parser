@@ -80,8 +80,7 @@ class MpCompiler implements MpCompilerClass {
   buildCommonTree(json) {
     const res = {};
     const { name, startFrame, endFrame, frame, layer } = json;
-    const { duration } = this.options;
-    res["duration"] = duration !== undefined ? duration : Number((endFrame - startFrame) / frame);
+    res["duration"] = (this.options && this.options.duration !== undefined) ? this.options.duration : Number((endFrame - startFrame) / frame);
     res["_name"] = name;
     this.rebuildLayerList(layer, res);
     return res;
