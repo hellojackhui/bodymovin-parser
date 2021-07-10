@@ -11,8 +11,10 @@ interface IAnimeConfig {
     direction: 'normal' | 'alternate';
     fillMode: 'none' | 'forwards' | 'backwards' | 'none' | 'both' | 'initial' | 'inherit';
 }
+
 interface IWebBMParserConfig {
     assetsOrigin?: string;
+    duration?: number;
     animeConfig: IAnimeConfig;
 }
 
@@ -51,7 +53,9 @@ class WebBMParser {
     buildCommonTree(json) {
         const res = {};
         const { name, startFrame, endFrame, frame, layer, id } = json;
-        res['duration'] = Number((endFrame - startFrame) / frame);
+        let duration = Number((endFrame - startFrame) / frame);
+        if (this.config.duration) duration = this.config.duration;
+        res['duration'] = duration;
         res['_name'] = name;
         res['maskList'] = [];
         this.rebuildLayer(layer, res);

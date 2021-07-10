@@ -18,8 +18,8 @@ function App() {
 
   useEffect(() => {
     return () => {
-      fetch('/clean', {
-        method: 'GET'
+      fetch('http://localhost:3000/clean', {
+        method: 'GET',
       });
     }
   }, [])

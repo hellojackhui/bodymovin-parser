@@ -8,7 +8,7 @@ Page({
 
   },
   onLoad() {
-    this.loadanime()
+    // this.loadanime()
   },
   isEqual(from, to, keys) {
     if (protoStr.call(from) !== protoStr.call(to)) {
@@ -184,7 +184,7 @@ Page({
       }
     ], 1000, () => {
       console.log('aaa');
-      this.loadanime();
+      // this.loadanime();
     })
   },
   callback() {

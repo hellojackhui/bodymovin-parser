@@ -20,7 +20,12 @@ function PreviewPage() {
   useEffect(() => {
     setSource({});
     fetch('/clean', {
-      method: 'GET'
+      method: 'GET',
+      headers: {
+        "content-type": "text/plain",
+      },
+      mode: "cors",
+      credentials: "include",
     });
   }, [])
   
