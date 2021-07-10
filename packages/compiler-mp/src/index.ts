@@ -172,7 +172,11 @@ class MpCompiler implements MpCompilerClass {
     const res = {};
     const transform = (source) => {
       if (source.keyFramesList) {
-        res[source.id] = this.rebuildKeyFrames(source.keyFramesList);
+        const { baseStyles } = source;
+        res[source.id] = {
+          styles: baseStyles,
+          frames: this.rebuildKeyFrames(source.keyFramesList),
+        }
       }
       if (source.children) {
         source.children.forEach((item) => {
