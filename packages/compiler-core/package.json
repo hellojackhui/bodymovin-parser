@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-core",
-  "version": "0.0.5-beta.8",
+  "version": "0.0.5-beta.9",
   "description": "bodymovin-parser 核心解析器",
   "main": "lib/compiler-core.umd.js",
   "files": [
@@ -22,5 +22,5 @@
   "license": "MIT",
   "author": "hellojackhui",
   "homepage": "https://github.com/hellojackhui/bodymovin-parser/blob/master/README.md",
-  "gitHead": "779bdffe19c8568ead28b763bbd259f9077755f5"
+  "gitHead": "e6cca53eb4422fd532d00d50a2fe126e26ed12df"
 }

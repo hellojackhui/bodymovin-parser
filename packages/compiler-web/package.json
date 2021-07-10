@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-web",
-  "version": "0.0.5-beta.8",
+  "version": "0.0.5-beta.9",
   "description": "bodymovin-parser web动画代码生成器",
   "main": "lib/compiler-web.umd.js",
   "files": [
@@ -25,5 +25,5 @@
   "dependencies": {
     "@bodymovin-parser/compiler-core": "^0.0.5"
   },
-  "gitHead": "779bdffe19c8568ead28b763bbd259f9077755f5"
+  "gitHead": "e6cca53eb4422fd532d00d50a2fe126e26ed12df"
 }
