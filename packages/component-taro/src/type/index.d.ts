@@ -8,6 +8,11 @@ export interface IAEAnimate {
     onFinish?: Function;
 }
 
+export interface IAESource {
+    domTree: object;
+    frames: object;
+}
+
 export interface IAEAnimateState {
-    tree: object;
+    aeSource: IAESource;
 }
