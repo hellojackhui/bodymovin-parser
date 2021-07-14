@@ -91,6 +91,8 @@ class MpCompiler implements MpCompilerClass {
     const traverse = (source, json) => {
       if (!json) return;
       const { type, id, width, height, children, path, layer, name } = json;
+      source["_index"] = index;
+      source["_id"] = `AELayer-${index++}`;
       source["type"] = type;
       source["_name"] = source["_name"] || name || id;
       source["id"] = id || "root";
@@ -98,8 +100,6 @@ class MpCompiler implements MpCompilerClass {
         width,
         height,
       };
-      source["_index"] = index;
-      source["_id"] = `AElayer-${index++}`;
       if (children) {
         source["children"] = [];
         children.forEach((child, index) => {

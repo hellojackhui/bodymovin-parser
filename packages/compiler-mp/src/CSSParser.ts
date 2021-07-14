@@ -36,9 +36,8 @@ class CSSParser {
         let infinite = (ctx.options && ctx.options.infinite !== undefined) ? ctx.options.infinite ? 'infinite' : '1' : 'infinite';
         const traverse = (tree, target) => {
             if (tree.id === 'root') {
-                const { type, styles, children, id, _name, } = tree;
-                target['_id'] = id;
-                target['id'] = _name;
+                const { type, styles, children, _id, _name, } = tree;
+                target['_id'] = _id;
                 target['_name'] = _name;
                 target['type'] = type;
                 target['baseClassName'] = `Layer_Composition`;
@@ -56,7 +55,6 @@ class CSSParser {
                 const { type, styles, _id, _index, animeList, url, _name, children } = tree;
                 target['_id'] = _id;
                 target['type'] = type;
-                target['id'] = _name;
                 target['_name'] = _name;
                 target['baseClassName'] = `Layer_${_index}`;
                 target['baseStyles'] = this.formatStyles({
