@@ -17,8 +17,8 @@ class HTMLParser {
         const tree = {};
         const traverse = (json, tree) => {
             if (!json) return;
-            const { type, attrs, _name, baseClassName = '', imageClassName = '', animeClassName = '', children, baseStyles, imageUrl} = json;
-            tree['id'] = _name || 'root';
+            const { type, attrs, _name, baseClassName = '', imageClassName = '', animeClassName = '', children, baseStyles, imageUrl, _id} = json;
+            tree['_id'] = _id || 'root';
             tree['type'] = type;
             tree['class'] = [baseClassName, imageClassName, animeClassName].join(' ').replace(/([\s]+)(\s*)$/, '$2');
             tree['aelayerName'] = _name || 'root';
