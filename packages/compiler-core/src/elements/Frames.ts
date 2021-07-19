@@ -72,8 +72,12 @@ function createOpacityFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
+    let start = -1;
+    let islast = true;
+    let isfirst = true;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
+        animeFrames[cur] = {};
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
             if (!initTime) {
@@ -81,11 +85,19 @@ function createOpacityFrameList(frame, frameList, startFrame) {
             }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
+            // diff为0，代表为关键帧。
+            if (diff === 0 && startTime !== start) {
+                animeFrames[cur] = {
+                    stick: true,
+                }
+                start = startTime;
+            }
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
                 let ratio = bezierFn(playRatio);
                 let curVal = fix(((endVal - startVal) * ratio) + startVal, 2);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     opacity: curVal,
                     ease: bezierStr,
@@ -93,6 +105,7 @@ function createOpacityFrameList(frame, frameList, startFrame) {
             } else {
                 let curVal = fix(((endVal - startVal) * playRatio) + startVal, 2);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     opacity: curVal,
                 }
@@ -102,12 +115,16 @@ function createOpacityFrameList(frame, frameList, startFrame) {
                 animeFrames[cur] = {
                     index: cur,
                     opacity: frameList[0].startVal,
+                    stick: isfirst ? true: false,
                 }
+                isfirst = false;
             } else {
                 animeFrames[cur] = {
                     index: cur,
                     opacity: frameList[len - 1].startVal,
+                    stick: (islast || cur === frame) ? true : false,
                 }
+                islast = false;
             }
         }
     }
@@ -118,8 +135,12 @@ function createRotateFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
+    let start = -1;
+    let islast = true;
+    let isfirst = true;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
+        animeFrames[cur] = {};
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
             if (!initTime) {
@@ -127,11 +148,19 @@ function createRotateFrameList(frame, frameList, startFrame) {
             }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
+            // diff为0，代表为关键帧。
+            if (diff === 0 && start !== startTime) {
+                animeFrames[cur] = {
+                    stick: true,
+                }
+                start = startTime;
+            }
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
                 let ratio = bezierFn(playRatio);
                 let curVal = fix(((endVal - startVal) * ratio) + startVal, 2);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     rotate: curVal,
                     ease: bezierStr,
@@ -139,6 +168,7 @@ function createRotateFrameList(frame, frameList, startFrame) {
             } else {
                 let curVal = fix(((endVal - startVal) * playRatio) + startVal, 2);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     rotate: curVal,
                 }
@@ -148,12 +178,16 @@ function createRotateFrameList(frame, frameList, startFrame) {
                 animeFrames[cur] = {
                     index: cur,
                     rotate: frameList[0].startVal,
+                    stick: isfirst ? true: false,
                 }
+                isfirst = false;
             } else {
                 animeFrames[cur] = {
                     index: cur,
                     rotate: frameList[len - 1].startVal,
+                    stick: (islast || cur === frame) ? true : false,
                 }
+                islast = false;
             }
         }
     }
@@ -164,8 +198,12 @@ function createScaleFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
+    let start = -1;
+    let islast = true;
+    let isfirst = true;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
+        animeFrames[cur] = {};
         const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
             if (!initTime) {
@@ -173,6 +211,13 @@ function createScaleFrameList(frame, frameList, startFrame) {
             }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
+            // diff为0，代表为关键帧。
+            if (diff === 0 && start !== startTime) {
+                animeFrames[cur] = {
+                    stick: true,
+                }
+                start = startTime;
+            }
             let playRatio = Number((diff / duration).toFixed(2));
             let ratio = bezierFn(playRatio);
             let offsetX = endVal[0] - startVal[0];
@@ -183,6 +228,7 @@ function createScaleFrameList(frame, frameList, startFrame) {
                 let valY = fix((offsetY * ratio) + startVal[1], 4);
                 let valZ = fix((offsetZ * ratio) + startVal[2], 4);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     scale: [valX, valY, valZ],
                     ease: bezierStr,
@@ -192,6 +238,7 @@ function createScaleFrameList(frame, frameList, startFrame) {
                 let valY = fix((offsetY * playRatio) + startVal[1], 4);
                 let valZ = fix((offsetZ * playRatio) + startVal[2], 4);
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     index: cur,
                     scale: [valX, valY, valZ],
                 }
@@ -201,12 +248,16 @@ function createScaleFrameList(frame, frameList, startFrame) {
                 animeFrames[cur] = {
                     index: cur,
                     scale: frameList[0].startVal,
+                    stick: isfirst ? true: false,
                 }
+                isfirst = false;
             } else {
                 animeFrames[cur] = {
                     index: cur,
                     scale: frameList[len - 1].startVal,
+                    stick: (islast || cur === frame) ? true : false,
                 }
+                islast = false;
             }
         }
     }
@@ -218,8 +269,12 @@ function createPositionFrameList(frame, frameList, startFrame) {
     const len = frameList.length;
     // 处理非锚点区域位置轨迹问题
     let initTime;
+    let start = -1;
+    let islast = true;
+    let isfirst = true;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
+        animeFrames[cur] = {};
         const area = frameList.filter((item) => (item.startTime <= i && item.endTime > i));
         if (area.length) {
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr, parabolaPointList } = area[0];
@@ -231,11 +286,19 @@ function createPositionFrameList(frame, frameList, startFrame) {
                 let offset = Math.floor((diff / duration) * 150);
                 let nextPoint = parabolaPointList.points[offset].point;
                 animeFrames[cur] = {
+                    ...animeFrames[cur],
                     position: [fix(nextPoint[0], 5), fix(nextPoint[1], 5), fix(nextPoint[2], 5)],
                     ease: bezierStr,
                 }
             } else {
                 let diff = i - startTime;
+                // diff为0，代表为关键帧。
+                if (diff === 0 && start !== startTime) {
+                    animeFrames[cur] = {
+                        stick: true,
+                    }
+                    start = startTime;
+                }
                 let playRatio = Number((diff / duration).toFixed(2));
                 let offsetX = endVal[0] - startVal[0];
                 let offsetY = endVal[1] - startVal[1];
@@ -246,6 +309,7 @@ function createPositionFrameList(frame, frameList, startFrame) {
                     let valY = fix((offsetY * ratio) + startVal[1], 5);
                     let valZ = fix((offsetZ * ratio) + startVal[2], 5);
                     animeFrames[cur] = {
+                        ...animeFrames[cur],
                         position: [valX, valY, valZ],
                         ease: bezierStr,
                     }
@@ -254,6 +318,7 @@ function createPositionFrameList(frame, frameList, startFrame) {
                     let valY = fix((offsetY * playRatio) + startVal[1], 5);
                     let valZ = fix((offsetZ * playRatio) + startVal[2], 5);
                     animeFrames[cur] = {
+                        ...animeFrames[cur],
                         position: [valX, valY, valZ],
                         ease: bezierStr,
                     }
@@ -263,11 +328,15 @@ function createPositionFrameList(frame, frameList, startFrame) {
             if (i <= Number(initTime) || !initTime) {
                 animeFrames[cur] = {
                     position: frameList[0].startVal,
+                    stick: isfirst ? true: false,
                 }
+                isfirst = false;
             } else {
                 animeFrames[cur] = {
                     position: frameList[len - 1].startVal,
+                    stick: (islast || cur === frame) ? true : false,
                 }
+                islast = false;
             }
         }
     }
