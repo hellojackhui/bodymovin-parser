@@ -18,6 +18,7 @@ const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 
 Promise.resolve(tree).then((tree) => {
     // const data = res.data;
+    debugger;
     const core =  new CoreParser({json: tree});
     const jsonstr = JSON.stringify(core.outputJSON());
     writeJSONFile(jsonstr);

@@ -11,6 +11,7 @@ class Position implements IPosition {
     public bezierFn: any;
     public bezierStr: string;
     public parabolaPointList: any;
+    public isFF: boolean;
 
     constructor({
         layer,
@@ -37,6 +38,7 @@ class Position implements IPosition {
         this.bezierFn = createBezier('p', layer);
         this.bezierStr = createBezierStr(layer);
         this.parabolaPointList = createParabolaList(layer, nextLayer);
+        this.isFF = this.parabolaPointList !== null;
     }
 
     getPosition(s) {
