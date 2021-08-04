@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/compiler-mp",
-  "version": "0.0.6-beta.9",
+  "version": "0.0.6-beta.10",
   "description": "bodymovin-parser 小程序帧动画代码生成器",
   "main": "lib/compiler-mp.umd.js",
   "files": [
