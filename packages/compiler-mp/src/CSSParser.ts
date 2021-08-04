@@ -67,6 +67,7 @@ class CSSParser {
                 }
                 if (animeList) {
                     target['animeClassName'] =  `Layer_Anim${_index}`;
+                    target['duration'] = Number(this._duration.toFixed(3));
                     target['animation'] = {
                         'animationName': `Layer_AnimKeys${_index}`,
                         'animationDuration': `${Number(this._duration.toFixed(3))}s`,

@@ -1214,17 +1214,17 @@
   resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-core/download/@bodymovin-parser/compiler-core-0.0.5.tgz#e12182a65ddcb507993c7fc3238b4ea4a15e02a4"
   integrity sha1-4SGCpl3ctQeZPH/DI4tOpKFeAqQ=
 
-"@bodymovin-parser/compiler-mp@^0.0.6-beta.5":
-  version "0.0.6-beta.5"
-  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-mp/download/@bodymovin-parser/compiler-mp-0.0.6-beta.5.tgz#0823aeae8765bba2616d7899983f5ba01dad78f6"
-  integrity sha1-CCOurodlu6JhbXiZmD9boB2tePY=
+"@bodymovin-parser/compiler-mp@^0.0.6-beta.7":
+  version "0.0.6-beta.7"
+  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-mp/download/@bodymovin-parser/compiler-mp-0.0.6-beta.7.tgz#4935a92f04cac8956e965b5422b6bebbc35a22d1"
+  integrity sha1-STWpLwTKyJVulltUIra+u8NaItE=
   dependencies:
     "@bodymovin-parser/compiler-core" "^0.0.5"
 
-"@bodymovin-parser/compiler-web@0.0.5-beta.3":
-  version "0.0.5-beta.3"
-  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-web/download/@bodymovin-parser/compiler-web-0.0.5-beta.3.tgz#c2e979fbcb3a0ba99cd6c1a9638a4ceea68d4c84"
-  integrity sha1-wul5+8s6C6mc1sGpY4pM7qaNTIQ=
+"@bodymovin-parser/compiler-web@0.0.5-beta.7":
+  version "0.0.5-beta.7"
+  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-web/download/@bodymovin-parser/compiler-web-0.0.5-beta.7.tgz#fbeec84703be4fc1e4db7f56c00e9fb74993fd2a"
+  integrity sha1-++7IRwO+T8Hk239WwA6ft0mT/So=
   dependencies:
     "@bodymovin-parser/compiler-core" "^0.0.5"
 
