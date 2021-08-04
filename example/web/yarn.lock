@@ -1214,10 +1214,10 @@
   resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-core/download/@bodymovin-parser/compiler-core-0.0.5.tgz#e12182a65ddcb507993c7fc3238b4ea4a15e02a4"
   integrity sha1-4SGCpl3ctQeZPH/DI4tOpKFeAqQ=
 
-"@bodymovin-parser/compiler-mp@^0.0.6-beta.9":
-  version "0.0.6-beta.9"
-  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-mp/download/@bodymovin-parser/compiler-mp-0.0.6-beta.9.tgz#d6d47c3e7297655adc4834cfc12447709e9b864e"
-  integrity sha1-1tR8PnKXZVrcSDTPwSRHcJ6bhk4=
+"@bodymovin-parser/compiler-mp@^0.0.6-beta.10":
+  version "0.0.6-beta.10"
+  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-mp/download/@bodymovin-parser/compiler-mp-0.0.6-beta.10.tgz#b928775cc879f5df08f2072813334e71ebcd7ee4"
+  integrity sha1-uSh3XMh59d8I8gcoEzNOcevNfuQ=
   dependencies:
     "@bodymovin-parser/compiler-core" "^0.0.5"
 
