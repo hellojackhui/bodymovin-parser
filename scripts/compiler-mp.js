@@ -18,9 +18,9 @@ const instance = new MpCompiler({
 })
 
 instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading2.json').then((data) => {
-    console.log(data);
-    writeMpWXMLFile(data.domContent);
-    writeMpWXSSFile(data.cssContent);
+    console.log(data.frames['AELayer-2'].frames.map((item) => item.scale3d));
+    // writeMpWXMLFile(data.domContent);
+    // writeMpWXSSFile(data.cssContent);
 })
 
 function writeMpWXMLFile(content) {

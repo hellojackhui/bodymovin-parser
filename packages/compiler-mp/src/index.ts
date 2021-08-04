@@ -200,7 +200,6 @@ class MpCompiler implements MpCompilerClass {
         ...tranformAttrs,
       });
     });
-    res = this.filterFrames(res);
     return res;
   }
 
@@ -219,17 +218,6 @@ class MpCompiler implements MpCompilerClass {
       attr["rotate"] = Number(rotateReg[1]);
     }
     return attr;
-  }
-
-  filterFrames(frames) {
-    for (let i = 0; i <= frames.length - 2; i++) {
-      if (isEqual(frames[i], frames[i + 1], ["offset"])) {
-        frames.splice(i + 1, 1);
-        --i;
-      }
-    }
-
-    return frames;
   }
 
   fix(num, points) {
