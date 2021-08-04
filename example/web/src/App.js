@@ -8,7 +8,8 @@ import {
 } from "@ant-design/icons";
 
 import PreviewPage from "./pages/preview-page/previewPage";
-import PreviewAst from './pages/preview-ast/previewAst'
+import PreviewAst from './pages/preview-ast/previewAst';
+import WebComponent from './pages/web-component/index';
 import "./App.css";
 
 const { Sider } = Layout;
@@ -55,6 +56,9 @@ function App() {
             <Menu.Item key="2" icon={<GithubOutlined />}>
               核心库调试
             </Menu.Item>
+            <Menu.Item key="3" icon={<GithubOutlined />}>
+              webcomponent调试
+            </Menu.Item>
             {/* <Menu.Item key="3" icon={<UploadOutlined />}>
               nav 3
             </Menu.Item>
@@ -66,6 +70,7 @@ function App() {
         <Layout>
           {state === "1" && <PreviewPage />}
           {state === "2" && <PreviewAst />}
+          {state === "3" && <WebComponent />}
           </Layout>
       </Layout>
       ,

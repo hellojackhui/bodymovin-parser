@@ -44,7 +44,7 @@ class MpCompiler implements MpCompilerClass {
 
   parseByJson(json) {
     this.json = json;
-    this.parseMPCode();
+    return this.parseMPCode();
   }
 
   parseByUrl(url) {
