@@ -21,7 +21,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-core": "^0.0.6-beta.13"
+    "@bodymovin-parser/compiler-core": "^0.0.6-beta.14"
   },
   "gitHead": "1034f4fb79298378f91862977c8f26c0c847c130"
 }
