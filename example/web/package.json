@@ -153,8 +153,8 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.6.2",
-    "@bodymovin-parser/compiler-web": "0.0.5-beta.13",
-    "@bodymovin-parser/compiler-mp": "^0.0.6-beta.13",
+    "@bodymovin-parser/compiler-web": "0.0.6-beta.14",
+    "@bodymovin-parser/compiler-mp": "^0.0.6-beta.14",
     "antd": "^4.16.1",
     "install": "^0.13.0",
     "json-formatter-js": "^2.3.4",
