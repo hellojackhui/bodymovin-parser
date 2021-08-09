@@ -10,7 +10,14 @@ react动效组件
 
 ## 代码演示
 ```javascript
-
+<AEComponent 
+    json={json}
+    counts={'Infinity'}
+    play={true}
+    onload={() => {}}
+    onPause={() => {}}
+    onPlay={() => {}}
+/>
 
 ```
 
