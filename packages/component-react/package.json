@@ -1,6 +1,6 @@
 {
   "name": "@bodymovin-parser/component-react",
-  "version": "0.0.6-beta.14",
+  "version": "0.0.6-beta.15",
   "description": "bodymovin-parser react动效播放组件",
   "main": "src/index.ts",
   "files": [
