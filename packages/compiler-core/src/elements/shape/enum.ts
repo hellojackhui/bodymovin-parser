@@ -1,0 +1,18 @@
+export enum BlendModeEnum {
+    'normal',
+    'multiply',
+    'screen',
+    'overlay',
+    'darken',
+    'lighten',
+    'colorDodge',
+    'colorBurn',
+    'hardLight',
+    'softLight',
+    'difference',
+    'exclusion',
+    'hue',
+    'saturation',
+    'color',
+    'luminosity',
+}

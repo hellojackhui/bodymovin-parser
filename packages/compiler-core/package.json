@@ -1,0 +1,26 @@
+{
+  "name": "@bodymovin-parser/compiler-core",
+  "version": "0.0.6-beta.14",
+  "description": "bodymovin-parser 核心解析器",
+  "main": "lib/compiler-core.umd.js",
+  "files": [
+    "index.ts",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
+    "directory": "packages/compiler-core"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "bodymovin",
+    "bodymovin-parser"
+  ],
+  "license": "MIT",
+  "author": "hellojackhui",
+  "homepage": "https://github.com/hellojackhui/bodymovin-parser/blob/master/README.md",
+  "gitHead": "1034f4fb79298378f91862977c8f26c0c847c130"
+}

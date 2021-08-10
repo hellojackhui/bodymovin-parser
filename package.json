@@ -1,0 +1,43 @@
+{
+  "name": "bodymovin-parser",
+  "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "huijiawei",
+    "email": "huijiawei@meituan.com"
+  },
+  "contributors": [
+    "huijiawei"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "build-core": "rollup --config --rollupCore",
+    "build-css": "rollup --config --rollupCss",
+    "build-mp": "rollup --config --rollupMp",
+    "test": "jest --no-cache",
+    "core-test": "npm run build-core && node scripts/compiler-core.js",
+    "css-test": "npm run build-css && node scripts/compiler-web.js",
+    "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
+    "dev": "rollup --config --watch",
+    "bootstrap": "cd example/web && npm run start",
+    "publish": "lerna publish",
+    "publish-force": "lerna publish --force-publish"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "axios": "0.21.1",
+    "jest": "^26.6.3",
+    "lerna": "^4.0.0",
+    "rollup": "^2.45.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "6.0.4",
+    "rollup-plugin-sourcemaps": "0.6.3",
+    "rollup-plugin-banner": "0.2.1",
+    "ts-jest": "^26.5.5",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4",
+    "fs-extra": "10.0.0",
+    "chalk": "4.1.1"
+  }
+}

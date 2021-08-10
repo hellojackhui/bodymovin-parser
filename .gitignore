@@ -1,0 +1,8 @@
+node_modules/
+mock/
+lib/
+.vscode/
+coverage/
+example/
+test.js
+preview.css
