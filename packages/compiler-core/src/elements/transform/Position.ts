@@ -42,6 +42,7 @@ class Position implements IPosition {
     }
 
     getPosition(s) {
+        if (!s) return [0, 0, 0];
         if (Array.isArray(s)) {
             return [s[0], s[1], s[2]];
         } else {

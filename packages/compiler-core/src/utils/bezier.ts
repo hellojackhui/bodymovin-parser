@@ -89,7 +89,7 @@ function createParabolaList(layer, nextLayer) {
     let e = nextLayer.s;
     let to = layer.to;
     let ti = layer.ti;
-    if (!layer.to || !layer.ti) {
+    if (!e || !layer.to || !layer.ti) {
         return null;
     }
     if (to && to[0] && ti && ti[0] && (s.length === 2 && !(s[0] === e[0] && s[1] === e[1]) && pointOnLine2D(s[0], s[1], e[0], e[1], s[0] + to[0], s[1] + to[1]) && pointOnLine2D(s[0], s[1], e[0], e[1], e[0] + ti[0], e[1] + ti[1])) || (s.length === 3 && !(s[0] === e[0] && s[1] === e[1] && s[2] === e[2]) && pointOnLine3D(s[0], s[1], s[2], e[0], e[1], e[2], s[0] + to[0], s[1] + to[1], s[2] + to[2]) && pointOnLine3D(s[0], s[1], s[2], e[0], e[1], e[2], e[0] + ti[0], e[1] + ti[1], e[2] + ti[2]))) {

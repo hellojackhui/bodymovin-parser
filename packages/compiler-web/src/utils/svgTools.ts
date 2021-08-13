@@ -75,6 +75,7 @@ const buildSvgContentTree = (shapes) => {
 const getShapeCommonData = (commonData, data) => {
   const items = data.items;
   items.map((item) => {
+    if (!item) return;
     switch (item.type) {
       case "shape":
         commonData["shapeData"] = getShapeData(item);
@@ -265,6 +266,7 @@ const getBoundsOfCurve = (p0, p1, p2, p3) => {
 
 // 构建svg树
 const buildSvgTree = (data) => {
+  console.log('data', data);
   const target = {};
   // 设置svg属性
   target['type'] = 'svg';
