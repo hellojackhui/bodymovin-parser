@@ -58,7 +58,7 @@ class CoreParser implements Compiler.ICompiler {
 
   buildAssetsModal() {
     const { assets, layers } = this.json;
-    layers.forEach((layer) => {
+    layers.forEach((layer, index) => {
       switch (layer.ty) {
         case LayerTypeEnum.image:
           this.buildAssetInstance(assets, layer);
@@ -74,6 +74,9 @@ class CoreParser implements Compiler.ICompiler {
           break;
         case LayerTypeEnum.text:
           this.buildTextInstance(layer);
+          break;
+        case LayerTypeEnum.null:
+          this.buildEmptyInstance(layer);
           break;
         default:
           this.buildAssetInstance(assets, layer);
@@ -115,6 +118,24 @@ class CoreParser implements Compiler.ICompiler {
 
   buildSolidInstance(layer) {
     const { sw: w, sh: h, ind: index } = layer;
+    const tempAsset = {
+      id: `layer_element-${index}`,
+      w,
+      h,
+      p: "",
+    };
+    const assetInstance = new Asset({
+      asset: tempAsset,
+      options: {
+        index,
+        layerType: LayerTypeEnum.image,
+      }
+    });
+    this.assetsObj[assetInstance._unionId] = assetInstance;
+  }
+
+  buildEmptyInstance(layer) {
+    const { w = 100, h = 100, ind: index } = layer;
     const tempAsset = {
       id: `layer_element-${index}`,
       w,
