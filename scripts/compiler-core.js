@@ -4,7 +4,7 @@ const axios = require('axios').default;
 
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const CoreParser = require('../packages/compiler-core/lib/compiler-core.umd');
-const tree = require('../mock/bodymovin1.json');
+const tree = require('../mock/big.json');
 
 const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 
@@ -18,7 +18,6 @@ const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 
 Promise.resolve(tree).then((tree) => {
     // const data = res.data;
-    debugger;
     const core =  new CoreParser({json: tree});
     const jsonstr = JSON.stringify(core.outputJSON());
     writeJSONFile(jsonstr);

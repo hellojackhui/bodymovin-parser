@@ -65,6 +65,7 @@ const buildClipPathTree = (data) => {
 // 构造shape类型svg树
 
 const buildSvgContentTree = (shapes) => {
+  if (!shapes) return;
   return shapes.map((shape) => {
     const commonData = {};
     getShapeCommonData(commonData, shape);
@@ -74,22 +75,30 @@ const buildSvgContentTree = (shapes) => {
 
 const getShapeCommonData = (commonData, data) => {
   const items = data.items;
+  if (!items) return;
   items.map((item) => {
     if (!item) return;
+    console.log('type', item);
     switch (item.type) {
       case "shape":
+      case "rect":
         commonData["shapeData"] = getShapeData(item);
-        commonData["path"] = buildSvgPath(item.keyFrames.pathList);
+        commonData["path"] = buildSvgPath(item.keyFrames ? item.keyFrames.pathList : item.pathList);
         break;
       case "fill":
         commonData["fillData"] = getFillData(item);
         break;
       case "transform":
         commonData["transformData"] = getTransformData(item);
+        break;
+      case "group":
+        getShapeCommonData(commonData, item);
+        break;
     }
   });
   return commonData;
 };
+
 
 const getFillData = (data) => {
     return {
@@ -110,6 +119,7 @@ const getTransformData = (data) => {
 
 // 计算路径数据
 const getShapeData = (data) => {
+  console.log('data', data);
   const boundingData = {
     x: 0,
     xMax: 0,
@@ -123,7 +133,7 @@ const getShapeData = (data) => {
   boundingData.xMax = -max;
   boundingData.y = max;
   boundingData.yMax = -max;
-  calculateBoundingBox(data.keyFrames, boundingData);
+  calculateBoundingBox(data.keyFrames ? data.keyFrames : data, boundingData);
   boundingData.width = boundingData.xMax < boundingData.x ? 0 : boundingData.xMax - boundingData.x;
   boundingData.height = boundingData.yMax < boundingData.y ? 0 : boundingData.yMax - boundingData.y;
   let shapeTransform = 'translate(' + boundingData.x + 'px,' + boundingData.y + 'px)';
@@ -266,7 +276,6 @@ const getBoundsOfCurve = (p0, p1, p2, p3) => {
 
 // 构建svg树
 const buildSvgTree = (data) => {
-  console.log('data', data);
   const target = {};
   // 设置svg属性
   target['type'] = 'svg';

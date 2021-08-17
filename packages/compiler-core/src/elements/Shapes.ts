@@ -2,6 +2,7 @@ import Shape from "./shape/Shape";
 import Fill from "./shape/Fill";
 import Transform from "./shape/Transform";
 import Group from './shape/Group';
+import Rect from './shape/Rect';
 
 export enum ShapeItemTypeEnum {
   SHAPE = "sh",
@@ -58,6 +59,7 @@ class Shapes {
   }
 
   buildItemModel(data) {
+    if (!data) return null;
     const output = data.map((item) => {
       switch (item.ty) {
         case ShapeItemTypeEnum.SHAPE:
@@ -68,6 +70,8 @@ class Shapes {
           return new Transform(item).output();
         case ShapeItemTypeEnum.GROUP:
           return new Group(item).output();
+        case ShapeItemTypeEnum.RECT:
+          return new Rect(item).output();
       }
     });
     return output;

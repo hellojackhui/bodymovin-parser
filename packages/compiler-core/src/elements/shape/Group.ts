@@ -1,5 +1,8 @@
 import { ShapeItemTypeEnum } from '../Shapes';
-import Tools from '../../utils/attrTools';
+import Path from './Path';
+import Fill from './Fill';
+import Transform from './Transform';
+
 interface IGroupItem {
     index: number;
     type: string;
@@ -11,7 +14,7 @@ interface IGroupItem {
 }
 
 interface IGroup {
-    type: keyof ShapeItemTypeEnum;
+    type: string;
     items: IGroupItem[];
     name: string;
     propIndex: number;
@@ -23,7 +26,7 @@ interface IGroup {
 class Group implements IGroup {
 
     json: any;
-    type: keyof ShapeItemTypeEnum;
+    type: string;
     name: any;
     propIndex: any;
     index: any;
@@ -33,7 +36,7 @@ class Group implements IGroup {
 
     constructor(data) {
         this.json = data;
-        this.type = ShapeItemTypeEnum.GROUP;
+        this.type = 'group';
         this.name = data.nm;
         this.propIndex = data.np;
         this.index = data.ix;
@@ -70,63 +73,15 @@ class Group implements IGroup {
     }
 
     buildFillAttrs(item) {
-        return {
-            type: ShapeItemTypeEnum.FILL,
-            isHidden: item.hd,
-            opacity: (item.o && item.o.k !== undefined) ? this.getOpacity(item.o.k) : 1,
-            color: (item.c && item.c.k !== undefined) ? this.getColor(item.c.k) : 1,
-        };
+        return new Fill(item).output();
     }
 
     buildTranformAttrs(data) {
-        const transformData = {
-            type: ShapeItemTypeEnum.TRANSFORM,
-        };
-        Object.keys(data).map((key) => {
-            switch(key) {
-                case 'p':
-                    transformData['position'] = Tools.getPosition(data.p.k);
-                    break;
-                case 's':
-                    transformData['scale'] = Tools.getScale(data.s.k);
-                    break;
-                case 'r':
-                    transformData['rotation'] = Tools.getRotation(data.r.k);
-                    break;
-                case 'o':
-                    transformData['opacity'] = Tools.getOpacity(data.r.k);
-                    break;
-
-            }
-        });
-        return transformData;
+        return new Transform(data).output();
     }
 
     buildShapeAttrs(data) {
-        const pathData = data.ks.k;
-        return {
-            type: ShapeItemTypeEnum.SHAPE,
-            isHidden: data.hd,
-            name: data.name,
-            matchName: data.matchName,
-            path: Tools.buildPathList(pathData),
-        }
-    }
-
-    getOpacity(num) {
-        if (typeof num === 'number') {
-            return num / 100;
-        }
-        return 1;
-    }
-
-    getColor(data) {
-        if (typeof data === 'object' && Array.isArray(data)) {
-            let rgb = data.slice(0, 3);
-            rgb = rgb.map((item) => Number((item * 255).toFixed(5)));
-            return [...rgb, 1];
-        }
-        return [255, 255, 255, 1];
+        return new Path(data.ks).output()
     }
 
 }

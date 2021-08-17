@@ -193,7 +193,7 @@ function createScaleFrameList(frame, frameList, startFrame) {
             if (!initTime) {
                 initTime = `${area[0].startTime}`;
             }
-            const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
+            const { startTime, duration, startVal, endVal = startVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
             if (diff === 0 && prevStartTime !== startTime) {
                 animeFrames[cur] = {
