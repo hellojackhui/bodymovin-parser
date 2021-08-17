@@ -1,8 +1,10 @@
 import Shape from "./shape/Shape";
 import Fill from "./shape/Fill";
 import Transform from "./shape/Transform";
+import Group from './shape/Group';
+import Rect from './shape/Rect';
 
-enum ShapeItemTypeEnum {
+export enum ShapeItemTypeEnum {
   SHAPE = "sh",
   GROUP = "gr",
   FILL = "fl",
@@ -65,6 +67,10 @@ class Shapes {
           return new Fill(item).output();
         case ShapeItemTypeEnum.TRANSFORM:
           return new Transform(item).output();
+        case ShapeItemTypeEnum.GROUP:
+          return new Group(item).output();
+        case ShapeItemTypeEnum.RECT:
+          return new Rect(item).output();
       }
     });
     return output;

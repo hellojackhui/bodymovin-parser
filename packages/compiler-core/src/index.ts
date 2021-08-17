@@ -75,6 +75,9 @@ class CoreParser implements Compiler.ICompiler {
         case LayerTypeEnum.text:
           this.buildTextInstance(layer);
           break;
+        case LayerTypeEnum.null:
+          this.buildEmptyInstance(layer);
+          break;
         default:
           this.buildAssetInstance(assets, layer);
           break;
@@ -158,6 +161,24 @@ class CoreParser implements Compiler.ICompiler {
       type: LayerTypeEnum.shape,
     }
     this.assetsObj[`layer-bm-${layer.ind}`] = shapeModal;
+  }
+
+  buildEmptyInstance(layer) {
+    const { w = 100, h = 100, ind: index } = layer;
+    const tempAsset = {
+      id: `layer_element-${index}`,
+      w,
+      h,
+      p: "",
+    };
+    const assetInstance = new Asset({
+      asset: tempAsset,
+      options: {
+        index,
+        layerType: LayerTypeEnum.image,
+      }
+    });
+    this.assetsObj[assetInstance._unionId] = assetInstance;
   }
 
   outputJSON() {
