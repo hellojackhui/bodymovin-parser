@@ -19,7 +19,6 @@ class Path {
     buildPathList(path) {
         let i;
         let len = path.i.length;
-        console.log(path);
         for (i = 0; i < len; i += 1) {
             path.i[i][0] += path.v[i][0];
             path.i[i][1] += path.v[i][1];

@@ -2,7 +2,7 @@
  * @author 惠嘉伟
  * @email huijiawei@meituan.com
  * @create date 2021-08-09 13:35:59
- * @modify date 2021-08-09 13:36:27
+ * @modify date 2021-08-17 11:54:28
  * @desc 基于bodymovin-parser的react动效播放组件
  */
 
@@ -63,7 +63,6 @@ function AnimeComponent(props) {
       mode: 'animate',
     })
     const data = await Promise.resolve(MpCompilerInst.parseByJson(options.json));
-    console.log('data', data);
     return {
       domTree: data.domTree,
       cssFrames: data.frames,

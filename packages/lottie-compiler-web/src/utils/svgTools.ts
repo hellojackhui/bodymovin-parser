@@ -78,7 +78,6 @@ const getShapeCommonData = (commonData, data) => {
   if (!items) return;
   items.map((item) => {
     if (!item) return;
-    console.log('type', item);
     switch (item.type) {
       case "shape":
       case "rect":
@@ -119,7 +118,6 @@ const getTransformData = (data) => {
 
 // 计算路径数据
 const getShapeData = (data) => {
-  console.log('data', data);
   const boundingData = {
     x: 0,
     xMax: 0,
