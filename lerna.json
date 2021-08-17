@@ -1,6 +1,8 @@
 {
   "packages": [
-    "packages/*"
+    "packages/compiler-core",
+    "packages/compiler-web",
+    "packages/compiler-mp"
   ],
   "version": "0.0.1"
 }
