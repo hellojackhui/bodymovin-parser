@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-compiler-core",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "bodymovin-parser 核心解析器",
   "main": "lib/compiler-core.umd.js",
   "files": [

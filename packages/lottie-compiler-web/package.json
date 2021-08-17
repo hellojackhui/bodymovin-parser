@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-compiler-web",
-  "version": "0.0.1-alpha.2",
+  "version": "0.0.1-alpha.3",
   "description": "bodymovin-parser web动画代码生成器",
   "main": "lib/compiler-web.umd.js",
   "files": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@wmfe/lottie-compiler-core": "^0.0.1-alpha.2"
+    "@wmfe/lottie-compiler-core": "^0.0.1-alpha.3"
   },
   "gitHead": "d10dbd729497ed012c5f596bfc2153938ebe6089"
 }
