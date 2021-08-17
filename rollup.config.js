@@ -12,53 +12,53 @@ const bannerText =
 
 const configs = {
   rollupCore: {
-    input: "packages/compiler-core/src/index.ts",
+    input: "packages/lottie-compiler-core/src/index.ts",
     output: [
       {
-        file: "packages/compiler-core/lib/compiler-core.iife.js",
+        file: "packages/lottie-compiler-core/lib/lottie-compiler-core.iife.js",
         format: "iife",
       },
       {
-        file: "packages/compiler-core/lib/compiler-core.umd.js",
+        file: "packages/lottie-compiler-core/lib/lottie-compiler-core.umd.js",
         name: "core",
         format: "umd",
       },
       {
-        file: "packages/compiler-core/lib/compiler-core.es.js",
+        file: "packages/lottie-compiler-core/lib/lottie-compiler-core.es.js",
         name: "core",
         format: "es",
       },
     ],
   },
   rollupMp: {
-    input: "packages/compiler-mp/src/index.ts",
+    input: "packages/lottie-compiler-mp/src/index.ts",
     output: [
       {
-        file: "packages/compiler-mp/lib/compiler-mp.iife.js",
+        file: "packages/lottie-compiler-mp/lib/lottie-compiler-mp.iife.js",
         format: "iife",
       },
       {
-        file: "packages/compiler-mp/lib/compiler-mp.umd.js",
+        file: "packages/lottie-compiler-mp/lib/lottie-compiler-mp.umd.js",
         name: "core",
         format: "umd",
       },
       {
-        file: "packages/compiler-mp/lib/compiler-mp.es.js",
+        file: "packages/lottie-compiler-mp/lib/lottie-compiler-mp.es.js",
         name: "core",
         format: "es",
       },
     ],
   },
   rollupCss: {
-    input: "packages/compiler-web/src/index.ts",
+    input: "packages/lottie-compiler-web/src/index.ts",
     output: [
       {
-        file: "packages/compiler-web/lib/compiler-web.umd.js",
+        file: "packages/lottie-compiler-web/lib/lottie-compiler-web.umd.js",
         name: "core",
         format: "umd",
       },
       {
-        file: "packages/compiler-web/lib/compiler-web.es.js",
+        file: "packages/lottie-compiler-web/lib/lottie-compiler-web.es.js",
         name: "core",
         format: "es",
       },

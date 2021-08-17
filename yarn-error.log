@@ -27,9 +27,9 @@ npm manifest:
       "build-css": "rollup --config --rollupCss",
       "build-mp": "rollup --config --rollupMp",
       "test": "jest --no-cache",
-      "core-test": "npm run build-core && node scripts/compiler-core.js",
-      "css-test": "npm run build-css && node scripts/compiler-web.js",
-      "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
+      "core-test": "npm run build-core && node scripts/lottie-compiler-core.js",
+      "css-test": "npm run build-css && node scripts/lottie-compiler-web.js",
+      "mp-test": "npm run build-mp && node scripts/lottie-compiler-mp.js",
       "dev": "rollup --config --watch",
       "bootstrap": "cd example/web && npm run start"
     },
@@ -1867,7 +1867,7 @@ Lockfile:
     dependencies:
       cache-base "^1.0.1"
       class-utils "^0.3.5"
-      component-emitter "^1.2.1"
+      lottie-component-emitter "^1.2.1"
       define-property "^1.0.0"
       isobject "^3.0.1"
       mixin-deep "^1.2.0"
@@ -1995,7 +1995,7 @@ Lockfile:
     integrity sha1-Cn9GQWgxyLZi7jb+TnxZ129marI=
     dependencies:
       collection-visit "^1.0.0"
-      component-emitter "^1.2.1"
+      lottie-component-emitter "^1.2.1"
       get-value "^2.0.6"
       has-value "^1.0.0"
       isobject "^3.0.1"
@@ -2254,9 +2254,9 @@ Lockfile:
       array-ify "^1.0.0"
       dot-prop "^5.1.0"
   
-  component-emitter@^1.2.1:
+  lottie-component-emitter@^1.2.1:
     version "1.3.0"
-    resolved "http://r.npm.sankuai.com/component-emitter/download/component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
+    resolved "http://r.npm.sankuai.com/lottie-component-emitter/download/lottie-component-emitter-1.3.0.tgz#16e4070fba8ae29b679f2215853ee181ab2eabc0"
     integrity sha1-FuQHD7qK4ptnnyIVhT7hgasuq8A=
   
   concat-map@0.0.1:
@@ -2509,7 +2509,7 @@ Lockfile:
   
   decode-uri-component@^0.2.0:
     version "0.2.0"
-    resolved "http://r.npm.sankuai.com/decode-uri-component/download/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+    resolved "http://r.npm.sankuai.com/decode-uri-component/download/decode-uri-lottie-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
     integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
   
   dedent@^0.7.0:

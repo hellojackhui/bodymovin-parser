@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios').default;
-const ParserToCSS = require('../packages/compiler-web/lib/compiler-web.umd');
+const ParserToCSS = require('../packages/lottie-compiler-web/lib/lottie-compiler-web.umd');
 
 const json = require('../mock/big.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');

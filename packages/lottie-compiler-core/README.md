@@ -1,4 +1,4 @@
-# @bodymovin-parser/compiler-core
+# @wmfe/lottie-compiler-core
 bodymovin通用解析器
 
 ## 工程目的
@@ -18,7 +18,7 @@ bodymovin通用解析器
 
 ## 如何使用
 ```javascript
-import Parser from '@bodymovin-parser/compiler-core';
+import Parser from '@wmfe/lottie-compiler-core';
 
 const inst = new Parser({
     json: json

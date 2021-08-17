@@ -1,4 +1,4 @@
-# compiler-core
+# lottie-compiler-core
 bodymovin小程序代码生成器
 
 # 功能
@@ -13,7 +13,7 @@ bodymovin小程序代码生成器
 
 ```js
 
-import MPCompiler from '@bodymovin-parser/compiler-mp';
+import MPCompiler from '@wmfe/lottie-compiler-mp';
 const axios = require('axios').default;
 
 

@@ -1,4 +1,4 @@
-# component-taro
+# lottie-component-taro
 taro动效组件
 
 ## 何时应用

@@ -6,7 +6,7 @@
  * @desc Miniprogram compiler
  */
 
-import CoreParser from "@bodymovin-parser/compiler-core";
+import CoreParser from "@wmfe/lottie-compiler-core";
 import isEqual from "./utils/is-equal";
 import { buildAnimeList, buildTransformStyle } from "./utils/utils";
 import CSSParser from "./CSSParser";

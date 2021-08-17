@@ -7,7 +7,7 @@
  */
 
 import { useState, useEffect } from "react";
-import MpCompiler from '@bodymovin-parser/compiler-mp';
+import MpCompiler from '@wmfe/lottie-compiler-mp';
 
 const hasOwnProperty = Object.prototype.hasOwnProperty;
 

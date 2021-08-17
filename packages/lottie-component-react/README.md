@@ -1,4 +1,4 @@
-# component-react
+# lottie-component-react
 react动效组件
 
 ## 何时应用

@@ -1,4 +1,4 @@
-import CoreParser from '@bodymovin-parser/compiler-core';
+import CoreParser from '@wmfe/lottie-compiler-core';
 import HTMLParser from './html/html-parser';
 import CSSParser from './css/css-parser';
 import TreeBuilder from './TreeBuilder';

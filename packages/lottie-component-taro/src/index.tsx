@@ -1,5 +1,5 @@
 import { IAEAnimate, IAEAnimateState } from './type/index';
-import MpAnimateCompiler from '@bodymovin-parser/compiler-mp'
+import MpAnimateCompiler from '@wmfe/lottie-compiler-mp'
 import { View, Image } from '@tarojs/components';
 import Taro from "@tarojs/taro";
 import { Component } from 'react';

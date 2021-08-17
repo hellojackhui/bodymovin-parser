@@ -1,8 +1,8 @@
 {
-  "name": "@bodymovin-parser/compiler-web",
-  "version": "0.0.1-alpha.1",
-  "description": "bodymovin-parser web动画代码生成器",
-  "main": "lib/compiler-web.umd.js",
+  "name": "@wmfe/component-taro",
+  "version": "0.0.6-beta.14",
+  "description": "bodymovin-parser taro动效播放组件",
+  "main": "src/index.ts",
   "files": [
     "index.ts"
   ],
@@ -23,7 +23,12 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@bodymovin-parser/compiler-core": "^0.0.1-alpha.1"
+    "@wmfe/compiler-web": "^0.0.6-beta.14",
+    "@tarojs/components": "3.2.14",
+    "@tarojs/taro": "3.2.14"
+  },
+  "devDependencies": {
+    "react": "^17.0.2"
   },
   "gitHead": "1034f4fb79298378f91862977c8f26c0c847c130"
 }

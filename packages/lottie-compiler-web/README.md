@@ -1,4 +1,4 @@
-# @bodymovin-parser/compiler-web
+# @wmfe/lottie-compiler-web
 
 bodymovin web代码生成器
 
@@ -8,7 +8,7 @@ bodymovin web代码生成器
 ```js
 
 // 使用本地json
-const WebParser = require('@bodymovin-parser/compiler-web');
+const WebParser = require('@wmfe/lottie-compiler-web');
 const json = require('xxx.json');
 
 const ins = new WebParser({
@@ -22,7 +22,7 @@ const {
 } = ins.parseByJson(json);
 
 // 使用网络资源
-const WebParser = require('@bodymovin-parser/compiler-web');
+const WebParser = require('@wmfe/lottie-compiler-web');
 const ins = new WebParser({
     mode: 'html',
     requestFn: (url) => axios.get(url),

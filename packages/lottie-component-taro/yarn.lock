@@ -9,17 +9,17 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@bodymovin-parser/compiler-core@^0.0.5":
+"@wmfe/lottie-compiler-core@^0.0.5":
   version "0.0.5"
-  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-core/download/@bodymovin-parser/compiler-core-0.0.5.tgz#e12182a65ddcb507993c7fc3238b4ea4a15e02a4"
+  resolved "http://r.npm.sankuai.com/@wmfe/lottie-compiler-core/download/@wmfe/lottie-compiler-core-0.0.5.tgz#e12182a65ddcb507993c7fc3238b4ea4a15e02a4"
   integrity sha1-4SGCpl3ctQeZPH/DI4tOpKFeAqQ=
 
-"@bodymovin-parser/compiler-web@^0.0.5-beta.3":
+"@wmfe/lottie-compiler-web@^0.0.5-beta.3":
   version "0.0.5-beta.3"
-  resolved "http://r.npm.sankuai.com/@bodymovin-parser/compiler-web/download/@bodymovin-parser/compiler-web-0.0.5-beta.3.tgz#c2e979fbcb3a0ba99cd6c1a9638a4ceea68d4c84"
+  resolved "http://r.npm.sankuai.com/@wmfe/lottie-compiler-web/download/@wmfe/lottie-compiler-web-0.0.5-beta.3.tgz#c2e979fbcb3a0ba99cd6c1a9638a4ceea68d4c84"
   integrity sha1-wul5+8s6C6mc1sGpY4pM7qaNTIQ=
   dependencies:
-    "@bodymovin-parser/compiler-core" "^0.0.5"
+    "@wmfe/lottie-compiler-core" "^0.0.5"
 
 "@stencil/core@2.4.0":
   version "2.4.0"
@@ -127,7 +127,7 @@ core-js@^2.4.0:
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
-  resolved "http://r.npm.sankuai.com/decode-uri-component/download/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
+  resolved "http://r.npm.sankuai.com/decode-uri-component/download/decode-uri-lottie-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
 dom7@^2.1.2:

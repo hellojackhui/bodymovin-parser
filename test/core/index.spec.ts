@@ -1,4 +1,4 @@
-const Parser = require('../../packages/compiler-core/lib/compiler-core.umd');
+const Parser = require('../../packages/lottie-compiler-core/lib/lottie-compiler-core.umd');
 const hand = require('../../mock/hand.json');
 
 describe('core-parser', () => {

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios').default;
-const MpCompiler = require('../packages/compiler-mp/lib/compiler-mp.umd');
+const MpCompiler = require('../packages/lottie-compiler-mp/lib/lottie-compiler-mp.umd');
 
 const json = require('../mock/demo1.json');
 const basePath = path.resolve(__dirname, '../example/miniprogram/pages/index/');

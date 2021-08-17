@@ -1,8 +1,8 @@
 {
   "packages": [
-    "packages/compiler-core",
-    "packages/compiler-web",
-    "packages/compiler-mp"
+    "packages/lottie-compiler-core",
+    "packages/lottie-compiler-web",
+    "packages/lottie-compiler-mp"
   ],
   "version": "0.0.1-alpha.1"
 }

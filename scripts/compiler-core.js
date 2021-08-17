@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
-const CoreParser = require('../packages/compiler-core/lib/compiler-core.umd');
+const CoreParser = require('../packages/lottie-compiler-core/lib/lottie-compiler-core.umd');
 const tree = require('../mock/big.json');
 
 const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
