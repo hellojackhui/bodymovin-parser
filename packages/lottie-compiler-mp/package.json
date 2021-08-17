@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/compiler-mp",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "description": "bodymovin-parser 小程序帧动画代码生成器",
   "main": "lib/compiler-mp.umd.js",
   "files": [
@@ -21,7 +21,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@wmfe/compiler-core": "^0.0.1-alpha.1"
+    "@wmfe/compiler-core": "^0.0.1-alpha.2"
   },
   "gitHead": "327ac919a0792ba0d2be77611758f172e17de916"
 }
