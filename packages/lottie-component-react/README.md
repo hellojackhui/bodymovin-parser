@@ -31,6 +31,7 @@ react动效组件
 source|数据源|JSON｜string|''|0.0.1
 play|自动播放|boolean|false|0.0.1
 infinite|是否循环播放|boolean|false|0.0.1
+count|播放次数|number|1|0.0.1
 duration|播放时间|number|1000|0.0.1
 onFinish|播放完成回调|function|() => {}|0.0.1
 onLoad|资源加载完成|function|() => {}|0.0.1
