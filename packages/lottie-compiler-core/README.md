@@ -1,9 +1,10 @@
 # @wmfe/lottie-compiler-core
-bodymovin通用解析器
+
+lottie动画核心解析器
 
 ## 工程目的
 
-基于AE导出的bodymovin.json，生成通用ast，用于跨平台解析与渲染
+基于AE导出的bodymovin插件导出的JSON文件，生成通用ast，用于跨平台解析与渲染
 
 ## 能力
 

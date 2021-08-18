@@ -2,7 +2,7 @@
  * @author 惠嘉伟
  * @email huijiawei@meituan.com
  * @create date 2021-08-09 13:35:59
- * @modify date 2021-08-17 11:54:28
+ * @modify date 2021-08-18 23:07:03
  * @desc 基于bodymovin-parser的react动效播放组件
  */
 
@@ -98,7 +98,7 @@ function AnimeComponent(props) {
     const source = (!cssFrames || !Object.keys(cssFrames).length) ? data : cssFrames;
     Object.keys(source).forEach((key) => {
       document.getElementById(key).animate(formatFrames(source[key].frames), {
-        duration: source[key].duration * 1000,
+        duration: props.duration || source[key].duration * 1000,
         iterations: props.counts || Infinity,
       })
     })
