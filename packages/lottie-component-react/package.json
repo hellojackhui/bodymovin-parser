@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-component-react",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "lottie-parser react动效播放组件",
   "main": "src/index.ts",
   "files": [
@@ -24,7 +24,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@wmfe/lottie-compiler-mp": "^0.0.1-alpha.4"
+    "@wmfe/lottie-compiler-mp": "^0.0.1-alpha.5"
   },
   "gitHead": "6555774534dd576dd01febbfd5d3e9f898bf4970"
 }

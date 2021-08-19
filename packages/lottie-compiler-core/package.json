@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-compiler-core",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.5",
   "description": "lottie-parser 核心解析器",
   "main": "lib/lottie-compiler-core.umd.js",
   "files": [
