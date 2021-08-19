@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-compiler-web",
-  "version": "0.0.1-alpha.6",
+  "version": "0.0.1-alpha.7",
   "description": "lottie-parser web动画代码生成器",
   "main": "lib/lottie-compiler-web.umd.js",
   "files": [
