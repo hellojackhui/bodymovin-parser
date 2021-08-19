@@ -1,5 +1,5 @@
 import { buildClipPathTree, buildSvgContentTree } from './utils/svgTools';
-
+import { framesFilter } from './utils/utils';
 class TreeBuilder {
     private _tree: any;
     private _duration: number;
@@ -143,9 +143,10 @@ class TreeBuilder {
         return res;
     }
 
-    getKeyFrames(list, source) {
+    getKeyFrames(frames, source) {
         const res = {};
-        if (!list || !Object.keys(list).length) return {};
+        if (!frames || !Object.keys(frames).length) return {};
+        const list = framesFilter(frames);
         let p;
         Object.keys(list).map((key, index) => {
             let item = list[key];

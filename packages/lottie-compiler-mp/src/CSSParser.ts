@@ -1,5 +1,6 @@
 
 import { camelCaseToAttrs, isCamelCase } from './utils/camel';
+import { framesFilter } from './utils/utils';
 class CSSParser {
 
     private _tree: any;
@@ -144,9 +145,10 @@ class CSSParser {
         return res;
     }
 
-    getKeyFrames(list, source) {
+    getKeyFrames(frames, source) {
         const res = {};
-        if (!list || !Object.keys(list).length) return {};
+        if (!frames || !Object.keys(frames).length) return {};
+        const list = framesFilter(frames);
         let p;
         Object.keys(list).map((key, index) => {
             let item = list[key];
