@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-component-taro",
-  "version": "0.0.6-beta.14",
+  "version": "0.0.1-alpha.4",
   "description": "bodymovin-parser taro动效播放组件",
   "main": "src/index.ts",
   "files": [
@@ -23,9 +23,9 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@wmfe/compiler-web": "^0.0.6-beta.14",
     "@tarojs/components": "3.2.14",
-    "@tarojs/taro": "3.2.14"
+    "@tarojs/taro": "3.2.14",
+    "@wmfe/compiler-web": "^0.0.6-beta.14"
   },
   "devDependencies": {
     "react": "^17.0.2"
