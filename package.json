@@ -20,8 +20,8 @@
     "mp-test": "npm run build-mp && node scripts/compiler-mp.js",
     "dev": "rollup --config --watch",
     "bootstrap": "cd example/web && npm run start",
-    "publish": "lerna publish",
-    "publish-force": "lerna publish --force-publish"
+    "publish": "lerna publish --registry='http://r.npm.sankuai.com'",
+    "publish-force": "lerna publish --force-publish --registry='http://r.npm.sankuai.com' "
   },
   "devDependencies": {
     "@types/jest": "^26.0.22",

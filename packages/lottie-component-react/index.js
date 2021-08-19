@@ -2,8 +2,8 @@
  * @author 惠嘉伟
  * @email huijiawei@meituan.com
  * @create date 2021-08-09 13:35:59
- * @modify date 2021-08-18 23:34:14
- * @desc 基于bodymovin-parser的react动效播放组件
+ * @modify date 2021-08-19 15:33:33
+ * @desc 基于lottie-parser的react动效播放组件
  */
 
  import { useState, useEffect } from "react";
