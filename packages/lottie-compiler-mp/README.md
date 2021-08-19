@@ -1,6 +1,6 @@
 # lottie-compiler-core
 
-bodymovin小程序代码生成器
+lottie-parser 小程序代码生成器
 
 # 功能
 1. 基于bodymovin生成适配小程序运行的dom/css代码

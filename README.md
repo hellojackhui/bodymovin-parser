@@ -1,7 +1,7 @@
-# lottie-player
+# magic
 
 
-基于bodymovin-parser的属性动画播放解决方案
+基于lottie-parser的属性动画播放解决方案
 
 ## 为什么要开发这个工程
 -   After Effect是知名的后期动效开发软件，基于AE的UI开发可以为web端带来丰富的动画效果和视觉展现，成为UI设计重要的组成部分。那么基于AE的动画展现就成为前端开发的重大难题。

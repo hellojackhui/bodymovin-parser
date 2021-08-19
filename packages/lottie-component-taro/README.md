@@ -2,14 +2,21 @@
 taro动效组件
 
 ## 何时应用
-基于ae-bodymovin的动效组件
+基于lottie-player的Taro动效组件
 
 ## 须知
 本组件由于使用[this.animate](https://developers.weixin.qq.com/miniprogram/dev/framework/view/animation.html)动画帧方法，故暂只支持微信小程序
 
 ## 代码演示
 ```javascript
-
+<AEComponent 
+    source={json}
+    autoPlay={true}
+    infinite={true}
+    onFinish={() => {}}
+    onLoad={() => {}}
+    onStart={() => {}}
+/>
 
 ```
 

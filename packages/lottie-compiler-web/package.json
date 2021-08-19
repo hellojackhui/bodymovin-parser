@@ -1,29 +1,31 @@
 {
   "name": "@wmfe/lottie-compiler-web",
   "version": "0.0.1-alpha.4",
-  "description": "bodymovin-parser web动画代码生成器",
-  "main": "lib/compiler-web.umd.js",
+  "description": "lottie-parser web动画代码生成器",
+  "main": "lib/lottie-compiler-web.umd.js",
   "files": [
     "index.ts"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
-    "directory": "packages/compiler-web"
+    "url": "git+http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/detail?path=packages%2Flottie-compiler-web%2FREADME.md",
+    "directory": "packages/lottie-compiler-web"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "bodymovin",
-    "bodymovin-parser",
+    "After Effects",
     "css3",
-    "keyframes"
+    "keyframes",
+    "lottie",
+    "lottie-parser"
   ],
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
     "@wmfe/lottie-compiler-core": "^0.0.1-alpha.4"
   },
-  "gitHead": "d10dbd729497ed012c5f596bfc2153938ebe6089"
+  "gitHead": "6555774534dd576dd01febbfd5d3e9f898bf4970"
 }

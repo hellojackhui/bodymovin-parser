@@ -1,7 +1,6 @@
 # @wmfe/lottie-compiler-web
 
-bodymovin web代码生成器
-
+lottie-parser web代码生成器
 
 ## 基本使用
 

@@ -1,34 +1,29 @@
 {
   "name": "@wmfe/lottie-component-taro",
   "version": "0.0.1-alpha.4",
-  "description": "bodymovin-parser taro动效播放组件",
+  "description": "lottie-parser taro动效播放组件",
   "main": "src/index.ts",
   "files": [
     "index.ts"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
-    "directory": "packages/compiler-web"
+    "url": "git+http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/detail?path=packages%2Flottie-component-taro%2FREADME.md",
+    "directory": "packages/lottie-component-taro"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "bodymovin",
-    "bodymovin-parser",
-    "css3",
-    "keyframes"
+    "After Effects",
+    "lottie",
+    "lottie-parser"
   ],
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@tarojs/components": "3.2.14",
-    "@tarojs/taro": "3.2.14",
-    "@wmfe/compiler-web": "^0.0.6-beta.14"
+    "@wmfe/lottie-compiler-web": "^0.0.1-alpha.4"
   },
-  "devDependencies": {
-    "react": "^17.0.2"
-  },
-  "gitHead": "1034f4fb79298378f91862977c8f26c0c847c130"
+  "gitHead": "6555774534dd576dd01febbfd5d3e9f898bf4970"
 }

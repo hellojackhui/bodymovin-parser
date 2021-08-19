@@ -3,7 +3,7 @@
 react动效组件
 
 ## 何时应用
-基于ae-bodymovin的web动效组件
+基于lottie-parser的web动效组件
 
 ## 须知
 本组件使用[Element.animate](https://developer.mozilla.org/en-US/docs/Web/API/Element/animate)动画帧方法，

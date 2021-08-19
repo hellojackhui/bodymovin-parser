@@ -1,26 +1,28 @@
 {
   "name": "@wmfe/lottie-compiler-core",
   "version": "0.0.1-alpha.4",
-  "description": "bodymovin-parser 核心解析器",
-  "main": "lib/compiler-core.umd.js",
+  "description": "lottie-parser 核心解析器",
+  "main": "lib/lottie-compiler-core.umd.js",
   "files": [
     "index.ts",
     "dist"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellojackhui/bodymovin-parser",
-    "directory": "packages/compiler-core"
+    "url": "git+http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/list",
+    "directory": "packages/lottie-compiler-core"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "bodymovin",
-    "bodymovin-parser"
+    "After Effects",
+    "lottie",
+    "lottie-parser"
   ],
   "license": "MIT",
   "author": "hellojackhui",
-  "homepage": "https://github.com/hellojackhui/bodymovin-parser/blob/master/README.md",
-  "gitHead": "d10dbd729497ed012c5f596bfc2153938ebe6089"
+  "homepage": "http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/detail?branch=refs%2Fheads%2Fmaster&path=README.md",
+  "gitHead": "6555774534dd576dd01febbfd5d3e9f898bf4970"
 }

@@ -6,8 +6,8 @@ import banner from "rollup-plugin-banner";
 
 const lerna = require("./lerna.json");
 const bannerText =
-  ` bodymovin-parser v${lerna.version}\n` +
-  ` (c) 2021-${new Date().getFullYear()} hellojackhui\n` +
+  ` lottie-parser v${lerna.version}\n` +
+  ` (c) 2021-${new Date().getFullYear()} huijiawei\n` +
   " Released under the MIT License."
 
 const configs = {
