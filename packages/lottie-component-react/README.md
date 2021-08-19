@@ -28,7 +28,7 @@ react动效组件
 
 参数|说明|类型|默认值|版本
 :---|:---|:---|:---|:---
-source|数据源|JSON｜string|''|0.0.1
+json|数据源|JSON｜string|''|0.0.1
 play|自动播放|boolean|false|0.0.1
 infinite|是否循环播放|boolean|false|0.0.1
 count|播放次数|number|1|0.0.1
