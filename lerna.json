@@ -2,7 +2,9 @@
   "packages": [
     "packages/lottie-compiler-core",
     "packages/lottie-compiler-web",
-    "packages/lottie-compiler-mp"
+    "packages/lottie-compiler-mp",
+    "packages/lottie-compiler-react",
+    "packages/lottie-compiler-taro"
   ],
   "version": "0.0.1-alpha.3"
 }
