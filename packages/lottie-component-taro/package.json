@@ -1,5 +1,5 @@
 {
-  "name": "@wmfe/component-taro",
+  "name": "@wmfe/lottie-component-taro",
   "version": "0.0.6-beta.14",
   "description": "bodymovin-parser taro动效播放组件",
   "main": "src/index.ts",
