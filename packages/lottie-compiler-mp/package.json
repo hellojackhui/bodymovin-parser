@@ -1,6 +1,6 @@
 {
   "name": "@wmfe/lottie-compiler-mp",
-  "version": "0.0.1-alpha.7",
+  "version": "0.0.1-alpha.8",
   "description": "lottie-parser 小程序帧动画代码生成器",
   "main": "lib/lottie-compiler-mp.umd.js",
   "files": [
@@ -23,7 +23,7 @@
   "license": "MIT",
   "author": "hellojackhui",
   "dependencies": {
-    "@wmfe/lottie-compiler-core": "^0.0.1-alpha.6"
+    "@wmfe/lottie-compiler-core": "^0.0.1-alpha.8"
   },
   "homepage": "http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/detail?path=packages%2Flottie-compiler-mp%2FREADME.md",
   "gitHead": "35b737b5e6e56adeeed80cb6a86bc0add9fbf036"
