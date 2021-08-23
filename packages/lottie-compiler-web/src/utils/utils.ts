@@ -9,6 +9,7 @@ function framesFilter(data) {
         const obj = {
             ...data[keys[i]],
             offset: 0,
+            index: 0,
         }
         let attrStr = typeof data[keys[i]] === 'object' ? JSON.stringify(obj) : '';
         if (!set.length || set[set.length - 1] !== attrStr) {
