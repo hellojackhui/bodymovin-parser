@@ -16,6 +16,7 @@ interface IWebBMParserConfig {
     assetsOrigin?: string;
     duration?: number;
     animeConfig: IAnimeConfig;
+    fullFrames?: boolean;
 }
 
 class WebBMParser {
@@ -46,7 +47,8 @@ class WebBMParser {
                 iterationCount: (config.animeConfig && config.animeConfig.iterationCount) ? config.animeConfig.iterationCount : 'infinite',
                 direction: (config.animeConfig && config.animeConfig.direction) ? config.animeConfig.direction : 'normal',
                 fillMode: (config.animeConfig && config.animeConfig.fillMode) ? config.animeConfig.fillMode : 'none',
-            }
+            },
+            fullFrames: config.fullFrames || true,
         }
     }
 

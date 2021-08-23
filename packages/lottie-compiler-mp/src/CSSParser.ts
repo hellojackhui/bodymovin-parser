@@ -79,7 +79,7 @@ class CSSParser {
                         'animationFillMode': 'none'
                     }
                     target['keyFramesName'] = `Layer_AnimKeys${_index}`;
-                    target['keyFramesList'] = this.getKeyFrames(animeList, target);
+                    target['keyFramesList'] = this.getKeyFrames(animeList, target, ctx);
                 }
                 if (children) {
                     target['children'] = [];
@@ -145,10 +145,10 @@ class CSSParser {
         return res;
     }
 
-    getKeyFrames(frames, source) {
+    getKeyFrames(frames, source, ctx) {
         const res = {};
         if (!frames || !Object.keys(frames).length) return {};
-        const list = framesFilter(frames);
+        const list = ctx.options.fullFrames ? frames : framesFilter(frames);
         let p;
         Object.keys(list).map((key, index) => {
             let item = list[key];

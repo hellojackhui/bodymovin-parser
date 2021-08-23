@@ -25,6 +25,7 @@ enum MpCompilerMode {
 interface MpCompilerOptions {
   duration?: number;
   infinite?: boolean;
+  fullFrames?: boolean;
 }
 
 class MpCompiler implements MpCompilerClass {
@@ -38,7 +39,10 @@ class MpCompiler implements MpCompilerClass {
   constructor(config) {
     const { request, options, mode } = config;
     this.mode = mode;
-    this.options = options;
+    this.options = {
+      ...options,
+      fullFrames: (options && options.fullFrames) || true,
+    };
     this.request = request;
   }
 
