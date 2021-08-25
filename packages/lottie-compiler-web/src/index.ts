@@ -48,7 +48,7 @@ class WebBMParser {
                 direction: (config.animeConfig && config.animeConfig.direction) ? config.animeConfig.direction : 'normal',
                 fillMode: (config.animeConfig && config.animeConfig.fillMode) ? config.animeConfig.fillMode : 'none',
             },
-            fullFrames: config.fullFrames || true,
+            fullFrames: config.fullFrames !== undefined ? config.fullFrames : true,
         }
     }
 

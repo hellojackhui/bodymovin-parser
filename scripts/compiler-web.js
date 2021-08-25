@@ -18,6 +18,7 @@ const instance = new ParserToCSS({
     requestFn: fetch,
     config: {
         mode: 'html',
+        fullFrames: false,
     },
 })
 
