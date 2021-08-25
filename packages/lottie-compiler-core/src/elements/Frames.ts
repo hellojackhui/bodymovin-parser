@@ -76,7 +76,7 @@ function createOpacityFrameList(frame, frameList, startFrame) {
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
         animeFrames[cur] = {};
-        const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
+        const area = frameList.filter((item) => item.startTime <= i && item.endTime >= i);
         if (area.length) {
             if (!initTime) {
                 initTime = `${area[0].startTime}`;

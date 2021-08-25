@@ -178,7 +178,7 @@ class WebBMParser {
 
     buildAnimeList(list, attributes) {
         const res = {};
-        const { width, height, opacity, anchor, ...rest} = attributes;
+        const { width, height, opacity = 1, anchor, ...rest} = attributes;
         list.map((item) => {
             res[`${Number((Number(item.offset) * 100).toFixed(3))}%`] = {
                 ...rest,

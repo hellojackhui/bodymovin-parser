@@ -183,7 +183,7 @@ class CSSParser {
                 transformStr += ';';
                 res[key]['transform'] = transformStr;
             }
-            if (opacity) {
+            if (opacity !== undefined) {
                 res[key]['opacity'] = this.fix(opacity, 2);
             }
             if (index === 0) {
@@ -212,6 +212,7 @@ class CSSParser {
     }
 
     fix(num, point = 2) {
+        if (num == undefined) return 1;
         return Number(Number(num).toFixed(point));
     }
 
