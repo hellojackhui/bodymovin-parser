@@ -12,11 +12,20 @@ class Path {
         const {a, k} = source;
         this.type = 'shape';
         this.isAnimated = !!a;
-        this.isClosed = k.c;
+        this.isClosed = this.getPathClosed(k);
         this.pathList = this.buildPathList(k);
     }
 
-    buildPathList(path) {
+    getPathClosed(data) {
+        if (this.isAnimated) return data[0].s[0].c;
+        return data.c;
+    }
+
+    buildPathList(data) {
+        let path = data;
+        if (this.isAnimated) {
+            path = data[0].s[0];
+        }
         let i;
         let len = path.i.length;
         for (i = 0; i < len; i += 1) {
@@ -34,7 +43,7 @@ class Path {
             isAnimated: this.isAnimated,
             isClosed: this.isClosed,
             pathList: this.pathList,
-          };
+        };
     }
 
 }

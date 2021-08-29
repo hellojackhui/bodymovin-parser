@@ -2,6 +2,7 @@ import { ShapeItemTypeEnum } from '../Shapes';
 import Path from './Path';
 import Fill from './Fill';
 import Transform from './Transform';
+import Ellipse from './Ellipse';
 
 interface IGroupItem {
     index: number;
@@ -68,6 +69,8 @@ class Group implements IGroup {
                     return this.buildFillAttrs(item);
                 case ShapeItemTypeEnum.TRANSFORM:
                     return this.buildTranformAttrs(item);
+                case ShapeItemTypeEnum.ELLIPSE:
+                    return this.buildEllipseAttrs(item);
             }
         })
     }
@@ -82,6 +85,10 @@ class Group implements IGroup {
 
     buildShapeAttrs(data) {
         return new Path(data.ks).output()
+    }
+
+    buildEllipseAttrs(data) {
+        return new Ellipse(data).output()
     }
 
 }

@@ -277,11 +277,13 @@ const buildSvgTree = (data) => {
   const target = {};
   // 设置svg属性
   target['type'] = 'svg';
-  target['attrs'] = {
-    width: data.shapeData.width,
-    height: data.shapeData.height,
-    viewBox: `${data.shapeData.x} ${data.shapeData.y} ${data.shapeData.width} ${data.shapeData.height}`,
-    style: `transform: ${data.shapeData.shapeTransform};`,
+  if (data.shapeData) {
+    target['attrs'] = {
+      width: data.shapeData.width,
+      height: data.shapeData.height,
+      viewBox: `${data.shapeData.x} ${data.shapeData.y} ${data.shapeData.width} ${data.shapeData.height}`,
+      style: `transform: ${data.shapeData.shapeTransform};`,
+    }
   }
   target['children'] = buildGTree(data);
   return target;

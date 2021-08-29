@@ -3,6 +3,7 @@ import Fill from "./shape/Fill";
 import Transform from "./shape/Transform";
 import Group from './shape/Group';
 import Rect from './shape/Rect';
+import Ellipse from './shape/Ellipse';
 
 export enum ShapeItemTypeEnum {
   SHAPE = "sh",
@@ -72,6 +73,8 @@ class Shapes {
           return new Group(item).output();
         case ShapeItemTypeEnum.RECT:
           return new Rect(item).output();
+        case ShapeItemTypeEnum.ELLIPSE:
+          return new Ellipse(item).output();
       }
     });
     return output;
