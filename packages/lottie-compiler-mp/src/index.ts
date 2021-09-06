@@ -41,7 +41,7 @@ class MpCompiler implements MpCompilerClass {
     this.mode = mode;
     this.options = {
       ...options,
-      fullFrames: (options && options.fullFrames) || true,
+      fullFrames: (options && options.fullFrames),
     };
     this.request = request;
   }
