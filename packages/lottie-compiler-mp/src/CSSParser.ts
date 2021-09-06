@@ -53,7 +53,7 @@ class CSSParser {
                     });
                 }
             } else {
-                const { type, styles, _id, _index, animeList, url, _name, children } = tree;
+                const { type, styles, _id, _index, animeList, url, _name, children, frameOptions } = tree;
                 target['_id'] = _id;
                 target['type'] = type;
                 target['_name'] = _name;
@@ -72,7 +72,7 @@ class CSSParser {
                     target['animation'] = {
                         'animationName': `Layer_AnimKeys${_index}`,
                         'animationDuration': `${Number(this._duration.toFixed(3))}s`,
-                        'animationDelay': '0.00s',
+                        'animationDelay': `${Number((frameOptions.initialFramePoint) / (frameOptions.frame)).toFixed(2)}s`,
                         'animationTimingFunction': 'steps(1)',
                         'animationIterationCount': infinite,
                         'animationDirection': 'normal',

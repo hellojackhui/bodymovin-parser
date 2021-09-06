@@ -106,6 +106,12 @@ class WebBMParser {
                         rotate
                     }),
                 }
+                source['frameOptions'] = {
+                    frame: layer.frame,
+                    totalFrames: layer.totalFrames,
+                    initialFramePoint: layer.initialFramePoint,
+                    finalFramePoint: layer.finalFramePoint,
+                } 
                 source['animeList'] = this.buildAnimeList(animeFrames, attributes);
                 if (layer.maskList) {
                     res['maskList'] = [

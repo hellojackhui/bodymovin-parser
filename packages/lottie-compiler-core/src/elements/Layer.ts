@@ -19,6 +19,7 @@ enum LayerTypeEnum {
 
 class Layer {
 
+    frame: number;
     frames: number; 
     index: any;
     id: any;
@@ -47,20 +48,22 @@ class Layer {
 
     buildBaseInfo({
         layer,
+        frame,
         frames,
         startFrame,
         options,
     }) {
-        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm } = layer;
+        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm, op } = layer;
         this._unionId = `layer-bm-${ind}`;
         this.parentId = `layer-bm-${parent}`;
         this.name = nm;
         this.id = id || this.name;
         this.frames = frames;
         this.layer = layer;
+        this.frame = frame;
         this._startFrame = startFrame;
         this._initialFramePoint = ip;
-        this._finalFramePoint = ip;
+        this._finalFramePoint = op;
         this._startTime = st;
         this._options = options;
         this.index = ind;
@@ -76,6 +79,7 @@ class Layer {
             unionId: this._unionId,
             parentId: this.parentId,
             name: this.name,
+            frame: this.frame,
             totalFrames: this.frames, 
             startFrame: this._startFrame,
             initialFramePoint: this._initialFramePoint,

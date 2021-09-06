@@ -113,6 +113,7 @@ class CoreParser implements Compiler.ICompiler {
     return this.rebuildAssetsTree({
       cur: target, 
       id: assetId,
+      layerId: layer.ind,
     });
   }
 
@@ -210,6 +211,7 @@ class CoreParser implements Compiler.ICompiler {
         const layerInstance = new Layer({
           layer,
           frames: frameCount,
+          frame: this.frame,
           startFrame: this.startFrame,
           options: {
             w, 
@@ -246,11 +248,14 @@ class CoreParser implements Compiler.ICompiler {
   rebuildAssetsTree({
     cur, 
     id,
+    layerId,
   }) {
     let { layers, assets } = this.json;
-    let targetLayerIndex = layers.findIndex((layer) => layer.refId === id);
-    let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || assets.id === id);
+    let targetLayerIndex = layers.findIndex((layer) => layer.refId === id && layerId === layer.ind);
+    let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || asset.id === id);
     let targetLayer = layers[targetLayerIndex];
+    let targetAssets = assets[targetAssetIndex];
+
     if (cur.layers) {
       cur.layers.forEach((layer) => {
         layer.parent = targetLayerIndex + 1;
@@ -258,17 +263,12 @@ class CoreParser implements Compiler.ICompiler {
       });
       layers.push(...cur.layers);
     }
-    assets.splice(targetAssetIndex, 1);
+
+    // 更新动画模式
     targetLayer.ty = LayerTypeEnum.image;
-    const templeAssets = {
-      id: targetLayer.refId,
-      w: targetLayer.w,
-      h: targetLayer.h,
-      e: 1,
-      u: '',
-      p: '',
-    };
-    assets.push(templeAssets);
+    targetLayer.refId = targetAssets.layers[0].refId;
+    targetLayer.ks = targetAssets.layers[0].ks;
+
     return this.buildAssetsModal();
   }
 

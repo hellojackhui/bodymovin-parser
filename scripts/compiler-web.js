@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const ParserToCSS = require('../packages/lottie-compiler-web/lib/lottie-compiler-web.umd');
 
-const json = require('../mock/big1.json');
+const json = require('../mock/big2.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 
 const fetch = (url) => {
@@ -22,7 +22,7 @@ const instance = new ParserToCSS({
     },
 })
 
-// instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/6.json').then(({
+// instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/rice.json').then(({
 //     cssContent,
 //     domContent
 // }) => {

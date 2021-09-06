@@ -137,6 +137,12 @@ class MpCompiler implements MpCompilerClass {
             rotate,
           }),
         };
+        source['frameOptions'] = {
+          frame: layer.frame,
+          totalFrames: layer.totalFrames,
+          initialFramePoint: layer.initialFramePoint,
+          finalFramePoint: layer.finalFramePoint,
+        } 
         source["animeList"] = buildAnimeList(animeFrames, attributes);
       }
       return source;
