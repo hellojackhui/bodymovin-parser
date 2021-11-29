@@ -72,22 +72,20 @@ function createOpacityFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
-    let prevStartTime = -1;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
         animeFrames[cur] = {};
-        const area = frameList.filter((item) => item.startTime <= i && item.endTime >= i);
+        const area = frameList.filter((item) => item.startTime <= i && item.endTime > i);
         if (area.length) {
             if (!initTime) {
                 initTime = `${area[0].startTime}`;
             }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
-            if (diff === 0 && prevStartTime !== startTime) {
+            if (diff < 1) {
                 animeFrames[cur] = {
                     isKeyFrame: true,
                 }
-                prevStartTime = startTime;
             }
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
@@ -128,7 +126,6 @@ function createRotateFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
-    let prevStartTime = -1;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
         animeFrames[cur] = {};
@@ -139,11 +136,10 @@ function createRotateFrameList(frame, frameList, startFrame) {
             }
             const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
-            if (diff === 0 && prevStartTime !== startTime) {
+            if (diff < 1) {
                 animeFrames[cur] = {
                     isKeyFrame: true,
                 }
-                prevStartTime = startTime;
             }
             let playRatio = Number((diff / duration).toFixed(2));
             if (bezierFn) {
@@ -184,7 +180,6 @@ function createScaleFrameList(frame, frameList, startFrame) {
     const animeFrames = {};
     const len = frameList.length;
     let initTime;
-    let prevStartTime = -1;
     for (let cur = 0; cur <= frame; cur++) {
         let i = cur + startFrame;
         animeFrames[cur] = {};
@@ -193,16 +188,15 @@ function createScaleFrameList(frame, frameList, startFrame) {
             if (!initTime) {
                 initTime = `${area[0].startTime}`;
             }
-            const { startTime, duration, startVal, endVal = startVal, bezierFn, bezierStr } = area[0];
+            const { startTime, duration, startVal, endVal, bezierFn, bezierStr } = area[0];
             let diff = i - startTime;
-            if (diff === 0 && prevStartTime !== startTime) {
+            if (diff < 1) {
                 animeFrames[cur] = {
                     isKeyFrame: true,
                 }
-                prevStartTime = startTime;
             }
             let playRatio = Number((diff / duration).toFixed(2));
-            let ratio = bezierFn(playRatio);
+            let ratio = bezierFn ? bezierFn(playRatio) : 1;
             let offsetX = endVal[0] - startVal[0];
             let offsetY = endVal[1] - startVal[1];
             let offsetZ = endVal[2] - startVal[2];
@@ -248,7 +242,6 @@ function createPositionFrameList(frame, frameList, startFrame) {
     const len = frameList.length;
     // 处理非锚点区域位置轨迹问题
     let initTime;
-    let prevStartTime = -1;
     let isHead = true;
     let isFoot = true;
     for (let cur = 0; cur <= frame; cur++) {
@@ -261,19 +254,20 @@ function createPositionFrameList(frame, frameList, startFrame) {
                 initTime = `${area[0].startTime}`;
             }
             let diff = i - startTime;
-            if (diff === 0 && prevStartTime !== startTime) {
+            if (diff < 1) {
                 animeFrames[cur] = {
                     isKeyFrame: true,
                 }
-                prevStartTime = startTime;
             }
             if (parabolaPointList) {
                 let offset = Math.floor((diff / duration) * 150);
+                offset = offset == 150 ? offset - 1 : offset;
                 let nextPoint = parabolaPointList.points[offset].point;
                 animeFrames[cur] = {
                     ...animeFrames[cur],
                     position: [fix(nextPoint[0], 5), fix(nextPoint[1], 5), fix(nextPoint[2], 5)],
                     ease: bezierStr,
+                    isKeyFrame: true,
                 }
             } else {
                 let playRatio = Number((diff / duration).toFixed(2));

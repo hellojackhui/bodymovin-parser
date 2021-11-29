@@ -103,6 +103,9 @@ class Layer {
             const layer = ks[key];
             return this.buildMetricsAnime(key, layer);
         });
+        // 关键帧过滤
+        this.animeFrames = this.animeFrames.filter((frame) => frame.index === 0 || frame.index >= this.animeFrames.length - 1 || frame.isKeyFrame);
+        return;
     }
 
     buildMaskLayer(layer, ctx) {
@@ -320,7 +323,7 @@ class Layer {
                 ...frames[key],
                 offset: Number(Number(index / this.frames).toFixed(5)),
             }
-        })
+        });
     }
 
     fix(num, point = 2) {

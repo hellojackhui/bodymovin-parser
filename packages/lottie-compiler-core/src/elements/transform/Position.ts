@@ -28,7 +28,10 @@ class Position implements IPosition {
         nextLayer,
     }) {
         const {t, s} = layer;
-        const next = nextLayer ? nextLayer : layer;
+        const next = nextLayer ? nextLayer : {
+            t: 99999,
+            s: layer.s,
+        };
         const {t: nt, s: ns} = next;
         this.startTime = nt < t ? nt : t;
         this.endTime = nt < t ? t : nt;

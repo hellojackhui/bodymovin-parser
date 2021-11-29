@@ -17,6 +17,7 @@ enum LayerTypeEnum {
 class CoreParser implements Compiler.ICompiler {
 
   public json: any;
+  private _json: any;
   public bmVersion: string;
   public endFrame: any;
   public name: any;
@@ -25,10 +26,11 @@ class CoreParser implements Compiler.ICompiler {
   public frame: any;
   public maskIndex: number;
   public layer: Compiler.IRootWrapper;
-  public assetsObj: {};
+  public assetList: {};
   public errorList: Array<Compiler.ErrorItem>;
 
   constructor({ json }) {
+    this._json = json;
     this.json = json;
     this.buildCoreParseModal();
     this.buildAssetsModal();
@@ -37,7 +39,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildCoreParseModal() {
-    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this.json;
+    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this._json;
     this.bmVersion = v;
     this.name = nm;
     this.startFrame = ip;
@@ -45,7 +47,7 @@ class CoreParser implements Compiler.ICompiler {
     this.frame = fr;
     this.is3dLayer = !!ddd;
     this.maskIndex = 0;
-    this.assetsObj = {};
+    this.assetList = {};
     this.errorList = [];
     this.layer = {
       type: "node",
@@ -57,7 +59,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildAssetsModal() {
-    const { assets, layers } = this.json;
+    const { assets, layers } = this._json;
     layers.forEach((layer, index) => {
       switch (layer.ty) {
         case LayerTypeEnum.image:
@@ -92,15 +94,15 @@ class CoreParser implements Compiler.ICompiler {
     if (!assetArr || !assetArr.length) {
       return;
     }
-    let target = assetArr[0];
     const assetInstance = new Asset({
-      asset: target,
+      asset: assetArr[0],
       options: {
         index: layer.ind,
         layerType: layer.ty,
       }
     });
-    this.assetsObj[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance._unionId] = assetInstance;
+    return;
   }
 
   buildCompInstance(assets, layer) {
@@ -109,9 +111,8 @@ class CoreParser implements Compiler.ICompiler {
     if (!assetArr || !assetArr.length) {
       return;
     }
-    let target = assetArr[0];
     return this.rebuildAssetsTree({
-      cur: target, 
+      cur: assetArr[0],
       id: assetId,
       layerId: layer.ind,
     });
@@ -132,7 +133,7 @@ class CoreParser implements Compiler.ICompiler {
         layerType: LayerTypeEnum.image,
       }
     });
-    this.assetsObj[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance._unionId] = assetInstance;
   }
 
   buildEmptyInstance(layer) {
@@ -150,7 +151,7 @@ class CoreParser implements Compiler.ICompiler {
         layerType: LayerTypeEnum.image,
       }
     });
-    this.assetsObj[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance._unionId] = assetInstance;
   }
 
   buildTextInstance(layer) {
@@ -162,7 +163,7 @@ class CoreParser implements Compiler.ICompiler {
         layerType: LayerTypeEnum.text,
       }
     });
-    this.assetsObj[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance._unionId] = assetInstance;
   }
 
   buildShapesInstance(layer) {
@@ -179,7 +180,7 @@ class CoreParser implements Compiler.ICompiler {
       id: layer.nm,
       type: LayerTypeEnum.shape,
     }
-    this.assetsObj[`layer-bm-${layer.ind}`] = shapeModal;
+    this.assetList[`layer-bm-${layer.ind}`] = shapeModal;
   }
 
   outputJSON() {
@@ -203,7 +204,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildLayersModal() {
-    const { layers, w, h } = this.json;
+    const { layers, w, h } = this._json;
     if (!layers || !layers.length) return;
     const frameCount = this.endFrame - this.startFrame;
     layers.forEach((layer) => {
@@ -228,7 +229,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildLayerTree() {
-    let obj = this.assetsObj;
+    let obj = this.assetList;
     Object.keys(obj).forEach((key) => {
       let layer = obj[key];
       if (layer.parentId && obj[layer.parentId]) {
@@ -241,16 +242,17 @@ class CoreParser implements Compiler.ICompiler {
         delete obj[key];
       }
     });
-    this.layer["children"] = Object.values(this.assetsObj);
+    this.layer["children"] = Object.values(this.assetList);
     return;
   }
 
+  // precomp类型
   rebuildAssetsTree({
     cur, 
     id,
     layerId,
   }) {
-    let { layers, assets } = this.json;
+    let { layers, assets } = this._json;
     let targetLayerIndex = layers.findIndex((layer) => layer.refId === id && layerId === layer.ind);
     let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || asset.id === id);
     let targetLayer = layers[targetLayerIndex];
@@ -258,8 +260,8 @@ class CoreParser implements Compiler.ICompiler {
 
     if (cur.layers) {
       cur.layers.forEach((layer) => {
-        layer.parent = targetLayerIndex + 1;
-        layer.ind += targetLayerIndex + 1;
+        layer.parent = targetLayer.ind;
+        layer.ind += targetLayer.ind;
       });
       layers.push(...cur.layers);
     }
@@ -275,9 +277,9 @@ class CoreParser implements Compiler.ICompiler {
   linkLayerToAsset({ layer }) {
     let parentId = layer.getParentId();
     let unionId = layer.getUnionId();
-    if (this.assetsObj[unionId]) {
-      this.assetsObj[unionId]["parentId"] = parentId;
-      this.assetsObj[unionId].layer = layer.outputJSON();
+    if (this.assetList[unionId]) {
+      this.assetList[unionId]["parentId"] = parentId;
+      this.assetList[unionId].layer = layer.outputJSON();
     } else {
       this.errorList.push({
         name: layer.name,

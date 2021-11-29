@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const MpCompiler = require('../packages/lottie-compiler-mp/lib/lottie-compiler-mp.umd');
 
-const json = require('../mock/demo1.json');
+const json = require('../mock/shapes-loading.json');
 const basePath = path.resolve(__dirname, '../example/miniprogram/pages/index/');
 
 const fetch = (url) => {
@@ -15,6 +15,9 @@ const fetch = (url) => {
 const instance = new MpCompiler({
     mode: 'animate',
     request: fetch,
+    options: {
+        fullFrames: false,
+    }
 })
 
 instance.parseByUrl('http://portal-portm.meituan.com/test/wmmp/page-loading2.json').then((data) => {

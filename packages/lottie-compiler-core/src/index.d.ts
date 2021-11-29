@@ -8,7 +8,7 @@ export interface ICompiler {
     layer: IRootWrapper;
     is3dLayer: boolean;
     maskIndex: number;
-    assetsObj: {
+    assetList: {
         [x: string]: IAsset
     };
 }

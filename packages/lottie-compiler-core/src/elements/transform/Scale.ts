@@ -32,7 +32,10 @@ class Scale implements IScale{
         nextLayer
     }) {
         const {t, s} = layer;
-        const next = nextLayer ? nextLayer : layer;
+        const next = nextLayer ? nextLayer : {
+            t: 99999,
+            s: layer.s,
+        };
         const {t: nt, s: ns} = next;
         this.startTime = t;
         this.endTime = nt;
