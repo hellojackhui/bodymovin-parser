@@ -17,6 +17,7 @@ class Asset implements IAsset {
     public height: any;
     public path: any;
     public _unionId: string;
+    public parentId: string;
 
     constructor({
         asset,
@@ -27,8 +28,9 @@ class Asset implements IAsset {
 
     buildAssets(assets, options) {
         const { id, w, h, u, p } = assets;
-        const { index, layerType = 2 } = options;
-        this._unionId = `layer-bm-${index}`;
+        const { index, layerType = 2, level, parent = 0 } = options;
+        this._unionId = `layer-bm-${level}-${index}`;
+        this.parentId = `layer-bm-${level - 1}-${parent}`;
         this.type = this.getNodeType(layerType);
         this.id = id;
         this.width = w;

@@ -1,4 +1,5 @@
 import isAttribute from '../utils/isAttribute';
+import { LayerTypeEnum, TypeEnum } from '../utils/constant';
 import { parseExpression } from '../utils/expression';
 import {
     buildOpacityFrames,
@@ -8,14 +9,6 @@ import {
 } from './Frames';
 import Mask from './Mask';
 
-enum LayerTypeEnum {
-    'precomp' = 0,
-    'solid' = 1,
-    'image' = 2,
-    'null' = 3,
-    'shape' = 4,
-    'text' = 5,
-}
 
 class Layer {
 
@@ -23,6 +16,7 @@ class Layer {
     frames: number; 
     index: any;
     id: any;
+    type: string;
     name: string;
     layer: any;
     _level: number;
@@ -53,9 +47,10 @@ class Layer {
         startFrame,
         options,
     }) {
-        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm, op } = layer;
-        this._unionId = `layer-bm-${ind}`;
-        this.parentId = `layer-bm-${parent}`;
+        const { ind, refId: id, parent = 0, ip, ef: effects = {}, st, nm, op, level, ty } = layer;
+        this._unionId = `layer-bm-${level}-${ind}`;
+        this.parentId = `layer-bm-${level - 1}-${parent}`;
+        this.type = TypeEnum[ty];
         this.name = nm;
         this.id = id || this.name;
         this.frames = frames;
@@ -79,6 +74,7 @@ class Layer {
             unionId: this._unionId,
             parentId: this.parentId,
             name: this.name,
+            type: this.type,
             frame: this.frame,
             totalFrames: this.frames, 
             startFrame: this._startFrame,

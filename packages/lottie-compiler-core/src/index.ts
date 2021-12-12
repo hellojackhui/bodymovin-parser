@@ -4,15 +4,7 @@ import Layer from "./elements/Layer";
 import Shapes from "./elements/Shapes";
 import Text from "./elements/Text";
 import * as Compiler from './index.d';
-
-enum LayerTypeEnum {
-  'precomp' = 0,
-  'solid' = 1,
-  'image' = 2,
-  'null' = 3,
-  'shape' = 4,
-  'text' = 5,
-}
+import { LayerTypeEnum, TypeEnum } from './utils/constant';
 
 class CoreParser implements Compiler.ICompiler {
 
@@ -34,10 +26,9 @@ class CoreParser implements Compiler.ICompiler {
     this.json = json;
     this.buildCoreParseModal();
     this.buildAssetsModal();
-    this.buildLayersModal();
-    this.buildLayerTree();
   }
 
+  // 构建核心数据对象
   buildCoreParseModal() {
     const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this._json;
     this.bmVersion = v;
@@ -58,9 +49,15 @@ class CoreParser implements Compiler.ICompiler {
     };
   }
 
-  buildAssetsModal() {
-    const { assets, layers } = this._json;
-    layers.forEach((layer, index) => {
+  // 基于layers构建assets模型
+  buildAssetsModal(newLayers?: any) {
+    const { assets, layers: sourceLayers } = this._json;
+    // 初始化图层层级
+    sourceLayers.forEach(layer => layer.level = 1);
+    // 剔除状态为null的图层
+    const layers = newLayers || sourceLayers.reduce((prev, next) => [...prev, ...next.ty === LayerTypeEnum['null'] ? [] : [next]], []);
+    // 图层遍历
+    layers.forEach((layer) => {
       switch (layer.ty) {
         case LayerTypeEnum.image:
           this.buildAssetInstance(assets, layer);
@@ -85,7 +82,7 @@ class CoreParser implements Compiler.ICompiler {
           break;
       }
     });
-    return;
+    return this.buildLayersModal(layers);
   }
 
   buildAssetInstance(assets, layer) {
@@ -99,6 +96,8 @@ class CoreParser implements Compiler.ICompiler {
       options: {
         index: layer.ind,
         layerType: layer.ty,
+        level: layer.level,
+        parent: layer.parent,
       }
     });
     this.assetList[assetInstance._unionId] = assetInstance;
@@ -119,9 +118,9 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildSolidInstance(layer) {
-    const { sw: w, sh: h, ind: index } = layer;
+    const { sw: w, sh: h, ind: index, level, parent } = layer;
     const tempAsset = {
-      id: `layer_element-${index}`,
+      id: `layer_element-${level}-${index}`,
       w,
       h,
       p: "",
@@ -131,15 +130,16 @@ class CoreParser implements Compiler.ICompiler {
       options: {
         index,
         layerType: LayerTypeEnum.image,
+        parent,
       }
     });
     this.assetList[assetInstance._unionId] = assetInstance;
   }
 
   buildEmptyInstance(layer) {
-    const { w = 100, h = 100, ind: index } = layer;
+    const { w = 100, h = 100, ind: index, level, parent = 0 } = layer;
     const tempAsset = {
-      id: `layer_element-${index}`,
+      id: `layer_element-${level}-${index}`,
       w,
       h,
       p: "",
@@ -149,18 +149,21 @@ class CoreParser implements Compiler.ICompiler {
       options: {
         index,
         layerType: LayerTypeEnum.image,
+        level,
+        parent,
       }
     });
     this.assetList[assetInstance._unionId] = assetInstance;
   }
 
   buildTextInstance(layer) {
-    const { t: text, ind: index } = layer;
+    const { t: text, ind: index, level } = layer;
     const assetInstance = new Text({
       asset: text,
       options: {
         index,
         layerType: LayerTypeEnum.text,
+        level,
       }
     });
     this.assetList[assetInstance._unionId] = assetInstance;
@@ -180,7 +183,7 @@ class CoreParser implements Compiler.ICompiler {
       id: layer.nm,
       type: LayerTypeEnum.shape,
     }
-    this.assetList[`layer-bm-${layer.ind}`] = shapeModal;
+    this.assetList[`layer-bm-${layer.level}-${layer.ind}`] = shapeModal;
   }
 
   outputJSON() {
@@ -203,10 +206,13 @@ class CoreParser implements Compiler.ICompiler {
     return this.json;
   }
 
-  buildLayersModal() {
-    const { layers, w, h } = this._json;
-    if (!layers || !layers.length) return;
+  buildLayersModal(lys) {
+    const { layers: sourceLayers, w, h } = this._json;
+    if (!sourceLayers || !sourceLayers.length) return;
     const frameCount = this.endFrame - this.startFrame;
+        // 剔除状态为null的图层
+    let layers = lys || sourceLayers;
+    layers = layers.reduce((prev, next) => [...prev, ...next.ty === LayerTypeEnum['null'] ? [] : [next]], []);
     layers.forEach((layer) => {
       if (layer.ks) {
         const layerInstance = new Layer({
@@ -225,11 +231,12 @@ class CoreParser implements Compiler.ICompiler {
         });
       }
     });
-    return;
+    return this.buildLayerTree();
   }
 
   buildLayerTree() {
     let obj = this.assetList;
+    // console.log(this.assetList);
     Object.keys(obj).forEach((key) => {
       let layer = obj[key];
       if (layer.parentId && obj[layer.parentId]) {
@@ -238,7 +245,7 @@ class CoreParser implements Compiler.ICompiler {
           ? parent["children"].push(layer)
           : (parent["children"] = [layer]);
       }
-      if (layer.parentId !== "layer-bm-0") {
+      if (layer.parentId !== "layer-bm-0-0" || layer.type === TypeEnum[3]) {
         delete obj[key];
       }
     });
@@ -257,21 +264,19 @@ class CoreParser implements Compiler.ICompiler {
     let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || asset.id === id);
     let targetLayer = layers[targetLayerIndex];
     let targetAssets = assets[targetAssetIndex];
-
     if (cur.layers) {
       cur.layers.forEach((layer) => {
         layer.parent = targetLayer.ind;
         layer.ind += targetLayer.ind;
+        layer.level = targetLayer.level + 1;
       });
-      layers.push(...cur.layers);
+      layers = layers.concat(cur.layers);
     }
-
     // 更新动画模式
     targetLayer.ty = LayerTypeEnum.image;
     targetLayer.refId = targetAssets.layers[0].refId;
     targetLayer.ks = targetAssets.layers[0].ks;
-
-    return this.buildAssetsModal();
+    return this.buildAssetsModal(layers);
   }
 
   linkLayerToAsset({ layer }) {

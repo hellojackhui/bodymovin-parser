@@ -32,10 +32,10 @@ class Text implements IText {
     constructor({
         asset, options
     }) {
-        const { index, layerType = 5 } = options;
+        const { index, layerType = 5, level } = options;
         
         this.source = asset;
-        this._unionId = `layer-bm-${index}`;
+        this._unionId = `layer-bm-${level}-${index}`;
         this.type = this.getNodeType(layerType);
         this.modelData = new TextData(asset.d.k[0].s);
     }
