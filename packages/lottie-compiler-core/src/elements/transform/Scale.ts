@@ -24,12 +24,12 @@ class Scale implements IScale{
     }) {
         this.buildScale({
             layer,
-            nextLayer
+            nextLayer,
         });
     }
     buildScale({
         layer,
-        nextLayer
+        nextLayer,
     }) {
         const {t, s} = layer;
         const next = nextLayer ? nextLayer : {

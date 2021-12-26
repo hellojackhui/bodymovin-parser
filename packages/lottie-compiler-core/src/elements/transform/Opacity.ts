@@ -24,12 +24,12 @@ class Opacity implements IOpacity {
     }) {
         this.buildOpacity({
             layer,
-            nextLayer
+            nextLayer,
         });
     }
     buildOpacity({
         layer,
-        nextLayer
+        nextLayer,
     }) {
         const {t, s, x} = layer;
         const next = nextLayer ? nextLayer : {

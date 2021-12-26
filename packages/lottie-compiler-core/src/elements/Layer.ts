@@ -95,12 +95,19 @@ class Layer {
 
     buildAnimeLayer(layer) {
         const { ks } = layer;
+        const { fullFrames = false, layerFrameNum = -1 } = this._options;
         Object.keys(ks).forEach((key) => {
             const layer = ks[key];
             return this.buildMetricsAnime(key, layer);
         });
         // 关键帧过滤
-        this.animeFrames = this.animeFrames.filter((frame) => frame.index === 0 || frame.index >= this.animeFrames.length - 1 || frame.isKeyFrame);
+        if (!fullFrames) {
+            this.animeFrames = this.animeFrames.filter((frame) => frame.index === 0 || frame.index >= this.animeFrames.length - 1 || frame.isKeyFrame);
+        }
+        if (layerFrameNum !== -1) {
+            const framesLen = this.animeFrames.length;
+            this.animeFrames = this.animeFrames.filter((_, index) => index === Math.ceil(framesLen / layerFrameNum));
+        }
         return;
     }
 

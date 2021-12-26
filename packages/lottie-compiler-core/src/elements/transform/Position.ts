@@ -33,7 +33,7 @@ class Position implements IPosition {
             s: layer.s,
         };
         const {t: nt, s: ns} = next;
-        this.startTime = nt < t ? nt : t;
+        this.startTime = nt < t ? nt: t;
         this.endTime = nt < t ? t : nt;
         this.duration = Math.abs(nt - t);
         this.startVal = this.getPosition(s);

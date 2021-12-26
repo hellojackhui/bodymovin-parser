@@ -1,4 +1,10 @@
 // 解析器核心类
+// 1. 解析初始化参数
+// 2. 基于layer进行树结构生成
+// 3. 进行图层帧动画处理
+// 4. 进行最终数据产出
+
+
 import Asset from "./elements/Asset";
 import Layer from "./elements/Layer";
 import Shapes from "./elements/Shapes";
@@ -8,8 +14,9 @@ import { LayerTypeEnum, TypeEnum } from './utils/constant';
 
 class CoreParser implements Compiler.ICompiler {
 
-  public json: any;
-  private _json: any;
+  private _json: JSON;
+  public options: Compiler.IOptions;
+  public rebuildJSON: any;
   public bmVersion: string;
   public endFrame: any;
   public name: any;
@@ -18,19 +25,21 @@ class CoreParser implements Compiler.ICompiler {
   public frame: any;
   public maskIndex: number;
   public layer: Compiler.IRootWrapper;
+  public level: number;
   public assetList: {};
   public errorList: Array<Compiler.ErrorItem>;
 
-  constructor({ json }) {
-    this._json = json;
-    this.json = json;
-    this.buildCoreParseModal();
-    this.buildAssetsModal();
+  constructor({ json, options = {} }) {
+    this._json = JSON.parse(JSON.stringify(json));  // 原始json文件
+    this.options = options;
+    this.rebuildJSON = json; // 重新构建的json【应对合成层图层】
+    this.buildCoreParseModal(); // 构建核心数据对象
+    this.buildAssetsModal();  // 基于layers构建dom树
   }
 
   // 构建核心数据对象
   buildCoreParseModal() {
-    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this._json;
+    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this.rebuildJSON;
     this.bmVersion = v;
     this.name = nm;
     this.startFrame = ip;
@@ -40,6 +49,7 @@ class CoreParser implements Compiler.ICompiler {
     this.maskIndex = 0;
     this.assetList = {};
     this.errorList = [];
+    this.level = 0;
     this.layer = {
       type: "node",
       width,
@@ -51,7 +61,7 @@ class CoreParser implements Compiler.ICompiler {
 
   // 基于layers构建assets模型
   buildAssetsModal(newLayers?: any) {
-    const { assets, layers: sourceLayers } = this._json;
+    const { assets, layers: sourceLayers } = this.rebuildJSON;
     // 初始化图层层级
     sourceLayers.forEach(layer => layer.level = 1);
     // 剔除状态为null的图层
@@ -85,6 +95,7 @@ class CoreParser implements Compiler.ICompiler {
     return this.buildLayersModal(layers);
   }
 
+  // 构建图片图层资源位
   buildAssetInstance(assets, layer) {
     let assetId = layer.refId;
     let assetArr = assets.filter((item) => item.id === assetId);
@@ -94,13 +105,10 @@ class CoreParser implements Compiler.ICompiler {
     const assetInstance = new Asset({
       asset: assetArr[0],
       options: {
-        index: layer.ind,
-        layerType: layer.ty,
-        level: layer.level,
-        parent: layer.parent,
+        layer
       }
     });
-    this.assetList[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance.getUnionId()] = assetInstance;
     return;
   }
 
@@ -110,6 +118,21 @@ class CoreParser implements Compiler.ICompiler {
     if (!assetArr || !assetArr.length) {
       return;
     }
+    // 构建合成基础图层
+    const { w, h, ind: index, level, } = layer;
+    const assetInstance = new Asset({
+      asset: {
+        id: `layer_element-${level}-${index}`,
+        w,
+        h,
+        p: "",
+      },
+      options: {
+        layer,
+        layerType: LayerTypeEnum.image,
+      }
+    });
+    this.assetList[assetInstance.getUnionId()] = assetInstance;
     return this.rebuildAssetsTree({
       cur: assetArr[0],
       id: assetId,
@@ -118,7 +141,7 @@ class CoreParser implements Compiler.ICompiler {
   }
 
   buildSolidInstance(layer) {
-    const { sw: w, sh: h, ind: index, level, parent } = layer;
+    const { sw: w, sh: h, ind: index, level } = layer;
     const tempAsset = {
       id: `layer_element-${level}-${index}`,
       w,
@@ -128,16 +151,15 @@ class CoreParser implements Compiler.ICompiler {
     const assetInstance = new Asset({
       asset: tempAsset,
       options: {
-        index,
+        layer,
         layerType: LayerTypeEnum.image,
-        parent,
       }
     });
-    this.assetList[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance.getUnionId()] = assetInstance;
   }
 
   buildEmptyInstance(layer) {
-    const { w = 100, h = 100, ind: index, level, parent = 0 } = layer;
+    const { w = 100, h = 100, ind: index, level } = layer;
     const tempAsset = {
       id: `layer_element-${level}-${index}`,
       w,
@@ -147,18 +169,16 @@ class CoreParser implements Compiler.ICompiler {
     const assetInstance = new Asset({
       asset: tempAsset,
       options: {
-        index,
+        layer,
         layerType: LayerTypeEnum.image,
-        level,
-        parent,
       }
     });
-    this.assetList[assetInstance._unionId] = assetInstance;
+    this.assetList[assetInstance.getUnionId()] = assetInstance;
   }
 
   buildTextInstance(layer) {
     const { t: text, ind: index, level } = layer;
-    const assetInstance = new Text({
+    const textInstance = new Text({
       asset: text,
       options: {
         index,
@@ -166,7 +186,7 @@ class CoreParser implements Compiler.ICompiler {
         level,
       }
     });
-    this.assetList[assetInstance._unionId] = assetInstance;
+    this.assetList[textInstance.getUnionId()] = textInstance;
   }
 
   buildShapesInstance(layer) {
@@ -179,11 +199,11 @@ class CoreParser implements Compiler.ICompiler {
     });
     const shapeModal = {
       shapeSource: shapesList,
-      _unionId: `layer-bm-${layer.ind}`,
+      _unionId: `layer_element-${layer.level}-${layer.ind}`,
       id: layer.nm,
       type: LayerTypeEnum.shape,
     }
-    this.assetList[`layer-bm-${layer.level}-${layer.ind}`] = shapeModal;
+    this.assetList[`layer_element-${layer.level}-${layer.ind}`] = shapeModal;
   }
 
   outputJSON() {
@@ -202,12 +222,12 @@ class CoreParser implements Compiler.ICompiler {
     return baseOutput;
   }
 
-  outputSource() {
-    return this.json;
+  outputSourceData() {
+    return this._json;
   }
 
   buildLayersModal(lys) {
-    const { layers: sourceLayers, w, h } = this._json;
+    const { layers: sourceLayers, w, h } = this.rebuildJSON;
     if (!sourceLayers || !sourceLayers.length) return;
     const frameCount = this.endFrame - this.startFrame;
         // 剔除状态为null的图层
@@ -223,6 +243,7 @@ class CoreParser implements Compiler.ICompiler {
           options: {
             w, 
             h,
+            ...this.options,
           },
           ctx: this,
         });
@@ -259,7 +280,7 @@ class CoreParser implements Compiler.ICompiler {
     id,
     layerId,
   }) {
-    let { layers, assets } = this._json;
+    let { layers, assets } = this.rebuildJSON;
     let targetLayerIndex = layers.findIndex((layer) => layer.refId === id && layerId === layer.ind);
     let targetAssetIndex = assets.findIndex((asset) => asset.refId === id || asset.id === id);
     let targetLayer = layers[targetLayerIndex];
@@ -274,8 +295,8 @@ class CoreParser implements Compiler.ICompiler {
     }
     // 更新动画模式
     targetLayer.ty = LayerTypeEnum.image;
-    targetLayer.refId = targetAssets.layers[0].refId;
-    targetLayer.ks = targetAssets.layers[0].ks;
+    targetLayer.refId = targetLayer.refId || targetAssets.layers[0].refId;
+    targetLayer.ks = targetLayer.ks || targetAssets.layers[0].ks;
     return this.buildAssetsModal(layers);
   }
 

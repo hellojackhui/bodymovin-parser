@@ -22,11 +22,16 @@ lottie动画核心解析器
 import Parser from '@wmfe/lottie-compiler-core';
 
 const inst = new Parser({
-    json: json
+    json: json,
+    options: {
+        fullFrames: true // 是否为全帧模式
+        layerFrameNum?: 10 // 图层动画返回多少帧【含关键帧】
+    }
 })
 
-// output parsed json
+// 返回解析ast
 const output = inst.outputJSON();
-
+// 返回原数据
+const sourceJSON = inst.outputSourceData();
 ```
 

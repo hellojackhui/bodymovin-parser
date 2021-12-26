@@ -3,7 +3,7 @@ const path = require('path');
 const axios = require('axios').default;
 const ParserToCSS = require('../packages/lottie-compiler-web/lib/lottie-compiler-web.umd');
 
-const json = require('../mock/shapes-loading.json');
+const json = require('../mock/demo4.json');
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 
 const fetch = (url) => {

@@ -4,7 +4,7 @@ const axios = require('axios').default;
 
 const basePath = path.resolve(__dirname, '../lib/demo/mock/');
 const CoreParser = require('../packages/lottie-compiler-core/lib/lottie-compiler-core.umd');
-const tree = require('../mock/hand.json');
+const tree = require('../mock/demo4.json');
 
 // const url = 'http://portal-portm.meituan.com/test/wmmp/4.json';
 
@@ -18,7 +18,9 @@ const tree = require('../mock/hand.json');
 
 Promise.resolve(tree).then((tree) => {
     // const data = res.data;
-    const core =  new CoreParser({json: tree});
+    const core =  new CoreParser({json: tree, options: {
+        fullFrames: true,
+    }});
     const jsonstr = JSON.stringify(core.outputJSON());
     writeJSONFile(jsonstr);
 })

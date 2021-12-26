@@ -1,16 +1,24 @@
 export interface ICompiler {
-    json: JSON;
+    rebuildJSON: JSON;
     bmVersion: string;
     name: string;
     startFrame: number;
     endFrame: number;
     frame: number;
+    level: number;
     layer: IRootWrapper;
     is3dLayer: boolean;
     maskIndex: number;
     assetList: {
         [x: string]: IAsset
     };
+    outputSourceData: () => JSON;
+    outputJSON: () => {[x: string]: any};
+}
+
+export interface IOptions {
+    fullFrames?: boolean;
+    layerFrameNum?: number;
 }
 
 export interface ICompilerOutput {

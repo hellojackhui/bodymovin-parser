@@ -22,12 +22,12 @@ class Rotate implements IRotate {
     }) {
         this.buildRotate({
             layer,
-            nextLayer
+            nextLayer,
         });
     }
     buildRotate({
         layer,
-        nextLayer
+        nextLayer,
     }) {
         const {t, s} = layer;
         const next = nextLayer ? nextLayer : {

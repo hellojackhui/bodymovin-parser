@@ -35,7 +35,7 @@ class Text implements IText {
         const { index, layerType = 5, level } = options;
         
         this.source = asset;
-        this._unionId = `layer-bm-${level}-${index}`;
+        this._unionId = `layer_element-${level}-${index}`;
         this.type = this.getNodeType(layerType);
         this.modelData = new TextData(asset.d.k[0].s);
     }
@@ -51,6 +51,10 @@ class Text implements IText {
             default:
                 return 'image';
         }
+    }
+
+    getUnionId() {
+        return this._unionId;
     }
 
     output() {

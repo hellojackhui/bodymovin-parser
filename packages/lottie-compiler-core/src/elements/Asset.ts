@@ -28,13 +28,14 @@ class Asset implements IAsset {
 
     buildAssets(assets, options) {
         const { id, w, h, u, p } = assets;
-        const { index, layerType = 2, level, parent = 0 } = options;
+        const { ind: index, level, parent = 0, w: width, h: height } = options.layer;
+        const { layerType = 2, } = options;
         this._unionId = `layer-bm-${level}-${index}`;
         this.parentId = `layer-bm-${level - 1}-${parent}`;
         this.type = this.getNodeType(layerType);
         this.id = id;
-        this.width = w;
-        this.height = h;
+        this.width = width || w;
+        this.height = height || h;
         this.path = this.buildUrlPath(u, p);
     }
 
@@ -49,6 +50,10 @@ class Asset implements IAsset {
             default:
                 return 'image';
         }
+    }
+
+    getUnionId() {
+        return this._unionId;
     }
 
     buildUrlPath(url, path) {

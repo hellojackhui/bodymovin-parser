@@ -43,7 +43,7 @@ class WebBMParser {
         return {
             ...config,
             animeConfig: {
-                mode: (config.animeConfig && config.animeConfig.mode) ? config.animeConfig.mode : 'steps(1)',
+                mode: !config.fullFrames ? 'linear' : (config.animeConfig && config.animeConfig.mode) ? config.animeConfig.mode : 'steps(1)',
                 iterationCount: (config.animeConfig && config.animeConfig.iterationCount) ? config.animeConfig.iterationCount : 'infinite',
                 direction: (config.animeConfig && config.animeConfig.direction) ? config.animeConfig.direction : 'normal',
                 fillMode: (config.animeConfig && config.animeConfig.fillMode) ? config.animeConfig.fillMode : 'none',
@@ -66,7 +66,7 @@ class WebBMParser {
 
     getParserTree(json) {
         if (!json) return;
-        this.parser = new CoreParser({json});
+        this.parser = new CoreParser({json, options: {fullFrames: this.config.fullFrames} });
         const outputJSON = this.parser.outputJSON();
         const parserTree = this.getWebCommonTree(outputJSON);
         this.getParserInstance(parserTree);
