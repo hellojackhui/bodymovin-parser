@@ -2,7 +2,7 @@
   "name": "@wmfe/lottie-compiler-core",
   "version": "0.0.1-alpha.12",
   "description": "lottie-parser 核心解析器",
-  "main": "lib/lottie-compiler-core.umd.js",
+  "main": "lib/index.js",
   "files": [
     "index.ts",
     "dist"
@@ -19,10 +19,11 @@
     "bodymovin",
     "After Effects",
     "lottie",
-    "lottie-parser"
+    "lottie-parser",
+    "frame animation"
   ],
   "license": "MIT",
-  "author": "hellojackhui",
+  "author": "huijiawei",
   "homepage": "http://dev.sankuai.com/code/repo-detail/~HUIJIAWEI/lottie-player/file/detail?branch=refs%2Fheads%2Fmaster&path=README.md",
   "gitHead": "35b737b5e6e56adeeed80cb6a86bc0add9fbf036"
 }

@@ -9,14 +9,18 @@ import Asset from "./elements/Asset";
 import Layer from "./elements/Layer";
 import Shapes from "./elements/Shapes";
 import Text from "./elements/Text";
-import * as Compiler from './index.d';
+import MagicLottieInstance from './elements/index';
+import getRelativeSourceData from './utils/getReletiveSourceData';
+import { IMagicCompiler, IMagicCompilerOptions } from './types/index.d';
+import { IMagicLottieInstance } from './types/layer.d';
+
 import { LayerTypeEnum, TypeEnum } from './utils/constant';
 
-class CoreParser implements Compiler.ICompiler {
+class CoreParser implements IMagicCompiler {
 
-  private _json: JSON;
-  public options: Compiler.IOptions;
-  public rebuildJSON: any;
+  public dataSource: JSON;
+  public options: IMagicCompilerOptions;
+  public compiledJSON: IMagicLottieInstance;
   public bmVersion: string;
   public endFrame: any;
   public name: any;
@@ -24,39 +28,56 @@ class CoreParser implements Compiler.ICompiler {
   public startFrame: any;
   public frame: any;
   public maskIndex: number;
-  public layer: Compiler.IRootWrapper;
+  // public layer: Compiler.IRootWrapper;
   public level: number;
   public assetList: {};
-  public errorList: Array<Compiler.ErrorItem>;
+  public errorList: any[];
 
   constructor({ json, options = {} }) {
-    this._json = JSON.parse(JSON.stringify(json));  // 原始json文件
+    this.dataSource = JSON.parse(JSON.stringify(json));  // 原始json文件
+    this.compiledJSON = json; // 重新构建的json【应对合成层图层】
     this.options = options;
-    this.rebuildJSON = json; // 重新构建的json【应对合成层图层】
-    this.buildCoreParseModal(); // 构建核心数据对象
+    this.verifySourceData(this.dataSource);
+    this.buildMagicLottieAST(this.dataSource); // 构建核心数据对象
     this.buildAssetsModal();  // 基于layers构建dom树
   }
 
+  // 获取源JSON数据
+  getSourceData() {
+    return this.dataSource;
+  }
+
+  // 获取编译后的数据
+  getCompiledData() {
+    return this.compiledJSON;
+  }
+
+  // 获取选定图层的原数据
+  getSelectedLayerSourceData(layerId) {
+    return getRelativeSourceData(this.dataSource, layerId);
+  }
+
+  // 校验传入的数据是否合法
+  verifySourceData(data) {
+    try {
+      if (!data) throw new Error('需要传入动效数据');
+      if (typeof data !== 'object') throw new Error('数据需为JSON格式');
+      let res = JSON.parse(JSON.stringify(data));
+      if (!res.v) throw new Error('请检查是否为合法动效生成数据');
+      if (!res.w || !res.h) throw new Error('区域尺寸为0，请检查');
+      return res;
+    } catch (err) {
+      console.log('-------- magic生成失败 ---------');
+      console.log('-------- 日志如下 ---------')
+      console.log(JSON.stringify(err));
+      console.log('-------- 分隔符 ---------')
+    }
+  }
+
   // 构建核心数据对象
-  buildCoreParseModal() {
-    const { v, nm, ip, op, fr, ddd = 0, w: width, h: height } = this.rebuildJSON;
-    this.bmVersion = v;
-    this.name = nm;
-    this.startFrame = ip;
-    this.endFrame = op;
-    this.frame = fr;
-    this.is3dLayer = !!ddd;
-    this.maskIndex = 0;
-    this.assetList = {};
-    this.errorList = [];
-    this.level = 0;
-    this.layer = {
-      type: "node",
-      width,
-      height,
-      children: [],
-      layer: {},
-    };
+  buildMagicLottieAST(data) {
+    const magicInstance = new MagicLottieInstance(data);
+    
   }
 
   // 基于layers构建assets模型
@@ -222,9 +243,7 @@ class CoreParser implements Compiler.ICompiler {
     return baseOutput;
   }
 
-  outputSourceData() {
-    return this._json;
-  }
+  
 
   buildLayersModal(lys) {
     const { layers: sourceLayers, w, h } = this.rebuildJSON;
